@@ -41,7 +41,7 @@ export const ResetPasswordForm = () => {
 
     useEffect(() => {
         // トークンとメールが存在する場合のみ検証
-        if (token && email && !hasValidatedToken) {
+        if (!hasValidatedToken) {
             validateToken();
         }
     }, [token, email, validateToken, hasValidatedToken]);
