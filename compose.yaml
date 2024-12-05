@@ -1,0 +1,86 @@
+services:
+  backend:
+    container_name: laravel
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    ports:
+      - 8000:8000
+    tty: true
+    volumes:
+      - type: bind
+        source: ./backend
+        target: /app
+      - type: volume
+        source: vendor
+        target: /app/vendor
+    depends_on:
+      - db
+    configs:
+      - source: php_config
+        target: /usr/local/etc/php/php.ini
+    networks:
+      - my-network
+
+  frontend:
+    container_name: react
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    ports:
+      - 5173:5173
+      - 6006:6006
+    environment:
+      CHOKIDAR_USEPOLLING: true
+    tty: true
+    volumes:
+      - type: bind
+        source: ./frontend
+        target: /home/node/app
+      - type: volume
+        source: node_modules
+        target: /home/node/app/node_modules
+    networks:
+      - my-network
+
+  db:
+    container_name: mysql
+    build:
+      context: .
+      dockerfile: docker/db/Dockerfile
+    ports:
+      - 13306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: pilates
+      MYSQL_USER: pilates
+      MYSQL_PASSWORD: pilates
+      TZ: Asia/Tokyo
+    volumes:
+      - type: volume
+        source: mysql-db-data
+        target: /var/lib/mysql/
+    restart: always
+    configs:
+      - source: mysql_config
+        target: /etc/mysql/conf.d/my.cnf
+    networks:
+      - my-network
+
+volumes:
+  mysql-db-data:
+    name: named-mysql-data
+  node_modules:
+    name: named-node_modules
+  vendor:
+    name: named-vendor
+
+configs:
+  php_config:
+    file: ./docker/backend/php.ini
+  mysql_config:
+    file: ./docker/db/my.cnf
+
+networks:
+  my-network:
+    driver: bridge

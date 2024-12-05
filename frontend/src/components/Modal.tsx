@@ -1,0 +1,36 @@
+import { Box, Modal as MUIModal } from "@mui/material";
+import React from "react";
+
+/**
+ * モーダルの型
+ */
+interface ModalProps {
+    open: boolean;
+    onClose: () => void;
+    children: React.ReactNode;
+}
+
+/**
+ * モーダルコンポーネント
+ */
+export const Modal = ({ open, onClose, children }: ModalProps) => {
+    return (
+        <MUIModal open={open} onClose={onClose}>
+            <Box
+                sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    width: 400,
+                    bgcolor: "background.paper",
+                    borderRadius: 2,
+                    boxShadow: 24,
+                    p: 4,
+                }}
+            >
+                {children}
+            </Box>
+        </MUIModal>
+    );
+};

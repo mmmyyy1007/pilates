@@ -1,0 +1,42 @@
+{
+    "name": "backend",
+    "service": "backend",
+    "workspaceFolder": "/app",
+    "dockerComposeFile": "../../../compose.yaml",
+    "shutdownAction": "stopCompose",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "xdebug.php-debug",
+                "amiralizadeh9480.laravel-extra-intellisense",
+                "ryannaddy.laravel-artisan",
+                "onecentlin.laravel5-snippets",
+                "mikestead.dotenv"
+            ],
+            "settings": {
+                "editor.detectIndentation": false,
+                "editor.renderWhitespace": "boundary",
+                "editor.insertSpaces": true,
+                "editor.formatOnSave": true,
+                "files.insertFinalNewline": true,
+                "files.trimFinalNewlines": true,
+                "files.trimTrailingWhitespace": true,
+                "editor.formatOnType": true,
+                "editor.formatOnPaste": true,
+                "php.suggest.basic": false,
+                "php.validate.enable": false,
+                "intelephense.telemetry.enabled": false,
+                "intelephense.completion.triggerParameterHints": true,
+                "intelephense.completion.insertUseDeclaration": true,
+                "intelephense.trace.server": "messages",
+                "intelephense.diagnostics.undefinedClassConstants": false,
+                "intelephense.diagnostics.undefinedFunctions": false,
+                "intelephense.diagnostics.undefinedConstants": false,
+                "intelephense.diagnostics.undefinedProperties": false,
+                "intelephense.diagnostics.undefinedTypes": false,
+                "intelephense.diagnostics.undefinedMethods": false
+            }
+        }
+    }
+}
