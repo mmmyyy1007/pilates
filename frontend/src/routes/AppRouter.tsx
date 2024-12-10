@@ -1,9 +1,11 @@
+import { Layout } from "@/components/Layout";
 import { ROUTES } from "@/configs/routes";
 import { getUser } from "@/features/auth/api/getUser";
 import { useAuthStore } from "@/features/auth/stores/authStore";
 import { Home } from "@/pages/Home";
 import { Login } from "@/pages/Login";
 import { PasswordReset } from "@/pages/PasswordReset"; // パスワードリセットページをインポート
+import { Place } from "@/pages/Place";
 import { createBrowserRouter, Navigate, redirect, RouterProvider } from "react-router-dom";
 
 /**
@@ -44,9 +46,13 @@ const router = createBrowserRouter([
         element: <Login />,
     },
     {
-        path: ROUTES.HOME,
+        // path: "/",
         loader: guardLoader,
-        element: <Home />,
+        element: <Layout />,
+        children: [
+            { path: ROUTES.HOME, element: <Home /> },
+            { path: ROUTES.PLACE, element: <Place /> },
+        ],
     },
     {
         path: ROUTES.PASSWORD_RESET,
