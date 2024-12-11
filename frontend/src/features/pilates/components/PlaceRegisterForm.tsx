@@ -56,6 +56,7 @@ export const PlaceRegisterForm = () => {
                                                 {...provided.draggableProps}
                                             >
                                                 <Switch
+                                                    color="success"
                                                     checked={item.enabled}
                                                     onChange={() => handlePlaceEnabledChange(item.id)}
                                                 />
