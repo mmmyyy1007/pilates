@@ -1,6 +1,6 @@
 import { Loading } from "@/components/Loading";
 import { Typography } from "@/components/Typography";
-import { LogoutButton } from "@/features/auth/components/LogoutButton";
+// import { LogoutButton } from "@/features/auth/components/LogoutButton";
 import { useAuthStore } from "@/features/auth/stores/authStore";
 import { LessonTimeline } from "@/features/pilates/components/LessonTimeline";
 import { Box } from "@mui/material";
@@ -33,7 +33,7 @@ export const Home = () => {
             <Typography variant="body1" gutterBottom>
                 ここはホーム画面です。
             </Typography>
-            <LogoutButton />
+            {/* <LogoutButton /> */}
             <LessonTimeline />
         </Box>
     );
