@@ -3,4 +3,5 @@ export const ROUTES = {
     HOME: "/home",
     PASSWORD_RESET: "/reset-password/:token",
     PLACE: "/place",
+    USERLIST: "/user",
 } as const;

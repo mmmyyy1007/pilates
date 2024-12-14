@@ -6,6 +6,8 @@ import { Home } from "@/pages/Home";
 import { Login } from "@/pages/Login";
 import { PasswordReset } from "@/pages/PasswordReset"; // パスワードリセットページをインポート
 import { Place } from "@/pages/Place";
+import { User } from "@/pages/User";
+
 import { createBrowserRouter, Navigate, redirect, RouterProvider } from "react-router-dom";
 
 /**
@@ -52,6 +54,7 @@ const router = createBrowserRouter([
         children: [
             { path: ROUTES.HOME, element: <Home /> },
             { path: ROUTES.PLACE, element: <Place /> },
+            { path: ROUTES.USERLIST, element: <User /> },
         ],
     },
     {
