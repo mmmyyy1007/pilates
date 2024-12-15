@@ -3,6 +3,7 @@ import { ROUTES } from "@/configs/routes";
 import { getUser } from "@/features/auth/api/getUser";
 import { useAuthStore } from "@/features/auth/stores/authStore";
 import { Home } from "@/pages/Home";
+import { Lesson } from "@/pages/Lesson";
 import { Login } from "@/pages/Login";
 import { PasswordReset } from "@/pages/PasswordReset"; // パスワードリセットページをインポート
 import { Place } from "@/pages/Place";
@@ -54,7 +55,8 @@ const router = createBrowserRouter([
         children: [
             { path: ROUTES.HOME, element: <Home /> },
             { path: ROUTES.PLACE, element: <Place /> },
-            { path: ROUTES.USERLIST, element: <User /> },
+            { path: ROUTES.USER, element: <User /> },
+            { path: ROUTES.LESSON, element: <Lesson /> },
         ],
     },
     {
