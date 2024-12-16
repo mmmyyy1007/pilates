@@ -1,4 +1,4 @@
 export interface UserData {
     username: string;
-    date: Date;
+    date: string;
 }

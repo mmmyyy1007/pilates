@@ -6,53 +6,33 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineItem from "@mui/lab/TimelineItem";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import TimelineSeparator from "@mui/lab/TimelineSeparator";
+import { formatDate, formatTime } from "../../../utils/dateUtils";
 import { TimelineData } from "../types/timelineTypes";
 
 export const LessonTimeline = () => {
     const timelineData: TimelineData[] = [
         {
             id: 1,
-            date: new Date(2024, 4, 6),
-            start: { hour: 12, minute: 0 },
-            end: { hour: 12, minute: 50 },
+            date: "2024-12-06",
+            start: "12:00:00",
+            end: "12:50:00",
             place: "STUDIO IVY 奥沢店",
         },
         {
             id: 2,
-            date: new Date(2024, 4, 13),
-            start: { hour: 12, minute: 0 },
-            end: { hour: 12, minute: 50 },
+            date: "2024-04-13",
+            start: "12:00:00",
+            end: "12:50:00",
             place: "STUDIO IVY 奥沢店",
         },
         {
             id: 3,
-            date: new Date(2024, 5, 6),
-            start: { hour: 12, minute: 0 },
-            end: { hour: 12, minute: 50 },
+            date: "2024-05-06",
+            start: "12:00:00",
+            end: "12:50:00",
             place: "STUDIO IVY 奥沢店",
         },
     ];
-    /**
-     * 日付をフォーマットする関数
-     *
-     * @param date
-     * @returns
-     */
-    const formatDate = (date: Date): string => {
-        const year = date.getFullYear();
-        const month = date.getMonth().toString().padStart(2, "0");
-        const day = date.getDate().toString().padStart(2, "0");
-        return `${year}.${month}.${day}`;
-    };
-    /**
-     * 時間をフォーマットする関数
-     *
-     * @param time
-     * @returns
-     */
-    const formatTime = (time: { hour: number; minute: number }): string => {
-        return `${time.hour.toString().padStart(2, "0")}:${time.minute.toString().padStart(2, "0")}`;
-    };
 
     return (
         <Timeline>
