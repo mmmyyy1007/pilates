@@ -12,6 +12,7 @@ export const UserList = () => {
         username: "〇〇 〇〇",
         date: "2024-04-06",
         mail: "saso@test.jp",
+        password: "sasosaso",
     };
 
     return (
@@ -35,6 +36,10 @@ export const UserList = () => {
             </Box>
             <Box>
                 <TextField label="メールアドレス" defaultValue={userData.mail} variant="standard"></TextField>
+                <CreateIcon />
+            </Box>
+            <Box>
+                <TextField label="パスワード" defaultValue={userData.password} variant="standard"></TextField>
                 <CreateIcon />
             </Box>
         </Box>
