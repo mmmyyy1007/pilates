@@ -3,6 +3,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreateIcon from "@mui/icons-material/Create";
 import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import TextField from "@mui/material/TextField";
 import { formatDate } from "../../../utils/dateUtils";
 import { UserData } from "../types/userTypes";
 
@@ -10,6 +11,7 @@ export const UserList = () => {
     const userData: UserData = {
         username: "〇〇 〇〇",
         date: "2024-04-06",
+        mail: "saso@test.jp",
     };
 
     return (
@@ -30,6 +32,10 @@ export const UserList = () => {
                         <Box>start {formatDate(userData.date)} ～</Box>
                     </Grid>
                 </Grid>
+            </Box>
+            <Box>
+                <TextField label="メールアドレス" defaultValue={userData.mail} variant="standard"></TextField>
+                <CreateIcon />
             </Box>
         </Box>
     );
