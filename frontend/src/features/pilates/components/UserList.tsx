@@ -1,9 +1,9 @@
+import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreateIcon from "@mui/icons-material/Create";
 import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import TextField from "@mui/material/TextField";
 import { formatDate } from "../../../utils/dateUtils";
 import { UserData } from "../types/userTypes";
 
