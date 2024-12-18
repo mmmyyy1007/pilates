@@ -13,12 +13,12 @@
 
 ## 手順
 
-### 1. リポジトリをクローン
+### 1. プロジェクトの作成
 
-GitHub からプロジェクトをクローンする。
+プロジェクトを作成する。
 
 ```bash
-git clone git@github.com:DogisRiki/docker-laravel.git
+mkdir docker-laravel
 cd docker-laravel
 ```
 
