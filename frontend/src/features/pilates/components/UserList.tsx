@@ -1,9 +1,12 @@
+import { Button } from "@/components/Button";
+import { Modal } from "@/components/Modal";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreateIcon from "@mui/icons-material/Create";
 import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
+import { useState } from "react";
 import { formatDate } from "../../../utils/dateUtils";
 import { UserData } from "../types/userTypes";
 
@@ -14,6 +17,7 @@ export const UserList = () => {
         mail: "saso@test.jp",
         password: "sasosaso",
     };
+    const [open, setOpen] = useState<boolean>(false);
 
     return (
         <Box sx={{ mt: 3 }}>
@@ -42,6 +46,11 @@ export const UserList = () => {
                 <TextField label="パスワード" defaultValue={userData.password} variant="standard"></TextField>
                 <CreateIcon />
             </Box>
+            <Modal open={open} onClose={() => setOpen(true)}>
+                <Typography>変更</Typography>
+                <TextField label="メールアドレス" defaultValue={userData.mail}></TextField>
+                <Button variant="outlined">更新</Button>
+            </Modal>
         </Box>
     );
 };
