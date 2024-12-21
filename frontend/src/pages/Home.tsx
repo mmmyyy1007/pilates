@@ -3,6 +3,7 @@ import { Typography } from "@/components/Typography";
 // import { LogoutButton } from "@/features/auth/components/LogoutButton";
 import { useAuthStore } from "@/features/auth/stores/authStore";
 import { LessonTimeline } from "@/features/pilates/components/LessonTimeline";
+import { SpeedDialMenu } from "@/features/pilates/components/SpeedDialMenu";
 import { Box } from "@mui/material";
 import { Gauge } from "@mui/x-charts/Gauge";
 
@@ -44,6 +45,7 @@ export const Home = () => {
             />
             {/* <LogoutButton /> */}
             <LessonTimeline />
+            <SpeedDialMenu />
         </Box>
     );
 };
