@@ -4,6 +4,7 @@ import { Typography } from "@/components/Typography";
 import { useAuthStore } from "@/features/auth/stores/authStore";
 import { LessonTimeline } from "@/features/pilates/components/LessonTimeline";
 import { Box } from "@mui/material";
+import { Gauge } from "@mui/x-charts/Gauge";
 
 /**
  * ホーム画面
@@ -33,6 +34,14 @@ export const Home = () => {
             <Typography variant="body1" gutterBottom>
                 ここはホーム画面です。
             </Typography>
+            <Gauge
+                width={100}
+                height={100}
+                value={10}
+                valueMin={0}
+                valueMax={30}
+                text={({ value, valueMax }) => `${value} / ${valueMax}`}
+            />
             {/* <LogoutButton /> */}
             <LessonTimeline />
         </Box>
