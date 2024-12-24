@@ -1,3 +1,4 @@
+import { ROUTES } from "@/configs/routes";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import PersonIcon from "@mui/icons-material/Person";
 import PlaceIcon from "@mui/icons-material/Place";
@@ -7,16 +8,18 @@ import SpeedDial from "@mui/material/SpeedDial";
 import SpeedDialAction from "@mui/material/SpeedDialAction";
 import SpeedDialIcon from "@mui/material/SpeedDialIcon";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const SpeedDialMenu = () => {
     const actions = [
-        { icon: <CalendarTodayIcon />, name: "レッスン一覧" },
-        { icon: <PlaceIcon />, name: "店舗一覧" },
-        { icon: <PersonIcon />, name: "アカウント管理" },
+        { icon: <CalendarTodayIcon />, name: "レッスン一覧", path: ROUTES.LESSON },
+        { icon: <PlaceIcon />, name: "店舗一覧", path: ROUTES.PLACE },
+        { icon: <PersonIcon />, name: "アカウント管理", path: ROUTES.USER },
     ];
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const navigate = useNavigate();
 
     return (
         <Box>
@@ -35,7 +38,7 @@ export const SpeedDialMenu = () => {
                         icon={action.icon}
                         tooltipTitle={action.name}
                         tooltipOpen
-                        onClick={handleClose}
+                        onClick={() => navigate(action.path)}
                     />
                 ))}
             </SpeedDial>
