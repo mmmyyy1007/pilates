@@ -45,6 +45,7 @@ apiClient.interceptors.response.use(
             switch (status) {
                 case 401:
                     // 認証不足
+                    alert("セッションが無効です。再ログインしてください。");
                     window.location.href = ROUTES.LOGIN;
                     break;
                 case 419:
