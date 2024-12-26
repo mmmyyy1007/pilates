@@ -1,6 +1,7 @@
 import { Button } from "@/components/Button";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
+import { apiClient } from "@/lib/apiClient";
 import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd";
 import AddIcon from "@mui/icons-material/Add";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -22,6 +23,10 @@ export const PlaceRegisterForm = () => {
     };
     const handlePlaceEnabledChange = (id: number) => {
         setPlaceData(placeData.map((v) => (v.id === id ? { ...v, enabled: !v.enabled } : v)));
+    };
+    const handleRegister = async () => {
+        const response = await apiClient.post("/place/register");
+        console.log(response);
     };
     const handleDragEnd = (result: DropResult) => {
         if (!result.destination) return;
@@ -84,7 +89,9 @@ export const PlaceRegisterForm = () => {
                     </IconButton>
                 </Box>
                 <Box sx={{ mt: 5 }}>
-                    <Button variant="outlined">登録</Button>
+                    <Button variant="outlined" onClick={handleRegister}>
+                        登録
+                    </Button>
                 </Box>
             </Box>
         </Box>
