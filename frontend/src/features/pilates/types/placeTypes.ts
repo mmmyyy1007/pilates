@@ -1,6 +1,9 @@
 export interface PlaceData {
-    id: number;
-    placeName: string;
-    enabled: boolean;
-    order: number;
+    id: string;
+    name: string;
+    displayFlag: boolean;
+    orderNo: number;
+}
+export interface placeApiResponse {
+    place: PlaceData[];
 }

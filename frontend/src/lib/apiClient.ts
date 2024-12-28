@@ -62,7 +62,7 @@ apiClient.interceptors.response.use(
                 case 500:
                     // サーバーエラー
                     alert("サーバーエラーが発生しました。");
-                    window.location.href = ROUTES.LOGIN;
+                    // window.location.href = ROUTES.LOGIN;
                     break;
                 default:
                     // その他のエラー

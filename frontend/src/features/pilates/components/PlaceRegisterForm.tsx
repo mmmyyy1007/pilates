@@ -1,32 +1,57 @@
 import { Button } from "@/components/Button";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
-import { apiClient } from "@/lib/apiClient";
+import { MESSAGES } from "@/constants/message";
+import { usePlace } from "@/features/pilates/hooks/usePlace";
+import { useErrorHandler } from "@/hooks/useErrorHandler";
 import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd";
 import AddIcon from "@mui/icons-material/Add";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { Alert, Box, IconButton } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PlaceData } from "../types/placeTypes";
 
 export const PlaceRegisterForm = () => {
-    const [placeData, setPlaceData] = useState<PlaceData[]>([
-        { id: 1, placeName: "test1", enabled: true, order: 1 },
-        { id: 2, placeName: "test2", enabled: false, order: 2 },
-        { id: 3, placeName: "test3", enabled: false, order: 3 },
-    ]);
-    const handlePlaceDataChange = (id: number, value: string) => {
-        // console.log(id, value);
-        setPlaceData(placeData.map((v) => (v.id === id ? { ...v, placeName: value } : v)));
+    const [placeData, setPlaceData] = useState<PlaceData[]>([]);
+    const [alertMessage, setAlertMessage] = useState<string | null>(null);
+    const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
+    const { handleShowPlace, handleRegisterPlace } = usePlace();
+    const { errors, handleError, resetErrors } = useErrorHandler();
+    useEffect(() => {
+        const fetchPlaceData = async () => {
+            const response = await handleShowPlace();
+            if (response.length === 0) {
+                setPlaceData([
+                    { id: Date.now().toString(), name: "", displayFlag: false, orderNo: 0 },
+                    { id: (Date.now() + 1).toString(), name: "", displayFlag: false, orderNo: 1 },
+                    { id: (Date.now() + 2).toString(), name: "", displayFlag: false, orderNo: 2 },
+                ]);
+            } else {
+                setPlaceData(response);
+            }
+        };
+        fetchPlaceData();
+    }, []);
+    const handlePlaceDataChange = (id: string, value: string) => {
+        setPlaceData(placeData.map((v) => (v.id === id ? { ...v, name: value, displayFlag: true } : v)));
     };
-    const handlePlaceEnabledChange = (id: number) => {
-        setPlaceData(placeData.map((v) => (v.id === id ? { ...v, enabled: !v.enabled } : v)));
+    const handlePlaceEnabledChange = (id: string) => {
+        setPlaceData(placeData.map((v) => (v.id === id ? { ...v, displayFlag: !v.displayFlag } : v)));
     };
-    const handleRegister = async () => {
-        const response = await apiClient.post("/place/register");
-        console.log(response);
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
+        resetErrors();
+        try {
+            await handleRegisterPlace(placeData);
+            setAlertServerity("success");
+            setAlertMessage(MESSAGES.registerSucces);
+        } catch (error) {
+            setAlertServerity("error");
+            setAlertMessage(MESSAGES.registerError);
+            handleError(error);
+        }
     };
     const handleDragEnd = (result: DropResult) => {
         if (!result.destination) return;
@@ -35,18 +60,29 @@ export const PlaceRegisterForm = () => {
         data.splice(result.destination.index, 0, recordedItem);
         const updatedItems = data.map((item, index) => ({
             ...item,
-            order: index,
+            orderNo: index,
         }));
         setPlaceData(updatedItems);
     };
-    const sortedData = [...placeData].sort((a, b) => a.order - b.order);
+    const sortedData = [...placeData].sort((a, b) => a.orderNo - b.orderNo);
+    const handleAddField = () => {
+        const tempId = Date.now().toString();
+        const nextOrderNo = placeData.length ? Math.max(...placeData.map((item) => item.orderNo)) + 1 : 0;
+        setPlaceData([...placeData, { id: tempId, name: "", displayFlag: false, orderNo: nextOrderNo }]);
+    };
+    const getFieldError = (orderNo: number, field: string): string | undefined => {
+        const key = `${orderNo}.${field}`;
+        return errors[key]?.[0];
+    };
     return (
         <Box sx={{ mt: 3 }}>
             <Typography variant="h5">店舗一覧</Typography>
             <Box>
-                <Alert severity="success" onClose={() => {}}>
-                    登録完了
-                </Alert>
+                {alertMessage && (
+                    <Alert severity={alertSeverity} onClose={() => setAlertMessage(null)}>
+                        {alertMessage}
+                    </Alert>
+                )}
                 <DragDropContext onDragEnd={handleDragEnd}>
                     <Droppable droppableId="droppable">
                         {(provided) => (
@@ -55,20 +91,20 @@ export const PlaceRegisterForm = () => {
                                     <Draggable key={item.id} draggableId={item.id.toString()} index={index}>
                                         {(provided) => (
                                             <Box
-                                                // key={item.id}
+                                                key={item.id}
                                                 sx={{ display: "flex", alignItems: "center", gap: 1 }}
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                             >
                                                 <Switch
                                                     color="success"
-                                                    checked={item.enabled}
+                                                    checked={item.displayFlag}
                                                     onChange={() => handlePlaceEnabledChange(item.id)}
                                                 />
                                                 <TextField
                                                     fullWidth
-                                                    value={item.placeName}
-                                                    error={item.id === 3}
+                                                    value={item.name}
+                                                    error={!!getFieldError(item.orderNo, "name")}
                                                     onChange={(e) => handlePlaceDataChange(item.id, e.target.value)}
                                                 ></TextField>
                                                 <IconButton color="default" {...provided.dragHandleProps}>
@@ -84,7 +120,7 @@ export const PlaceRegisterForm = () => {
                     </Droppable>
                 </DragDropContext>
                 <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
-                    <IconButton color="default">
+                    <IconButton color="default" onClick={handleAddField}>
                         <AddIcon />
                     </IconButton>
                 </Box>
