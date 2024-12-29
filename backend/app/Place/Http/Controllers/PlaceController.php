@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Place\Services\PlaceServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use App\Place\Models\Place;
 
 class PlaceController extends Controller
 {
