@@ -1,13 +1,11 @@
-// import { registerPlace } from "@/features/pilates/api/registerPlace";
-import { showLessonPlace } from "@/features/pilates/api/showLessonPlace";
-// import { LessonPlaceData } from "@/features/pilates/types/lessonTypes";
+import { showLesson } from "@/features/pilates/api/showLesson";
 
-export const useLessonPlace = () => {
-    const handleShowLessonPlace = async () => {
-        return await showLessonPlace();
+export const useLesson = () => {
+    const handleShowLesson = async () => {
+        return await showLesson();
     };
     // const handleRegisterPlace = async (data: PlaceData[]) => {
     //     await registerPlace(data);
     // };
-    return { handleShowLessonPlace };
+    return { handleShowLesson };
 };

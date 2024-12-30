@@ -1,45 +1,52 @@
 import { Button } from "@/components/Button";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
-import { useLessonPlace } from "@/features/pilates/hooks/useLesson";
+import { useLesson } from "@/features/pilates/hooks/useLesson";
+import { usePlace } from "@/features/pilates/hooks/usePlace";
+import { LessonData } from "@/features/pilates/types/lessonTypes";
+import { ActivePlaceData } from "@/features/pilates/types/placeTypes";
+// import allLocales from "@fullcalendar/core/locales-all";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import FullCalendar from "@fullcalendar/react";
 import { Box } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { useEffect, useState } from "react";
-import { LessonPlaceData } from "../types/lessonTypes";
 
 export const LessonList = () => {
-    const [LessonPlaceData, setLessonPlaceData] = useState<LessonPlaceData[]>([]);
-    const { handleShowLessonPlace } = useLessonPlace();
+    const [ActivePlaceData, setActivePlaceData] = useState<ActivePlaceData[]>([]);
+    const [LessonData, setLessonData] = useState<LessonData[]>([]);
+    const { handleActiveShowPlace } = usePlace();
+    const { handleShowLesson } = useLesson();
     useEffect(() => {
-        const fetchLessonPlaceData = async () => {
-            const response = await handleShowLessonPlace();
-            if (response.length === 0) {
-                setLessonPlaceData([{ id: "", name: "" }]);
-            } else {
-                setLessonPlaceData(response);
-            }
+        const fetchLessonData = async () => {
+            const [lessonResponse, placeResponse] = await Promise.all([handleShowLesson(), handleActiveShowPlace()]);
+            console.log(lessonResponse);
+            setActivePlaceData(placeResponse);
+            setLessonData(lessonResponse);
         };
-        fetchLessonPlaceData();
+        fetchLessonData();
     }, []);
     return (
         <Box sx={{ mt: 3 }}>
             <Typography variant="h5">レッスン一覧</Typography>
             <FullCalendar
                 plugins={[dayGridPlugin]} // pluginsにdayGridPluginを設定する
+                // locales={allLocales}
+                locale="ja"
                 // headerToolbar={{
                 //     right: "dayGridMonth,dayGridWeek",
                 // }}
                 initialView="dayGridMonth" // 初期表示のモードを設定する
-                events={"https://fullcalendar.io/api/demo-feeds/events.json"}
+                // events={[{ title: "event", start: "2024-12-30T12:00:00", end: "2024-12-30T12:50:00" }]}
+                events={LessonData}
             />
             <DateTimePicker label="開始日時" slotProps={{ textField: { size: "small", fullWidth: true } }} />
             <DateTimePicker label="終了日時" slotProps={{ textField: { size: "small", fullWidth: true } }} />
             <Autocomplete
                 disablePortal
-                options={LessonPlaceData}
+                noOptionsText=""
+                options={ActivePlaceData}
                 getOptionKey={(option) => option.id}
                 getOptionLabel={(option) => option.name}
                 sx={{ width: 300 }}

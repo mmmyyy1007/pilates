@@ -1,8 +1,9 @@
-export interface LessonPlaceData {
-    id: string;
-    name: string;
+export interface LessonData {
+    title: "string";
+    start: "string";
+    end: string;
 }
 
-export interface LessonPlaceApiResponse {
-    list: { place: LessonPlaceData[] };
+export interface LessonApiResponse {
+    lesson: LessonData[];
 }
