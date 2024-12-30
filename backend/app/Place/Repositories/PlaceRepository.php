@@ -24,6 +24,22 @@ class PlaceRepository implements PlaceRepositoryInterface
 
     /**
      * @param int $userId
+     * @return Collection $records
+     */
+    public function getPlaceActiveById(int $userId): Collection
+    {
+        $sql = Place::select('id', 'name')
+            ->where('user_id', $userId)
+            ->where('display_flag', 1)
+            ->orderBy('order_no');
+
+        $records = $sql->get();
+
+        return $records;
+    }
+
+    /**
+     * @param int $userId
      * @param string $placeId
      * @return bool $exists
      */

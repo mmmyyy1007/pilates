@@ -26,6 +26,13 @@ class PlaceController extends Controller
         return response()->json(['place' => $place]);
     }
 
+    public function showActive(Request $request)
+    {
+        $userId = Auth::id();
+        $place = $this->placeService->getPlaceActiveById($userId);
+        return response()->json(['place' => $place]);
+    }
+
     /**
      * 店舗情報登録
      */

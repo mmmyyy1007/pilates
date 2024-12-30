@@ -21,8 +21,18 @@ class PlaceService implements PlaceServiceInterface
      */
     public function getPlaceById(int $userId): Collection
     {
-        // 店舗情報取得
         $place = $this->placeRepository->getPlaceById($userId);
+
+        return $place;
+    }
+
+    /**
+     * @param int $userId
+     * @return Collection
+     */
+    public function getPlaceActiveById(int $userId): Collection
+    {
+        $place = $this->placeRepository->getPlaceActiveById($userId);
 
         return $place;
     }
