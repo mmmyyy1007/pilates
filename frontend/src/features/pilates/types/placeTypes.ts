@@ -4,6 +4,13 @@ export interface PlaceData {
     displayFlag: boolean;
     orderNo: number;
 }
+
+export type ActivePlaceData = Pick<PlaceData, "id" | "name">;
+
+export interface ActivePlaceApiResponse {
+    place: ActivePlaceData[];
+}
+
 export interface placeApiResponse {
     place: PlaceData[];
 }
