@@ -23,6 +23,6 @@ class LessonController extends Controller
     {
         $userId = Auth::id();
         $place = $this->lessonService->getPlaceById($userId);
-        return response()->json(['place' => $place]);
+        return response()->json(['list' => ['place' => $place]]);
     }
 }
