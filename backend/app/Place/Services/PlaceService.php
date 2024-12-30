@@ -35,7 +35,9 @@ class PlaceService implements PlaceServiceInterface
     {
         // 新規の場合、ユニークIDを再設定
         $placeData = collect($placeData)->map(function ($item) {
-            if (strlen($item['id']) !== 36) {
+            $exists = $this->placeRepository->existsPlaceById($item['user_id'], $item['id']);
+
+            if (!$exists) {
                 $item['id'] = Str::uuid();
             }
             return $item;

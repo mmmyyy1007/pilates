@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface PlaceServiceInterface
 {
+
     /**
      * @param int $userId
      * @return Collection

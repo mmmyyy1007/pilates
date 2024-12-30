@@ -23,6 +23,19 @@ class PlaceRepository implements PlaceRepositoryInterface
     }
 
     /**
+     * @param int $userId
+     * @param string $placeId
+     * @return bool $exists
+     */
+    public function existsPlaceById(int $userId, string $placeId): bool
+    {
+        $sql = Place::where('user_id', $userId)->where('id', $placeId);
+        $exists = $sql->exists();
+
+        return $exists;
+    }
+
+    /**
      * @param array $placeData
      * @return bool $status
      */

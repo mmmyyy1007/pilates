@@ -13,6 +13,13 @@ interface PlaceRepositoryInterface
     public function getPlaceById(int $userId): Collection;
 
     /**
+     * @param int $userId
+     * @param string $placeId
+     * @param bool
+     */
+    public function existsPlaceById(int $userId, string $placeId): bool;
+
+    /**
      * @param array $placeData
      * @return bool
      */
