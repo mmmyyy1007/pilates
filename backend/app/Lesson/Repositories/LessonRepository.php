@@ -3,24 +3,41 @@
 namespace App\Lesson\Repositories;
 
 use App\Place\Models\Place;
+use App\Lesson\Models\Lesson;
 use Illuminate\Database\Eloquent\Collection;
 
 class LessonRepository implements LessonRepositoryInterface
 {
+
     /**
      * @param int $userId
      * @return Collection $records
      */
-    public function getPlaceById(int $userId): Collection
+    public function getLessonById(int $userId): Collection
     {
-        $sql = Place::select('id', 'name')
+        $sql = Lesson::select('id', 'start_datetime', 'end_datetime', 'place')
             ->where('user_id', $userId)
-            ->where('display_flag', 1)
-            ->orderBy('order_no');
+            ->orderBy('start_datetime')
+            ->orderBy('end_datetime');
 
         $records = $sql->get();
 
         return $records;
+    }
+
+    /**
+     * @param int $userId
+     * @return Collection $record
+     */
+    public function findLessonById(int $userId): Collection
+    {
+        $sql = Lesson::select('id', 'start_datetime as startDatetime', 'end_datetime as endDatetime', 'place')
+            ->where('user_id', $userId)
+            ->orderBy('start_datetime');
+
+        $record = $sql->first();
+
+        return $record;
     }
 
     /**

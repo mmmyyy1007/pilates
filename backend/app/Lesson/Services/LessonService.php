@@ -4,7 +4,7 @@ namespace App\Lesson\Services;
 
 use App\Lesson\Repositories\LessonRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 class LessonService implements LessonServiceInterface
 {
@@ -17,14 +17,35 @@ class LessonService implements LessonServiceInterface
 
     /**
      * @param int $userId
+     * @return array
+     */
+    public function getLessonById(int $userId): array
+    {
+        $lesson = $this->lessonRepository->getLessonById($userId);
+
+        $events = collect($lesson)->map(function ($item) {
+            $start = Carbon::create($item['start_datetime']);
+            $end = Carbon::create($item['end_datetime']);
+            $diff = $start->diffInMinutes($end);
+
+            $events['title'] = $item['place'] . '(' . $diff . '分)';
+            $events['start'] = $start->format('Y-m-d\TH:i:s');
+            $events['end'] = $end->format('Y-m-d\TH:i:s');
+            return $events;
+        })->toArray();
+
+        return $events;
+    }
+
+    /**
+     * @param int $userId
      * @return Collection
      */
-    public function getPlaceById(int $userId): Collection
+    public function findLessonById(int $userId): Collection
     {
-        // 店舗情報取得
-        $place = $this->lessonRepository->getPlaceById($userId);
+        $lesson = $this->lessonRepository->findLessonById($userId);
 
-        return $place;
+        return $lesson;
     }
 
     /**
