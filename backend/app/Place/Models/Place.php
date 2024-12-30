@@ -18,5 +18,13 @@ class Place extends Model
      *
      * @var string
      */
-    // protected $primaryKey = 'user_id';
+    protected $keyType = 'string';
+    protected $primaryKey = 'id';
+
+    /**
+     * モデルのIDを自動増分するか
+     *
+     * @var bool
+     */
+    public $incrementing = false;
 }
