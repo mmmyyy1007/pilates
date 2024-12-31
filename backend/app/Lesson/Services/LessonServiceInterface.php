@@ -19,6 +19,12 @@ interface LessonServiceInterface
      */
     public function countLessonById(int $userId): int;
 
+    /**
+     * @param int $userId
+     * @return array
+     */
+    public function timelineLessonById(int $userId): array;
+
 
     /**
      * @param int $userId

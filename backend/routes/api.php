@@ -21,4 +21,5 @@ Route::middleware(['auth'])->prefix('lesson')->name('lesson.')->controller(Lesso
     // Route::middleware(['convert.snake'])->post('register', 'register')->name('register');
     Route::get('show', 'show')->name('show');
     Route::get('show/guage', 'showGuage')->name('showGuage');
+    Route::get('show/timeline', 'showTimeline')->name('showTimeline');
 });

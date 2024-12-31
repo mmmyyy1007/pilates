@@ -27,7 +27,7 @@ class LessonController extends Controller
     }
 
     /**
-     *
+     * レッスン回数取得
      */
     public function showGuage(Request $request)
     {
@@ -35,6 +35,17 @@ class LessonController extends Controller
         $count = $this->lessonService->countLessonById($userId);
         return response()->json(['count' => $count]);
     }
+
+    /**
+     * レッスン一覧タイムライン取得
+     */
+    public function showTimeline()
+    {
+        $userId = Auth::id();
+        $timeline = $this->lessonService->timelineLessonById($userId);
+        return response()->json(['timeline' => $timeline]);
+    }
+
 
     /**
      * レッスン登録情報取得(1件)
