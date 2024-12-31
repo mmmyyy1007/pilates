@@ -1,11 +1,15 @@
 import { registerLesson } from "@/features/pilates/api/registerLesson";
 import { showLesson } from "@/features/pilates/api/showLesson";
 import { showLessonGuage } from "@/features/pilates/api/showLessonGuage";
+import { showLessonTimeline } from "@/features/pilates/api/showLessonTimeline";
 import { LessonData } from "@/features/pilates/types/lessonTypes";
 
 export const useLesson = () => {
     const handleShowLessonGuage = async () => {
         return await showLessonGuage();
+    };
+    const handleShowLessonTimeline = async () => {
+        return await showLessonTimeline();
     };
     const handleShowLesson = async () => {
         return await showLesson();
@@ -13,5 +17,5 @@ export const useLesson = () => {
     const handleRegisterLesson = async (data: LessonData[]) => {
         await registerLesson(data);
     };
-    return { handleShowLessonGuage, handleShowLesson, handleRegisterLesson };
+    return { handleShowLessonGuage, handleShowLessonTimeline, handleShowLesson, handleRegisterLesson };
 };

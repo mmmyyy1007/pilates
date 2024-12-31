@@ -15,3 +15,15 @@ export interface LessonCountData {
 export interface LessonCountApiResponse {
     count: LessonCountData;
 }
+
+export interface LessonTimelineData {
+    id: string;
+    date: string;
+    start: string;
+    end: string;
+    place: string;
+}
+
+export interface LessonTimelineApiRespose {
+    timeline: LessonTimelineData[];
+}
