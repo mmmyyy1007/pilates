@@ -3,6 +3,8 @@ export interface LessonData {
     start: string;
     end: string;
     id: string;
+    place: string;
+    placeId: string;
 }
 
 export interface LessonApiResponse {

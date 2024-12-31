@@ -18,8 +18,9 @@ import { useEffect, useState } from "react";
 export const LessonList = () => {
     const [ActivePlaceData, setActivePlaceData] = useState<ActivePlaceData[]>([]);
     const [LessonData, setLessonData] = useState<LessonData[]>([]);
+    const [SelectedPlaceData, setSelectedPlaceData] = useState<ActivePlaceData | null>(null);
     const { handleActiveShowPlace } = usePlace();
-    const { handleShowLesson, handleShowLessonDetail } = useLesson();
+    const { handleShowLesson } = useLesson();
     const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(Date.now()));
     const [endDate, setEndDate] = useState<Dayjs | null>(dayjs().add(1, "hour"));
     useEffect(() => {
@@ -32,14 +33,14 @@ export const LessonList = () => {
         fetchLessonData();
     }, []);
     const handleDateClick = async (arg: EventClickArg) => {
-        await handleShowLessonDetail({ id: arg.event.id });
+        const start = dayjs(arg.event.startStr);
+        const end = dayjs(arg.event.endStr);
+        const placeId = arg.event.extendedProps.placeId;
+        const place = arg.event.extendedProps.place;
+        setStartDate(start);
+        setEndDate(end);
+        setSelectedPlaceData({ id: placeId, name: place });
     };
-    // const handleDateClick = useCallback((arg: DateClickArg) => {
-    //     await handleShowLessonDetail(arg.dateStr);
-    //     alert(arg.dateStr);
-    //     // LessonDetailData.date = arg.dateStr;
-    //     // setLessonDetailData();
-    // }, []);
     return (
         <Box sx={{ mt: 3 }}>
             <Typography variant="h5">レッスン一覧</Typography>
@@ -65,9 +66,11 @@ export const LessonList = () => {
             <Autocomplete
                 disablePortal
                 noOptionsText=""
+                value={SelectedPlaceData}
                 options={ActivePlaceData}
                 getOptionKey={(option) => option.id}
                 getOptionLabel={(option) => option.name}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
                 sx={{ width: 300 }}
                 renderInput={(params) => <TextField {...params} label="レッスン場所" />}
             />
