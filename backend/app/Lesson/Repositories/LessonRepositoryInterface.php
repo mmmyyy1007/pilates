@@ -15,6 +15,14 @@ interface LessonRepositoryInterface
 
     /**
      * @param int $userId
+     * @return int
+     */
+    public function countLessonById(int $userId): int;
+
+
+
+    /**
+     * @param int $userId
      * @return Collection
      */
     public function findLessonById(int $userId): Collection;

@@ -27,6 +27,20 @@ class LessonRepository implements LessonRepositoryInterface
 
     /**
      * @param int $userId
+     * @return int $count
+     */
+    public function countLessonById(int $userId): int
+    {
+        $sql = Lesson::where('user_id', $userId);
+
+        $count = $sql->count();
+
+        return $count;
+    }
+
+
+    /**
+     * @param int $userId
      * @return Collection $record
      */
     public function findLessonById(int $userId): Collection

@@ -20,4 +20,5 @@ Route::middleware(['auth'])->prefix('place')->name('place.')->controller(PlaceCo
 Route::middleware(['auth'])->prefix('lesson')->name('lesson.')->controller(LessonController::class)->group(function () {
     // Route::middleware(['convert.snake'])->post('register', 'register')->name('register');
     Route::get('show', 'show')->name('show');
+    Route::get('show/guage', 'showGuage')->name('showGuage');
 });

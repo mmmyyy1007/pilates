@@ -27,6 +27,16 @@ class LessonController extends Controller
     }
 
     /**
+     *
+     */
+    public function showGuage(Request $request)
+    {
+        $userId = Auth::id();
+        $count = $this->lessonService->countLessonById($userId);
+        return response()->json(['count' => $count]);
+    }
+
+    /**
      * レッスン登録情報取得(1件)
      */
     public function find(Request $request)

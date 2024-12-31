@@ -39,6 +39,18 @@ class LessonService implements LessonServiceInterface
 
     /**
      * @param int $userId
+     * @return int
+     */
+    public function countLessonById(int $userId): int
+    {
+        $count = $this->lessonRepository->countLessonById($userId);
+
+        return $count;
+    }
+
+
+    /**
+     * @param int $userId
      * @return Collection
      */
     public function findLessonById(int $userId): Collection
