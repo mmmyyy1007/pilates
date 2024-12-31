@@ -15,7 +15,7 @@ class LessonRepository implements LessonRepositoryInterface
      */
     public function getLessonById(int $userId): Collection
     {
-        $sql = Lesson::select('id', 'start_datetime', 'end_datetime', 'place')
+        $sql = Lesson::select('id', 'start_datetime', 'end_datetime', 'place', 'place_id')
             ->where('user_id', $userId)
             ->orderBy('start_datetime')
             ->orderBy('end_datetime');

@@ -32,6 +32,8 @@ class LessonService implements LessonServiceInterface
             $events['title'] = $item['place'] . '(' . $diff . '分)';
             $events['start'] = $start->format('Y-m-d\TH:i:s');
             $events['end'] = $end->format('Y-m-d\TH:i:s');
+            $events['place'] = $item['place'];
+            $events['placeId'] = $item['place_id'];
             return $events;
         })->toArray();
 
