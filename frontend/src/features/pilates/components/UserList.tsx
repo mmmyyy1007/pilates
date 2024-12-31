@@ -7,7 +7,6 @@ import CreateIcon from "@mui/icons-material/Create";
 import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { useState } from "react";
-import { formatDate } from "../../../utils/dateUtils";
 import { UserData } from "../types/userTypes";
 
 export const UserList = () => {
@@ -21,7 +20,7 @@ export const UserList = () => {
 
     return (
         <Box sx={{ mt: 3 }}>
-            <Typography variant="h5">アカウント設定</Typography>
+            <Typography variant="h5">アカウント管理</Typography>
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2}>
                     <Grid size={4}>
@@ -34,7 +33,7 @@ export const UserList = () => {
                             {userData.username}
                             <CreateIcon />
                         </Box>
-                        <Box>start {formatDate(userData.date)} ～</Box>
+                        <Box>start {userData.date} ～</Box>
                     </Grid>
                 </Grid>
             </Box>
