@@ -28,9 +28,10 @@ interface LessonServiceInterface
 
     /**
      * @param int $userId
+     * @param string $id
      * @return Collection
      */
-    public function findLessonById(int $userId): Collection;
+    public function getLessonDetailById(int $userId, string $id): Collection;
 
     /**
      * @param array $placeData

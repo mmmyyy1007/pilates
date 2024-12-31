@@ -22,4 +22,5 @@ Route::middleware(['auth'])->prefix('lesson')->name('lesson.')->controller(Lesso
     Route::get('show', 'show')->name('show');
     Route::get('show/guage', 'showGuage')->name('showGuage');
     Route::get('show/timeline', 'showTimeline')->name('showTimeline');
+    Route::post('show/detail', 'showDetail')->name('showDetail');
 });

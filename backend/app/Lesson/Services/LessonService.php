@@ -28,6 +28,7 @@ class LessonService implements LessonServiceInterface
             $end = Carbon::create($item['end_datetime']);
             $diff = $start->diffInMinutes($end);
 
+            $events['id'] = $item['id'];
             $events['title'] = $item['place'] . '(' . $diff . '分)';
             $events['start'] = $start->format('Y-m-d\TH:i:s');
             $events['end'] = $end->format('Y-m-d\TH:i:s');
@@ -75,11 +76,12 @@ class LessonService implements LessonServiceInterface
 
     /**
      * @param int $userId
+     * @param string $id
      * @return Collection
      */
-    public function findLessonById(int $userId): Collection
+    public function getLessonDetailById(int $userId, string $id): Collection
     {
-        $lesson = $this->lessonRepository->findLessonById($userId);
+        $lesson = $this->lessonRepository->getLessonDetailById($userId, $id);
 
         return $lesson;
     }

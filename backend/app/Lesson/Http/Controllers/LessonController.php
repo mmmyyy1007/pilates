@@ -48,12 +48,13 @@ class LessonController extends Controller
 
 
     /**
-     * レッスン登録情報取得(1件)
+     * レッスン登録情報取得(詳細)
      */
-    public function find(Request $request)
+    public function showDetail(Request $request)
     {
         $userId = Auth::id();
-        $lesson = $this->lessonService->findLessonById($userId);
-        return response()->json($lesson);
+        $id = $request->input('id');
+        $lesson = $this->lessonService->getLessonDetailById($userId, $id);
+        return response()->json(['lesson' => $lesson]);
     }
 }
