@@ -5,20 +5,21 @@ import { useLesson } from "@/features/pilates/hooks/useLesson";
 import { usePlace } from "@/features/pilates/hooks/usePlace";
 import { LessonData } from "@/features/pilates/types/lessonTypes";
 import { ActivePlaceData } from "@/features/pilates/types/placeTypes";
+import { EventClickArg } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
+import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import { Box } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export const LessonList = () => {
     const [ActivePlaceData, setActivePlaceData] = useState<ActivePlaceData[]>([]);
     const [LessonData, setLessonData] = useState<LessonData[]>([]);
     const { handleActiveShowPlace } = usePlace();
-    const { handleShowLesson } = useLesson();
+    const { handleShowLesson, handleShowLessonDetail } = useLesson();
     const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(Date.now()));
     const [endDate, setEndDate] = useState<Dayjs | null>(dayjs().add(1, "hour"));
     useEffect(() => {
@@ -30,22 +31,24 @@ export const LessonList = () => {
         };
         fetchLessonData();
     }, []);
-    const handleDateClick = useCallback((arg: DateClickArg) => {
-        alert(arg.dateStr);
-    }, []);
+    const handleDateClick = async (arg: EventClickArg) => {
+        await handleShowLessonDetail({ id: arg.event.id });
+    };
+    // const handleDateClick = useCallback((arg: DateClickArg) => {
+    //     await handleShowLessonDetail(arg.dateStr);
+    //     alert(arg.dateStr);
+    //     // LessonDetailData.date = arg.dateStr;
+    //     // setLessonDetailData();
+    // }, []);
     return (
         <Box sx={{ mt: 3 }}>
             <Typography variant="h5">レッスン一覧</Typography>
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
-                // locales={allLocales}
                 locale="ja"
-                // headerToolbar={{
-                //     right: "dayGridMonth,dayGridWeek",
-                // }}
-                initialView="dayGridMonth" // 初期表示のモードを設定する
+                initialView="dayGridMonth"
                 events={LessonData}
-                dateClick={handleDateClick}
+                eventClick={handleDateClick}
             />
             <DateTimePicker
                 label="開始日時"

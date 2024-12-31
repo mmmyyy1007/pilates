@@ -2,6 +2,7 @@ export interface LessonData {
     title: string;
     start: string;
     end: string;
+    id: string;
 }
 
 export interface LessonApiResponse {
@@ -26,4 +27,8 @@ export interface LessonTimelineData {
 
 export interface LessonTimelineApiRespose {
     timeline: LessonTimelineData[];
+}
+
+export interface LessonDetailId {
+    id: string;
 }
