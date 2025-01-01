@@ -19,10 +19,16 @@ export const PlaceRegisterForm = () => {
     const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
     const { handleShowPlace, handleRegisterPlace } = usePlace();
     const { errors, handleError, resetErrors } = useErrorHandler();
+
     useEffect(() => {
+        /**
+         * 店舗一覧表示
+         */
         const fetchPlaceData = async () => {
             const response = await handleShowPlace();
+
             if (response.length === 0) {
+                // 初期表示
                 setPlaceData([
                     { id: Date.now().toString(), name: "", displayFlag: false, orderNo: 0 },
                     { id: (Date.now() + 1).toString(), name: "", displayFlag: false, orderNo: 1 },
@@ -34,15 +40,34 @@ export const PlaceRegisterForm = () => {
         };
         fetchPlaceData();
     }, []);
+
+    /**
+     * 入力フォームデータ変更
+     *
+     * @param id
+     * @param value
+     */
     const handlePlaceDataChange = (id: string, value: string) => {
         setPlaceData(placeData.map((v) => (v.id === id ? { ...v, name: value, displayFlag: true } : v)));
     };
+    /**
+     * 表示・非表示設定
+     *
+     * @param id
+     */
     const handlePlaceEnabledChange = (id: string) => {
         setPlaceData(placeData.map((v) => (v.id === id ? { ...v, displayFlag: !v.displayFlag } : v)));
     };
+
+    /**
+     * 店舗登録処理
+     *
+     * @param e
+     */
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         resetErrors();
+
         try {
             await handleRegisterPlace(placeData);
             setAlertServerity("success");
@@ -53,6 +78,13 @@ export const PlaceRegisterForm = () => {
             handleError(error);
         }
     };
+
+    /**
+     * 入力フォーム並び替え
+     *
+     * @param result
+     * @returns
+     */
     const handleDragEnd = (result: DropResult) => {
         if (!result.destination) return;
         const data = Array.from(placeData);
@@ -65,15 +97,28 @@ export const PlaceRegisterForm = () => {
         setPlaceData(updatedItems);
     };
     const sortedData = [...placeData].sort((a, b) => a.orderNo - b.orderNo);
+
+    /**
+     * 入力フォーム追加
+     */
     const handleAddField = () => {
         const tempId = Date.now().toString();
         const nextOrderNo = placeData.length ? Math.max(...placeData.map((item) => item.orderNo)) + 1 : 0;
         setPlaceData([...placeData, { id: tempId, name: "", displayFlag: false, orderNo: nextOrderNo }]);
     };
+
+    /**
+     * 入力フォームエラー表示
+     *
+     * @param orderNo
+     * @param field
+     * @returns
+     */
     const getFieldError = (orderNo: number, field: string): string | undefined => {
         const key = `${orderNo}.${field}`;
         return errors[key]?.[0];
     };
+
     return (
         <Box sx={{ mt: 3 }}>
             <Typography variant="h5">店舗一覧</Typography>
