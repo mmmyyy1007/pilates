@@ -25,6 +25,7 @@ export interface LessonTimelineData {
     start: string;
     end: string;
     place: string;
+    count: number;
 }
 
 export interface LessonTimelineApiRespose {

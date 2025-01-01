@@ -51,7 +51,7 @@ export const LessonTimeline = () => {
                             }}
                             variant="outlined"
                         >
-                            {item.id}
+                            {item.count}
                         </TimelineDot>
                         <TimelineConnector />
                     </TimelineSeparator>
