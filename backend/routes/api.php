@@ -1,5 +1,6 @@
 <?php
 
+use App\Account\Http\Controllers\AccountController;
 use App\Place\Http\Controllers\PlaceController;
 use App\Lesson\Http\Controllers\LessonController;
 use Illuminate\Http\Request;
@@ -23,4 +24,9 @@ Route::middleware(['auth'])->prefix('lesson')->name('lesson.')->controller(Lesso
     Route::get('show/guage', 'showGuage')->name('showGuage');
     Route::get('show/timeline', 'showTimeline')->name('showTimeline');
     Route::post('show/detail', 'showDetail')->name('showDetail');
+});
+
+// アカウント管理
+Route::middleware(['auth'])->prefix('account')->name('account.')->controller(AccountController::class)->group(function () {
+    Route::get('show', 'show')->name('show');
 });

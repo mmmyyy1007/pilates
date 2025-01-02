@@ -97,15 +97,10 @@ class LessonService implements LessonServiceInterface
     {
         // 新規の場合、ユニークIDを再設定
         $exists = $this->lessonRepository->existsLessonById($lessonData['user_id'], $lessonData['id']);
+
         if (!$exists) {
             $lessonData['id'] = Str::uuid();
         }
-        // $lessonData = collect($lessonData)->map(function ($item) {
-        //     if (strlen($item['id']) !== 36) {
-        //         $item['id'] = Str::uuid();
-        //     }
-        //     return $item;
-        // })->toArray();
 
         // レッスン情報登録
         $status = $this->lessonRepository->registerLesson($lessonData);
