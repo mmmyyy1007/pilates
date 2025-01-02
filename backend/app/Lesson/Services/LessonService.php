@@ -5,6 +5,7 @@ namespace App\Lesson\Services;
 use App\Lesson\Repositories\LessonRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class LessonService implements LessonServiceInterface
 {
@@ -89,22 +90,26 @@ class LessonService implements LessonServiceInterface
     }
 
     /**
-     * @param array $placeData
+     * @param array $lessonData
      * @return bool
      */
-    // public function registerPlace(array $placeData): bool
-    // {
-    //     // 新規の場合、ユニークIDを再設定
-    //     $placeData = collect($placeData)->map(function ($item) {
-    //         if (strlen($item['id']) !== 36) {
-    //             $item['id'] = Str::uuid();
-    //         }
-    //         return $item;
-    //     })->toArray();
+    public function registerLesson(array $lessonData): bool
+    {
+        // 新規の場合、ユニークIDを再設定
+        $exists = $this->lessonRepository->existsLessonById($lessonData['user_id'], $lessonData['id']);
+        if (!$exists) {
+            $lessonData['id'] = Str::uuid();
+        }
+        // $lessonData = collect($lessonData)->map(function ($item) {
+        //     if (strlen($item['id']) !== 36) {
+        //         $item['id'] = Str::uuid();
+        //     }
+        //     return $item;
+        // })->toArray();
 
-    //     // 店舗情報登録
-    //     $status = $this->placeRepository->registerPlace($placeData);
+        // レッスン情報登録
+        $status = $this->lessonRepository->registerLesson($lessonData);
 
-    //     return $status;
-    // }
+        return $status;
+    }
 }

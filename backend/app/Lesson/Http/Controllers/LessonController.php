@@ -46,7 +46,6 @@ class LessonController extends Controller
         return response()->json(['timeline' => $timeline]);
     }
 
-
     /**
      * レッスン登録情報取得(詳細)
      */
@@ -56,5 +55,23 @@ class LessonController extends Controller
         $id = $request->input('id');
         $lesson = $this->lessonService->getLessonDetailById($userId, $id);
         return response()->json(['lesson' => $lesson]);
+    }
+
+    /**
+     * レッスン情報登録
+     */
+    public function register(Request $request)
+    {
+        // $request->validate([
+        //     '*.name' => ['required', 'max:255'],
+        //     '*.display_flag' => ['required'],
+        //     '*.order_no' => ['required'],
+        // ]);
+        $lessonData = $request->all();
+        $lessonData += ['user_id' => Auth::id()];
+
+        $status = $this->lessonService->registerLesson($lessonData);
+
+        return response()->json(['status' => $status]);
     }
 }

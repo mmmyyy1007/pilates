@@ -34,8 +34,8 @@ interface LessonServiceInterface
     public function getLessonDetailById(int $userId, string $id): Collection;
 
     /**
-     * @param array $placeData
+     * @param array $lessonData
      * @return bool
      */
-    //public function registerPlace(array $placeData): bool;
+    public function registerLesson(array $lessonData): bool;
 }

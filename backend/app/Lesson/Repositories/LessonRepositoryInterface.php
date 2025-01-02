@@ -29,8 +29,15 @@ interface LessonRepositoryInterface
     public function getLessonDetailById(int $userId, string $id): Collection;
 
     /**
-     * @param array $placeData
+     * @param int $userId
+     * @param string $id
      * @return bool
      */
-    // public function registerPlace(array $placeData): bool;
+    public function existsLessonById(int $userId, string $id): bool;
+
+    /**
+     * @param array $lessonData
+     * @return bool
+     */
+    public function registerLesson(array $lessonData): bool;
 }

@@ -56,13 +56,26 @@ class LessonRepository implements LessonRepositoryInterface
     }
 
     /**
-     * @param array $placeData
+     * @param int $userId
+     * @param string $lessonId
+     * @return bool $exists
+     */
+    public function existsLessonById(int $userId, string $lessonId): bool
+    {
+        $sql = Lesson::where('user_id', $userId)->where('id', $lessonId);
+        $exists = $sql->exists();
+
+        return $exists;
+    }
+
+    /**
+     * @param array $lessonData
      * @return bool $status
      */
-    // public function registerPlace(array $placeData): bool
-    // {
-    //     $status = Place::upsert($placeData, ['id', 'user_id'], ['name', 'display_flag', 'order_no']);
+    public function registerLesson(array $lessonData): bool
+    {
+        $status = Lesson::upsert($lessonData, ['id', 'user_id'], ['start_datetime', 'end_datetime', 'place_id', 'place']);
 
-    //     return $status;
-    // }
+        return $status;
+    }
 }
