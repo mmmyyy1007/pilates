@@ -19,12 +19,18 @@ export const LessonList = () => {
     const [ActivePlaceData, setActivePlaceData] = useState<ActivePlaceData[]>([]);
     const [LessonData, setLessonData] = useState<LessonData[]>([]);
     const [SelectedPlaceData, setSelectedPlaceData] = useState<ActivePlaceData | null>(null);
-    const { handleActiveShowPlace } = usePlace();
-    const { handleShowLesson } = useLesson();
     const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(Date.now()));
     const [endDate, setEndDate] = useState<Dayjs | null>(dayjs().add(1, "hour"));
+    const [eventClickId, seteventClickId] = useState<string | null>(null);
+    const { handleActiveShowPlace } = usePlace();
+    const { handleShowLesson, handleRegisterLesson } = useLesson();
+
     useEffect(() => {
         const fetchLessonData = async () => {
+            /**
+             * レッスン一覧取得(カレンダー内)
+             * 店舗一覧取得
+             */
             const [lessonResponse, placeResponse] = await Promise.all([handleShowLesson(), handleActiveShowPlace()]);
 
             setActivePlaceData(placeResponse);
@@ -32,6 +38,11 @@ export const LessonList = () => {
         };
         fetchLessonData();
     }, []);
+
+    /**
+     * カレンダー内のイベントをクリック時
+     * @param arg
+     */
     const handleDateClick = async (arg: EventClickArg) => {
         const start = dayjs(arg.event.startStr);
         const end = dayjs(arg.event.endStr);
@@ -40,7 +51,24 @@ export const LessonList = () => {
         setStartDate(start);
         setEndDate(end);
         setSelectedPlaceData({ id: placeId, name: place });
+        seteventClickId(arg.event.id);
     };
+
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const selectedId = LessonData.find((lesson) => lesson.id === eventClickId)?.id ?? Date.now().toString();
+        if (SelectedPlaceData && startDate && endDate) {
+            const data = {
+                place: SelectedPlaceData.name,
+                placeId: SelectedPlaceData.id,
+                startDatetime: startDate.format("YYYY-MM-DD HH:mm:ss"),
+                endDatetime: endDate.format("YYYY-MM-DD HH:mm:ss"),
+                id: selectedId,
+            };
+            handleRegisterLesson(data);
+        }
+    };
+
     return (
         <Box sx={{ mt: 3 }}>
             <Typography variant="h5">レッスン一覧</Typography>
@@ -72,9 +100,12 @@ export const LessonList = () => {
                 getOptionLabel={(option) => option.name}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
                 sx={{ width: 300 }}
+                onChange={(_, newValue) => setSelectedPlaceData(newValue)}
                 renderInput={(params) => <TextField {...params} label="レッスン場所" />}
             />
-            <Button variant="outlined">登録</Button>
+            <Button variant="outlined" onClick={handleRegister}>
+                登録
+            </Button>
         </Box>
     );
 };

@@ -15,9 +15,7 @@ export interface LessonCountData {
     count: number;
 }
 
-export interface LessonCountApiResponse {
-    count: LessonCountData;
-}
+export type LessonCountApiResponse = LessonCountData;
 
 export interface LessonTimelineData {
     id: string;
@@ -34,4 +32,12 @@ export interface LessonTimelineApiRespose {
 
 export interface LessonDetailId {
     id: string;
+}
+
+export interface LessonRegisterData {
+    startDatetime: string;
+    endDatetime: string;
+    id: string;
+    place: string;
+    placeId: string;
 }
