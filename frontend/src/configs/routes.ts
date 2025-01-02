@@ -3,6 +3,6 @@ export const ROUTES = {
     HOME: "/home",
     PASSWORD_RESET: "/reset-password/:token",
     PLACE: "/place",
-    USER: "/user",
+    ACCOUNT: "/account",
     LESSON: "/lesson",
 } as const;

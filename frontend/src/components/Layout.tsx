@@ -39,7 +39,7 @@ export const Layout = () => {
         { icon: <HomeIcon />, name: "ホーム", path: ROUTES.HOME },
         { icon: <CalendarTodayIcon />, name: "レッスン一覧", path: ROUTES.LESSON },
         { icon: <PlaceIcon />, name: "店舗一覧", path: ROUTES.PLACE },
-        { icon: <PersonIcon />, name: "アカウント管理", path: ROUTES.USER },
+        { icon: <PersonIcon />, name: "アカウント管理", path: ROUTES.ACCOUNT },
     ];
 
     const DrawerList = (

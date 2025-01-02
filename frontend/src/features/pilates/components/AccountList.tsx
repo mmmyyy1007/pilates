@@ -1,22 +1,27 @@
-import { Button } from "@/components/Button";
-import { Modal } from "@/components/Modal";
+import { Loading } from "@/components/Loading";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
+import { useAuthStore } from "@/features/auth/stores/authStore";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreateIcon from "@mui/icons-material/Create";
 import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { useState } from "react";
-import { UserData } from "../types/userTypes";
+import { UserData } from "../types/accountTypes";
 
-export const UserList = () => {
+export const AccountList = () => {
+    const { user } = useAuthStore();
+
+    if (!user) {
+        return <Loading />;
+    }
+
     const userData: UserData = {
         username: "〇〇 〇〇",
         date: "2024-04-06",
         mail: "saso@test.jp",
         password: "sasosaso",
     };
-    const [open, setOpen] = useState<boolean>(false);
+    // const [open, setOpen] = useState<boolean>(false);
 
     return (
         <Box sx={{ mt: 3 }}>
@@ -30,7 +35,7 @@ export const UserList = () => {
                     </Grid>
                     <Grid size={8}>
                         <Box>
-                            {userData.username}
+                            {user.name}
                             <CreateIcon />
                         </Box>
                         <Box>start {userData.date} ～</Box>
@@ -45,11 +50,11 @@ export const UserList = () => {
                 <TextField label="パスワード" defaultValue={userData.password} variant="standard"></TextField>
                 <CreateIcon />
             </Box>
-            <Modal open={open} onClose={() => setOpen(true)}>
+            {/* <Modal open={open} onClose={() => setOpen(true)}>
                 <Typography>変更</Typography>
                 <TextField label="メールアドレス" defaultValue={userData.mail}></TextField>
                 <Button variant="outlined">更新</Button>
-            </Modal>
+            </Modal> */}
         </Box>
     );
 };

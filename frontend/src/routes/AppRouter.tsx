@@ -2,12 +2,12 @@ import { Layout } from "@/components/Layout";
 import { ROUTES } from "@/configs/routes";
 import { getUser } from "@/features/auth/api/getUser";
 import { useAuthStore } from "@/features/auth/stores/authStore";
+import { Account } from "@/pages/Account";
 import { Home } from "@/pages/Home";
 import { Lesson } from "@/pages/Lesson";
 import { Login } from "@/pages/Login";
 import { PasswordReset } from "@/pages/PasswordReset"; // パスワードリセットページをインポート
 import { Place } from "@/pages/Place";
-import { User } from "@/pages/User";
 
 import { createBrowserRouter, Navigate, redirect, RouterProvider } from "react-router-dom";
 
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
         children: [
             { path: ROUTES.HOME, element: <Home /> },
             { path: ROUTES.PLACE, element: <Place /> },
-            { path: ROUTES.USER, element: <User /> },
+            { path: ROUTES.ACCOUNT, element: <Account /> },
             { path: ROUTES.LESSON, element: <Lesson /> },
         ],
     },
