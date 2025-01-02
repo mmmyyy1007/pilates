@@ -1,15 +1,17 @@
 import { Button } from "@/components/Button";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
+import { MESSAGES } from "@/constants/message";
 import { useLesson } from "@/features/pilates/hooks/useLesson";
 import { usePlace } from "@/features/pilates/hooks/usePlace";
 import { LessonData } from "@/features/pilates/types/lessonTypes";
 import { ActivePlaceData } from "@/features/pilates/types/placeTypes";
+import { useErrorHandler } from "@/hooks/useErrorHandler";
 import { EventClickArg } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
-import { Box } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
@@ -22,8 +24,11 @@ export const LessonList = () => {
     const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(Date.now()));
     const [endDate, setEndDate] = useState<Dayjs | null>(dayjs().add(1, "hour"));
     const [eventClickId, seteventClickId] = useState<string | null>(null);
+    const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
+    const [alertMessage, setAlertMessage] = useState<string | null>(null);
     const { handleActiveShowPlace } = usePlace();
     const { handleShowLesson, handleRegisterLesson } = useLesson();
+    const { handleError, resetErrors } = useErrorHandler();
 
     useEffect(() => {
         const fetchLessonData = async () => {
@@ -56,6 +61,8 @@ export const LessonList = () => {
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
+        resetErrors();
+
         const selectedId = LessonData.find((lesson) => lesson.id === eventClickId)?.id ?? Date.now().toString();
         if (SelectedPlaceData && startDate && endDate) {
             const data = {
@@ -65,7 +72,15 @@ export const LessonList = () => {
                 endDatetime: endDate.format("YYYY-MM-DD HH:mm:ss"),
                 id: selectedId,
             };
-            handleRegisterLesson(data);
+            try {
+                await handleRegisterLesson(data);
+                setAlertServerity("success");
+                setAlertMessage(MESSAGES.registerSucces);
+            } catch (error) {
+                setAlertServerity("error");
+                setAlertMessage(MESSAGES.registerError);
+                handleError(error);
+            }
         }
     };
 
@@ -79,6 +94,11 @@ export const LessonList = () => {
                 events={LessonData}
                 eventClick={handleDateClick}
             />
+            {alertMessage && (
+                <Alert severity={alertSeverity} onClose={() => setAlertMessage(null)}>
+                    {alertMessage}
+                </Alert>
+            )}
             <DateTimePicker
                 label="開始日時"
                 slotProps={{ textField: { size: "small", fullWidth: true } }}
