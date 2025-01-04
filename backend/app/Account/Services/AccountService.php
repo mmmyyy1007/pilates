@@ -24,6 +24,9 @@ class AccountService implements AccountServiceInterface
     {
         $account = $this->accountRepository->getAccountById($userId);
 
+        $start = Carbon::create($account->date);
+        $account->date = $start->format('Y.m.d');
+
         return $account;
     }
 }
