@@ -16,8 +16,9 @@ interface AccountServiceInterface
 
     /**
      * @param int $userId
-     * @param string $useName
+     * @param string $key
+     * @param string $data
      * @return bool
      */
-    public function updateNameById(int $userId, string $userName): bool;
+    public function updateUserById(int $userId, string $key, string $data): bool;
 }
