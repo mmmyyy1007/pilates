@@ -1,13 +1,13 @@
-import { registerUserName } from "@/features/pilates/api/registerUserName";
 import { showAccount } from "@/features/pilates/api/showAccount";
-import { AccountUserNameData } from "@/features/pilates/types/accountTypes";
+import { updateUser } from "@/features/pilates/api/updateAccount";
+import { UpdatedAccountData } from "@/features/pilates/types/accountTypes";
 
 export const useAccount = () => {
     const handleShowAccount = async () => {
         return await showAccount();
     };
-    const handleRegisterUserName = async (data: AccountUserNameData) => {
-        await registerUserName(data);
+    const handleUpdateUser = async (data: UpdatedAccountData) => {
+        await updateUser(data);
     };
-    return { handleShowAccount, handleRegisterUserName };
+    return { handleShowAccount, handleUpdateUser };
 };

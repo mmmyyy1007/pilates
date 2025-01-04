@@ -8,4 +8,19 @@ export interface AccountApiRespose {
     account: AccountData;
 }
 
-export type AccountUserNameData = Pick<AccountData, "name">;
+export interface AccountUserNameData {
+    key: string;
+    name: string;
+    email: string;
+}
+
+export interface AccountFormData {
+    key: string;
+    name: string;
+    value: string;
+}
+
+export interface UpdatedAccountData {
+    key: string;
+    data: string;
+}

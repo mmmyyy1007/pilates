@@ -3,7 +3,7 @@ import { Modal } from "@/components/Modal";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
 import { useAccount } from "@/features/pilates/hooks/useAccount";
-import { AccountData, AccountUserNameData } from "@/features/pilates/types/accountTypes";
+import { AccountData, AccountFormData, UpdatedAccountData } from "@/features/pilates/types/accountTypes";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreateIcon from "@mui/icons-material/Create";
 import { Box } from "@mui/material";
@@ -13,8 +13,9 @@ import { useEffect, useState } from "react";
 export const AccountList = () => {
     const [open, setOpen] = useState<boolean>(false);
     const [accountData, setAccountData] = useState<AccountData>({ name: "", date: "", email: "" });
-    const { handleShowAccount, handleRegisterUserName } = useAccount();
-    const [changedName, setChangedName] = useState<AccountUserNameData>({ name: "" });
+    const [updatedFormName, setupdatedFormName] = useState<AccountFormData>({ key: "", name: "", value: "" });
+    const { handleShowAccount, handleUpdateUser } = useAccount();
+    const [changedData, setChangedData] = useState<UpdatedAccountData>({ key: "", data: "" });
 
     useEffect(() => {
         /**
@@ -24,7 +25,6 @@ export const AccountList = () => {
             const response = await handleShowAccount();
 
             setAccountData(response);
-            setChangedName({ name: response.name });
         };
         fetchAccountData();
     }, []);
@@ -32,7 +32,9 @@ export const AccountList = () => {
     /**
      * 更新用モーダル表示
      */
-    const handleModalOpen = () => {
+    const handleModalOpen = (formKey: string, formName: string, formValue: string) => {
+        setupdatedFormName({ key: formKey, name: formName, value: formValue });
+        setChangedData({ key: formKey, data: formValue });
         setOpen(true);
     };
 
@@ -43,7 +45,7 @@ export const AccountList = () => {
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         setOpen(false);
-        await handleRegisterUserName(changedName);
+        await handleUpdateUser(changedData);
     };
 
     return (
@@ -59,7 +61,7 @@ export const AccountList = () => {
                     <Grid size={8}>
                         <Box>
                             {accountData.name}
-                            <CreateIcon onClick={handleModalOpen} />
+                            <CreateIcon onClick={() => handleModalOpen("name", "名前", accountData.name)} />
                         </Box>
                         <Box>start ～ {accountData.date}</Box>
                     </Grid>
@@ -68,7 +70,7 @@ export const AccountList = () => {
             <Box>
                 <Typography>
                     {accountData.email}
-                    <CreateIcon />
+                    <CreateIcon onClick={() => handleModalOpen("email", "メールアドレス", accountData.email)} />
                 </Typography>
             </Box>
             <Box>
@@ -80,9 +82,9 @@ export const AccountList = () => {
             <Modal open={open} onClose={() => setOpen(false)}>
                 <Typography>変更</Typography>
                 <TextField
-                    label="名前"
-                    value={changedName.name}
-                    onChange={(e) => setChangedName({ name: e.target.value })}
+                    label={updatedFormName.name}
+                    value={changedData.data}
+                    onChange={(e) => setChangedData({ key: updatedFormName.key, data: e.target.value })}
                 ></TextField>
                 <Button variant="outlined" onClick={handleRegister}>
                     更新
