@@ -26,4 +26,17 @@ class AccountController extends Controller
 
         return response()->json(['account' => $account]);
     }
+
+    /**
+     * ログインユーザー変更
+     */
+    public function updateName(Request $request)
+    {
+        $userId = Auth::id();
+        $data = $request->all();
+        $userName = $request->input('name');
+        $status = $this->accountService->updateNameById($userId, $userName);
+
+        return response()->json(['status' => $status]);
+    }
 }

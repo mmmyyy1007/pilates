@@ -29,4 +29,16 @@ class AccountService implements AccountServiceInterface
 
         return $account;
     }
+
+    /**
+     * @param int $userId
+     * @param string $userName
+     * @return bool
+     */
+    public function updateNameById(int $userId, string $userName): bool
+    {
+        $status = $this->accountRepository->updateNameById($userId, $userName);
+
+        return $status;
+    }
 }

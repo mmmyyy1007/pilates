@@ -12,4 +12,11 @@ interface AccountRepositoryInterface
      * @return mixed
      */
     public function getAccountById(int $userId): mixed;
+
+    /**
+     * @param int $userId
+     * @param string $userName
+     * @return bool
+     */
+    public function updateNameById(int $userId, string $userName): bool;
 }
