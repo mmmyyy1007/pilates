@@ -5,6 +5,7 @@ namespace App\Account\Repositories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AccountRepository implements AccountRepositoryInterface
 {
@@ -36,6 +37,26 @@ class AccountRepository implements AccountRepositoryInterface
 
         $status = User::where('id', $userId)
             ->update([$key => $data]);
+
+        return $status;
+    }
+
+    /**
+     * @param int $userId
+     * @param string $userPassword
+     * @param array $data
+     * @return bool $status
+     */
+    public function updatePasswordById(int $userId, string $userPassword, array $data): bool
+    {
+
+        // 現在のパスワードと一致するかチェック
+        if (Hash::check($data['password'], $userPassword)) {
+            return false;
+        }
+
+        $status = User::where('id', $userId)
+            ->update(['password' => Hash::make($data['new_password'])]);
 
         return $status;
     }

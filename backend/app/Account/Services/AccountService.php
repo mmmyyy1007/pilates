@@ -42,4 +42,17 @@ class AccountService implements AccountServiceInterface
 
         return $status;
     }
+
+    /**
+     * @param int $userId
+     * @param string $userPassword
+     * @param array $data
+     * @return bool
+     */
+    public function updatePasswordById(int $userId, string $userPassword, array $data): bool
+    {
+        $status = $this->accountRepository->updatePasswordById($userId, $userPassword, $data);
+
+        return $status;
+    }
 }

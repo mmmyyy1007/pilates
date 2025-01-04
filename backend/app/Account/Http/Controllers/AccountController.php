@@ -40,4 +40,23 @@ class AccountController extends Controller
 
         return response()->json(['status' => $status]);
     }
+
+    /**
+     * ログインパスワード変更
+     */
+    public function updatePassword(Request $request)
+    {
+        $userId = Auth::id();
+        $userPassword = Auth::user()->password;
+        $request->validate([
+            'password' => ['required'],
+            'new_password' => ['required'],
+            'confirm_new_password' => ['required'],
+        ]);
+        $data = $request->all();
+
+        $status = $this->accountService->updatePasswordById($userId, $userPassword, $data);
+
+        return response()->json(['status' => $status]);
+    }
 }
