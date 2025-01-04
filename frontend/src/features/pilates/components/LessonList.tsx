@@ -59,6 +59,10 @@ export const LessonList = () => {
         seteventClickId(arg.event.id);
     };
 
+    /**
+     * レッスン情報登録
+     * @param e
+     */
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         resetErrors();
@@ -72,6 +76,7 @@ export const LessonList = () => {
                 endDatetime: endDate.format("YYYY-MM-DD HH:mm:ss"),
                 id: selectedId,
             };
+
             try {
                 await handleRegisterLesson(data);
                 setAlertServerity("success");

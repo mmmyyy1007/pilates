@@ -1,27 +1,50 @@
-import { Loading } from "@/components/Loading";
+import { Button } from "@/components/Button";
+import { Modal } from "@/components/Modal";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
-import { useAuthStore } from "@/features/auth/stores/authStore";
+import { useAccount } from "@/features/pilates/hooks/useAccount";
+import { AccountData, AccountUserNameData } from "@/features/pilates/types/accountTypes";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreateIcon from "@mui/icons-material/Create";
 import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { UserData } from "../types/accountTypes";
+import { useEffect, useState } from "react";
 
 export const AccountList = () => {
-    const { user } = useAuthStore();
+    const [open, setOpen] = useState<boolean>(false);
+    const [accountData, setAccountData] = useState<AccountData>({ name: "", date: "", email: "" });
+    const { handleShowAccount, handleRegisterUserName } = useAccount();
+    const [changedName, setChangedName] = useState<AccountUserNameData>({ name: "" });
 
-    if (!user) {
-        return <Loading />;
-    }
+    useEffect(() => {
+        /**
+         * アカウントデータ表示
+         */
+        const fetchAccountData = async () => {
+            const response = await handleShowAccount();
 
-    const userData: UserData = {
-        username: "〇〇 〇〇",
-        date: "2024-04-06",
-        mail: "saso@test.jp",
-        password: "sasosaso",
+            setAccountData(response);
+            setChangedName({ name: response.name });
+        };
+        fetchAccountData();
+    }, []);
+
+    /**
+     * 更新用モーダル表示
+     */
+    const handleModalOpen = () => {
+        setOpen(true);
     };
-    // const [open, setOpen] = useState<boolean>(false);
+
+    /**
+     * ログインユーザー変更
+     * @param e
+     */
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setOpen(false);
+        await handleRegisterUserName(changedName);
+    };
 
     return (
         <Box sx={{ mt: 3 }}>
@@ -35,26 +58,36 @@ export const AccountList = () => {
                     </Grid>
                     <Grid size={8}>
                         <Box>
-                            {user.name}
-                            <CreateIcon />
+                            {accountData.name}
+                            <CreateIcon onClick={handleModalOpen} />
                         </Box>
-                        <Box>start {userData.date} ～</Box>
+                        <Box>start ～ {accountData.date}</Box>
                     </Grid>
                 </Grid>
             </Box>
             <Box>
-                <TextField label="メールアドレス" defaultValue={userData.mail} variant="standard"></TextField>
-                <CreateIcon />
+                <Typography>
+                    {accountData.email}
+                    <CreateIcon />
+                </Typography>
             </Box>
             <Box>
-                <TextField label="パスワード" defaultValue={userData.password} variant="standard"></TextField>
-                <CreateIcon />
+                <Typography>
+                    *******
+                    <CreateIcon />
+                </Typography>
             </Box>
-            {/* <Modal open={open} onClose={() => setOpen(true)}>
+            <Modal open={open} onClose={() => setOpen(false)}>
                 <Typography>変更</Typography>
-                <TextField label="メールアドレス" defaultValue={userData.mail}></TextField>
-                <Button variant="outlined">更新</Button>
-            </Modal> */}
+                <TextField
+                    label="名前"
+                    value={changedName.name}
+                    onChange={(e) => setChangedName({ name: e.target.value })}
+                ></TextField>
+                <Button variant="outlined" onClick={handleRegister}>
+                    更新
+                </Button>
+            </Modal>
         </Box>
     );
 };
