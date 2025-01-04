@@ -11,7 +11,8 @@ import Grid from "@mui/material/Grid2";
 import { useEffect, useState } from "react";
 
 export const AccountList = () => {
-    const [open, setOpen] = useState<boolean>(false);
+    const [openUser, setOpenUser] = useState<boolean>(false);
+    const [openPassword, setOpenPassword] = useState<boolean>(false);
     const [accountData, setAccountData] = useState<AccountData>({ name: "", date: "", email: "" });
     const [updatedFormName, setupdatedFormName] = useState<AccountFormData>({ key: "", name: "", value: "" });
     const { handleShowAccount, handleUpdateUser } = useAccount();
@@ -30,21 +31,28 @@ export const AccountList = () => {
     }, []);
 
     /**
-     * 更新用モーダル表示
+     * 更新用モーダル表示(ユーザー名・メールアドレス)
      */
-    const handleModalOpen = (formKey: string, formName: string, formValue: string) => {
+    const handleModalOpenUser = (formKey: string, formName: string, formValue: string) => {
         setupdatedFormName({ key: formKey, name: formName, value: formValue });
         setChangedData({ key: formKey, data: formValue });
-        setOpen(true);
+        setOpenUser(true);
+    };
+
+    /**
+     * 更新用モーダル表示(パスワード)
+     */
+    const handleModalOpenPassword = () => {
+        setOpenPassword(true);
     };
 
     /**
      * ログインユーザー変更
      * @param e
      */
-    const handleRegister = async (e: React.FormEvent) => {
+    const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
-        setOpen(false);
+        setOpenUser(false);
         await handleUpdateUser(changedData);
     };
 
@@ -61,7 +69,7 @@ export const AccountList = () => {
                     <Grid size={8}>
                         <Box>
                             {accountData.name}
-                            <CreateIcon onClick={() => handleModalOpen("name", "名前", accountData.name)} />
+                            <CreateIcon onClick={() => handleModalOpenUser("name", "名前", accountData.name)} />
                         </Box>
                         <Box>start ～ {accountData.date}</Box>
                     </Grid>
@@ -70,25 +78,36 @@ export const AccountList = () => {
             <Box>
                 <Typography>
                     {accountData.email}
-                    <CreateIcon onClick={() => handleModalOpen("email", "メールアドレス", accountData.email)} />
+                    <CreateIcon onClick={() => handleModalOpenUser("email", "メールアドレス", accountData.email)} />
                 </Typography>
             </Box>
             <Box>
                 <Typography>
                     *******
-                    <CreateIcon />
+                    <CreateIcon onClick={() => handleModalOpenPassword()} />
                 </Typography>
             </Box>
-            <Modal open={open} onClose={() => setOpen(false)}>
+            <Modal open={openUser} onClose={() => setOpenUser(false)}>
                 <Typography>変更</Typography>
                 <TextField
                     label={updatedFormName.name}
                     value={changedData.data}
                     onChange={(e) => setChangedData({ key: updatedFormName.key, data: e.target.value })}
                 ></TextField>
-                <Button variant="outlined" onClick={handleRegister}>
+                <Button variant="outlined" onClick={handleUpdate}>
                     更新
                 </Button>
+            </Modal>
+            <Modal open={openPassword} onClose={() => setOpenPassword(false)}>
+                <Typography>変更</Typography>
+                <TextField label="現在のパスワード"></TextField>
+                <TextField label="新しいパスワード"></TextField>
+                <TextField label="新しいパスワード(確認)"></TextField>
+                <Box>
+                    <Button variant="outlined" onClick={handleUpdate}>
+                        更新
+                    </Button>
+                </Box>
             </Modal>
         </Box>
     );
