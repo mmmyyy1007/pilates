@@ -18,9 +18,9 @@ class AccountService implements AccountServiceInterface
 
     /**
      * @param int $userId
-     * @return Collection
+     * @return mixed
      */
-    public function getAccountById(int $userId): Collection
+    public function getAccountById(int $userId): mixed
     {
         $account = $this->accountRepository->getAccountById($userId);
 

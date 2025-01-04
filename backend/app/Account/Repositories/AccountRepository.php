@@ -10,15 +10,15 @@ class AccountRepository implements AccountRepositoryInterface
 
     /**
      * @param int $userId
-     * @return Collection $records
+     * @return mixed $record
      */
-    public function getAccountById(int $userId): Collection
+    public function getAccountById(int $userId): mixed
     {
         $sql = User::select('id', 'name', 'email', 'password')
             ->where('id', $userId);
 
-        $records = $sql->get();
+        $record = $sql->first();
 
-        return $records;
+        return $record;
     }
 }

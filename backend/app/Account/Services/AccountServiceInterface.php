@@ -9,7 +9,7 @@ interface AccountServiceInterface
 {
     /**
      * @param int $userId
-     * @return Collection
+     * @return mixed
      */
-    public function getAccountById(int $userId): Collection;
+    public function getAccountById(int $userId): mixed;
 }
