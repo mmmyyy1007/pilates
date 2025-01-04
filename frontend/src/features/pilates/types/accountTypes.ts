@@ -24,3 +24,9 @@ export interface UpdatedAccountData {
     key: string;
     data: string;
 }
+
+export interface UpdatedPasswordData {
+    password: string;
+    newPassword: string;
+    ConfirmNewPassword: string;
+}

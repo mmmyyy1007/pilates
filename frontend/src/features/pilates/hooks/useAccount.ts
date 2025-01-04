@@ -1,6 +1,7 @@
 import { showAccount } from "@/features/pilates/api/showAccount";
-import { updateUser } from "@/features/pilates/api/updateAccount";
-import { UpdatedAccountData } from "@/features/pilates/types/accountTypes";
+import { updatePassword } from "@/features/pilates/api/updatePassword";
+import { updateUser } from "@/features/pilates/api/updateUser";
+import { UpdatedAccountData, UpdatedPasswordData } from "@/features/pilates/types/accountTypes";
 
 export const useAccount = () => {
     const handleShowAccount = async () => {
@@ -9,5 +10,8 @@ export const useAccount = () => {
     const handleUpdateUser = async (data: UpdatedAccountData) => {
         await updateUser(data);
     };
-    return { handleShowAccount, handleUpdateUser };
+    const handleUpdatePassword = async (data: UpdatedPasswordData) => {
+        await updatePassword(data);
+    };
+    return { handleShowAccount, handleUpdateUser, handleUpdatePassword };
 };

@@ -3,20 +3,30 @@ import { Modal } from "@/components/Modal";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
 import { useAccount } from "@/features/pilates/hooks/useAccount";
-import { AccountData, AccountFormData, UpdatedAccountData } from "@/features/pilates/types/accountTypes";
+import {
+    AccountData,
+    AccountFormData,
+    UpdatedAccountData,
+    UpdatedPasswordData,
+} from "@/features/pilates/types/accountTypes";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreateIcon from "@mui/icons-material/Create";
 import { Box } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export const AccountList = () => {
     const [openUser, setOpenUser] = useState<boolean>(false);
     const [openPassword, setOpenPassword] = useState<boolean>(false);
     const [accountData, setAccountData] = useState<AccountData>({ name: "", date: "", email: "" });
     const [updatedFormName, setupdatedFormName] = useState<AccountFormData>({ key: "", name: "", value: "" });
-    const { handleShowAccount, handleUpdateUser } = useAccount();
+    const { handleShowAccount, handleUpdateUser, handleUpdatePassword } = useAccount();
     const [changedData, setChangedData] = useState<UpdatedAccountData>({ key: "", data: "" });
+    const [updatedPassword, setUpdatedPassword] = useState<UpdatedPasswordData>({
+        password: "",
+        newPassword: "",
+        ConfirmNewPassword: "",
+    });
 
     useEffect(() => {
         /**
@@ -54,6 +64,16 @@ export const AccountList = () => {
         e.preventDefault();
         setOpenUser(false);
         await handleUpdateUser(changedData);
+    };
+
+    /**
+     * パスワード変更
+     * @param e
+     */
+    const handleUpdatePass = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setOpenPassword(false);
+        await handleUpdatePassword(updatedPassword);
     };
 
     return (
@@ -100,11 +120,38 @@ export const AccountList = () => {
             </Modal>
             <Modal open={openPassword} onClose={() => setOpenPassword(false)}>
                 <Typography>変更</Typography>
-                <TextField label="現在のパスワード"></TextField>
-                <TextField label="新しいパスワード"></TextField>
-                <TextField label="新しいパスワード(確認)"></TextField>
+                <TextField
+                    label="現在のパスワード"
+                    value={updatedPassword.password}
+                    onChange={(e) =>
+                        setUpdatedPassword((prevState) => ({
+                            ...prevState,
+                            password: e.target.value,
+                        }))
+                    }
+                ></TextField>
+                <TextField
+                    label="新しいパスワード"
+                    value={updatedPassword.newPassword}
+                    onChange={(e) =>
+                        setUpdatedPassword((prevState) => ({
+                            ...prevState,
+                            newPassword: e.target.value,
+                        }))
+                    }
+                ></TextField>
+                <TextField
+                    label="新しいパスワード(確認)"
+                    value={updatedPassword.ConfirmNewPassword}
+                    onChange={(e) =>
+                        setUpdatedPassword((prevState) => ({
+                            ...prevState,
+                            ConfirmNewPassword: e.target.value,
+                        }))
+                    }
+                ></TextField>
                 <Box>
-                    <Button variant="outlined" onClick={handleUpdate}>
+                    <Button variant="outlined" onClick={handleUpdatePass}>
                         更新
                     </Button>
                 </Box>
