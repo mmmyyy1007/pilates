@@ -20,7 +20,7 @@ export const AccountList = () => {
     const [openPassword, setOpenPassword] = useState<boolean>(false);
     const [accountData, setAccountData] = useState<AccountData>({ name: "", date: "", email: "" });
     const [updatedFormName, setupdatedFormName] = useState<AccountFormData>({ key: "", name: "", value: "" });
-    const { handleShowAccount, handleUpdateUser, handleUpdatePassword } = useAccount();
+    const { handleShowAccount, handleUpdateUser, handleUpdatePassword, handleDeleteUser } = useAccount();
     const [changedData, setChangedData] = useState<UpdatedAccountData>({ key: "", data: "" });
     const [updatedPassword, setUpdatedPassword] = useState<UpdatedPasswordData>({
         password: "",
@@ -76,6 +76,13 @@ export const AccountList = () => {
         await handleUpdatePassword(updatedPassword);
     };
 
+    /**
+     * 退会
+     */
+    const handleDeleteAccount = async () => {
+        await handleDeleteUser();
+    };
+
     return (
         <Box sx={{ mt: 3 }}>
             <Typography variant="h5">アカウント管理</Typography>
@@ -106,6 +113,11 @@ export const AccountList = () => {
                     *******
                     <CreateIcon onClick={() => handleModalOpenPassword()} />
                 </Typography>
+            </Box>
+            <Box>
+                <Button variant="outlined" onClick={handleDeleteAccount}>
+                    退会
+                </Button>
             </Box>
             <Modal open={openUser} onClose={() => setOpenUser(false)}>
                 <Typography>変更</Typography>

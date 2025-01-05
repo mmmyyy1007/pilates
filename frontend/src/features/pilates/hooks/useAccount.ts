@@ -1,3 +1,4 @@
+import { deleteUser } from "@/features/pilates/api/deleteUser";
 import { showAccount } from "@/features/pilates/api/showAccount";
 import { updatePassword } from "@/features/pilates/api/updatePassword";
 import { updateUser } from "@/features/pilates/api/updateUser";
@@ -13,5 +14,8 @@ export const useAccount = () => {
     const handleUpdatePassword = async (data: UpdatedPasswordData) => {
         await updatePassword(data);
     };
-    return { handleShowAccount, handleUpdateUser, handleUpdatePassword };
+    const handleDeleteUser = async () => {
+        await deleteUser();
+    };
+    return { handleShowAccount, handleUpdateUser, handleUpdatePassword, handleDeleteUser };
 };
