@@ -2,7 +2,9 @@
 
 namespace App\Account\Repositories;
 
+use App\Lesson\Models\Lesson;
 use App\Models\User;
+use App\Place\Models\Place;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -59,5 +61,26 @@ class AccountRepository implements AccountRepositoryInterface
             ->update(['password' => Hash::make($data['new_password'])]);
 
         return $status;
+    }
+
+    /**
+     * @param int $userId
+     * @return bool $status
+     */
+    public function deleteUserById(int $userId): bool
+    {
+        try {
+
+            DB::transaction(
+                function () use ($userId) {
+                    Lesson::where('user_id', $userId)->delete();
+                    Place::where('user_id', $userId)->delete();
+                    User::where('id', $userId)->delete();
+                }
+            );
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

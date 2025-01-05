@@ -55,4 +55,15 @@ class AccountService implements AccountServiceInterface
 
         return $status;
     }
+
+    /**
+     * @param int $userId
+     * @return bool
+     */
+    public function deleteUserById(int $userId): bool
+    {
+        $status = $this->accountRepository->deleteUserById($userId);
+
+        return $status;
+    }
 }

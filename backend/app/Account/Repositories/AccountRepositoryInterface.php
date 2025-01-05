@@ -28,4 +28,10 @@ interface AccountRepositoryInterface
      * @return bool
      */
     public function updatePasswordById(int $userId, string $userPassword, array $data): bool;
+
+    /**
+     * @param int $userId
+     * @return bool
+     */
+    public function deleteUserById(int $userId): bool;
 }

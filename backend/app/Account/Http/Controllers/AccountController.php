@@ -59,4 +59,16 @@ class AccountController extends Controller
 
         return response()->json(['status' => $status]);
     }
+
+    /**
+     * 退会
+     */
+    public function deleteUser(Request $request)
+    {
+        $userId = Auth::id();
+
+        $status = $this->accountService->deleteUserById($userId);
+
+        return response()->json(['status' => $status]);
+    }
 }
