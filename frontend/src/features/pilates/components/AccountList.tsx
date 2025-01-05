@@ -2,6 +2,7 @@ import { Button } from "@/components/Button";
 import { Modal } from "@/components/Modal";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
+import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useAccount } from "@/features/pilates/hooks/useAccount";
 import {
     AccountData,
@@ -9,6 +10,7 @@ import {
     UpdatedAccountData,
     UpdatedPasswordData,
 } from "@/features/pilates/types/accountTypes";
+import { useErrorHandler } from "@/hooks/useErrorHandler";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreateIcon from "@mui/icons-material/Create";
 import { Box } from "@mui/material";
@@ -21,6 +23,8 @@ export const AccountList = () => {
     const [accountData, setAccountData] = useState<AccountData>({ name: "", date: "", email: "" });
     const [updatedFormName, setupdatedFormName] = useState<AccountFormData>({ key: "", name: "", value: "" });
     const { handleShowAccount, handleUpdateUser, handleUpdatePassword, handleDeleteUser } = useAccount();
+    const { handleLogout } = useLogout();
+    const { handleError, resetErrors } = useErrorHandler();
     const [changedData, setChangedData] = useState<UpdatedAccountData>({ key: "", data: "" });
     const [updatedPassword, setUpdatedPassword] = useState<UpdatedPasswordData>({
         password: "",
@@ -79,8 +83,16 @@ export const AccountList = () => {
     /**
      * 退会
      */
-    const handleDeleteAccount = async () => {
-        await handleDeleteUser();
+    const handleDeleteAccount = async (e: React.FormEvent) => {
+        e.preventDefault();
+        resetErrors();
+
+        try {
+            await handleDeleteUser();
+            handleLogout();
+        } catch (error) {
+            handleError(error);
+        }
     };
 
     return (
@@ -153,7 +165,7 @@ export const AccountList = () => {
                     }
                 ></TextField>
                 <TextField
-                    label="新しいパスワード(確認)"
+                    label="新しいパスワード(確認用)"
                     value={updatedPassword.ConfirmNewPassword}
                     onChange={(e) =>
                         setUpdatedPassword((prevState) => ({
