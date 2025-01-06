@@ -13,7 +13,7 @@ import {
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreateIcon from "@mui/icons-material/Create";
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import React, { useEffect, useState } from "react";
 
@@ -108,7 +108,12 @@ export const AccountList = () => {
                     <Grid size={8}>
                         <Box>
                             {accountData.name}
-                            <CreateIcon onClick={() => handleModalOpenUser("name", "名前", accountData.name)} />
+                            <IconButton
+                                color="default"
+                                onClick={() => handleModalOpenUser("name", "名前", accountData.name)}
+                            >
+                                <CreateIcon />
+                            </IconButton>
                         </Box>
                         <Box>start ～ {accountData.date}</Box>
                     </Grid>
@@ -117,13 +122,20 @@ export const AccountList = () => {
             <Box>
                 <Typography>
                     {accountData.email}
-                    <CreateIcon onClick={() => handleModalOpenUser("email", "メールアドレス", accountData.email)} />
+                    <IconButton
+                        color="default"
+                        onClick={() => handleModalOpenUser("email", "メールアドレス", accountData.email)}
+                    >
+                        <CreateIcon />
+                    </IconButton>
                 </Typography>
             </Box>
             <Box>
                 <Typography>
                     *******
-                    <CreateIcon onClick={() => handleModalOpenPassword()} />
+                    <IconButton color="default" onClick={() => handleModalOpenPassword()}>
+                        <CreateIcon />
+                    </IconButton>
                 </Typography>
             </Box>
             <Box>
