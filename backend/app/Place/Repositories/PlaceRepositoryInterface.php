@@ -30,4 +30,11 @@ interface PlaceRepositoryInterface
      * @return bool
      */
     public function registerPlace(array $placeData): bool;
+
+    /**
+     * @param string $placeId
+     * @param int $userId
+     * @return bool
+     */
+    public function deletePlace(string $placeId, int $userId): bool;
 }

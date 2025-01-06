@@ -3,6 +3,7 @@
 namespace App\Place\Repositories;
 
 use App\Place\Models\Place;
+use App\Lesson\Models\Lesson;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -59,6 +60,37 @@ class PlaceRepository implements PlaceRepositoryInterface
     public function registerPlace(array $placeData): bool
     {
         $status = Place::upsert($placeData, ['id', 'user_id'], ['name', 'display_flag', 'order_no']);
+
+        return $status;
+    }
+
+    /**
+     * @param int $userId
+     * @param string $placeId
+     * @return bool $exists
+     */
+    public function existsLessonById(int $userId, string $placeId): bool
+    {
+        $sql = Lesson::where('user_id', $userId)->where('place_id', $placeId);
+        $exists = $sql->exists();
+
+        return $exists;
+    }
+
+    /**
+     * @param string $placeId
+     * @param int $userId
+     * @return bool
+     */
+    public function deletePlace(string $placeId, int $userId): bool
+    {
+        $exists = $this->existsLessonById($userId, $placeId);
+
+        if ($exists) {
+            return false;
+        }
+
+        $status = Place::where('user_id', $userId)->where('id', $placeId)->delete();
 
         return $status;
     }

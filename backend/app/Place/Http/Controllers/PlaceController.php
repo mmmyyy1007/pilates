@@ -49,4 +49,16 @@ class PlaceController extends Controller
 
         return response()->json(['status' => $status]);
     }
+
+    /**
+     * 店舗情報削除
+     */
+    public function deletePlace(Request $request)
+    {
+        $placeId = $request->input('id');
+
+        $status = $this->placeService->deletePlace($placeId);
+
+        return response()->json(['status' => $status]);
+    }
 }

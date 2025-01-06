@@ -24,4 +24,10 @@ interface PlaceServiceInterface
      * @return bool
      */
     public function registerPlace(array $placeData): bool;
+
+    /**
+     * @param string $placeId
+     * @return bool
+     */
+    public function deletePlace(string $placeId): bool;
 }

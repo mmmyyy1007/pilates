@@ -1,3 +1,4 @@
+import { deletePlace } from "@/features/pilates/api/deletePlace";
 import { registerPlace } from "@/features/pilates/api/registerPlace";
 import { showActivePlace } from "@/features/pilates/api/showActivePlace";
 import { showPlace } from "@/features/pilates/api/showPlace";
@@ -13,5 +14,8 @@ export const usePlace = () => {
     const handleActiveShowPlace = async () => {
         return await showActivePlace();
     };
-    return { handleShowPlace, handleRegisterPlace, handleActiveShowPlace };
+    const handleDeletePlace = async (id: string) => {
+        return await deletePlace(id);
+    };
+    return { handleShowPlace, handleRegisterPlace, handleActiveShowPlace, handleDeletePlace };
 };

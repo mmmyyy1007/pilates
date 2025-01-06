@@ -6,6 +6,7 @@ import { usePlace } from "@/features/pilates/hooks/usePlace";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { Alert, Box, IconButton } from "@mui/material";
 import Stack from "@mui/material/Stack";
@@ -17,7 +18,7 @@ export const PlaceRegisterForm = () => {
     const [placeData, setPlaceData] = useState<PlaceData[]>([]);
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
     const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
-    const { handleShowPlace, handleRegisterPlace } = usePlace();
+    const { handleShowPlace, handleRegisterPlace, handleDeletePlace } = usePlace();
     const { errors, handleError, resetErrors } = useErrorHandler();
 
     useEffect(() => {
@@ -120,6 +121,27 @@ export const PlaceRegisterForm = () => {
         return errors[key]?.[0];
     };
 
+    /**
+     * 店舗削除処理
+     *
+     * @param e
+     */
+    const handleDelete = async (e: React.FormEvent) => {
+        e.preventDefault();
+        resetErrors();
+
+        try {
+            const clickedId = e.currentTarget.id;
+            await handleDeletePlace({ id: clickedId });
+            setAlertServerity("success");
+            setAlertMessage(MESSAGES.registerSucces);
+        } catch (error) {
+            setAlertServerity("error");
+            setAlertMessage(MESSAGES.registerError);
+            handleError(error);
+        }
+    };
+
     return (
         <Box sx={{ mt: 3 }}>
             <Typography variant="h5">店舗一覧</Typography>
@@ -153,6 +175,9 @@ export const PlaceRegisterForm = () => {
                                                     error={!!getFieldError(item.orderNo, "name")}
                                                     onChange={(e) => handlePlaceDataChange(item.id, e.target.value)}
                                                 ></TextField>
+                                                <IconButton color="default" id={item.id} onClick={handleDelete}>
+                                                    <DeleteIcon />
+                                                </IconButton>
                                                 <IconButton color="default" {...provided.dragHandleProps}>
                                                     <DragIndicatorIcon />
                                                 </IconButton>

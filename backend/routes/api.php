@@ -13,6 +13,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 // 店舗一覧
 Route::middleware(['auth'])->prefix('place')->name('place.')->controller(PlaceController::class)->group(function () {
     Route::middleware(['convert.snake'])->post('register', 'register')->name('register');
+    Route::post('delete', 'deletePlace')->name('deletePlace');
     Route::get('show', 'show')->name('show');
     Route::get('show/active', 'showActive')->name('showActive');
 });

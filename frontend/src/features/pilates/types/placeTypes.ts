@@ -14,3 +14,7 @@ export interface ActivePlaceApiResponse {
 export interface placeApiResponse {
     place: PlaceData[];
 }
+
+export interface DeletedPlaceData {
+    id: string;
+}

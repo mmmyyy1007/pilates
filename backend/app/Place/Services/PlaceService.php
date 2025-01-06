@@ -66,4 +66,16 @@ class PlaceService implements PlaceServiceInterface
 
         return $status;
     }
+
+    /**
+     * @param string $placeId
+     * @return bool
+     */
+    public function deletePlace(string $placeId): bool
+    {
+
+        $status = $this->placeRepository->deletePlace($placeId, Auth::id());
+
+        return $status;
+    }
 }
