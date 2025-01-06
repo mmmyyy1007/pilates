@@ -39,18 +39,13 @@ class PlaceController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            '*.name' => ['required', 'max:255'],
+            '*.name' => ['max:255'],
             '*.display_flag' => ['required'],
             '*.order_no' => ['required'],
         ]);
         $data = $request->all();
 
-        $placeData = collect($data)->map(function ($item) {
-            $item['user_id'] = Auth::id();
-            return $item;
-        })->toArray();
-
-        $status = $this->placeService->registerPlace($placeData);
+        $status = $this->placeService->registerPlace($data);
 
         return response()->json(['status' => $status]);
     }

@@ -5,6 +5,7 @@ namespace App\Place\Services;
 use App\Place\Repositories\PlaceRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class PlaceService implements PlaceServiceInterface
 {
@@ -43,14 +44,21 @@ class PlaceService implements PlaceServiceInterface
      */
     public function registerPlace(array $placeData): bool
     {
-        // 新規の場合、ユニークIDを再設定
         $placeData = collect($placeData)->map(function ($item) {
-            $exists = $this->placeRepository->existsPlaceById($item['user_id'], $item['id']);
+            $item['user_id'] = Auth::id();
 
+            // 新規登録の場合、ユニークIDを再設定
+            $exists = $this->placeRepository->existsPlaceById($item['user_id'], $item['id']);
             if (!$exists) {
                 $item['id'] = Str::uuid();
             }
+
             return $item;
+        })->toArray();
+
+        // 店舗名が入力済の場合のみ保持
+        $placeData = collect($placeData)->filter(function ($item) {
+            return !is_null($item['name']);
         })->toArray();
 
         // 店舗情報登録

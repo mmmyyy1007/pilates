@@ -4,6 +4,7 @@ namespace App\Place\Repositories;
 
 use App\Place\Models\Place;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class PlaceRepository implements PlaceRepositoryInterface
 {
@@ -53,7 +54,7 @@ class PlaceRepository implements PlaceRepositoryInterface
 
     /**
      * @param array $placeData
-     * @return bool $status
+     * @return bool
      */
     public function registerPlace(array $placeData): bool
     {
