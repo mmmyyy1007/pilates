@@ -44,17 +44,6 @@ class LessonController extends Controller
     }
 
     /**
-     * レッスン登録情報取得(詳細)
-     */
-    public function showDetail(Request $request)
-    {
-        $userId = Auth::id();
-        $id = $request->input('id');
-        $lesson = $this->lessonService->getLessonDetailById($userId, $id);
-        return response()->json(['lesson' => $lesson]);
-    }
-
-    /**
      * レッスン情報登録
      */
     public function register(Request $request)

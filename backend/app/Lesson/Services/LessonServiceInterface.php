@@ -23,13 +23,6 @@ interface LessonServiceInterface
     public function timelineLessonById(): array;
 
     /**
-     * @param int $userId
-     * @param string $id
-     * @return Collection
-     */
-    public function getLessonDetailById(int $userId, string $id): Collection;
-
-    /**
      * @param array $lessonData
      * @return bool
      */

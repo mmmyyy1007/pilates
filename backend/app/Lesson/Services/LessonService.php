@@ -74,19 +74,6 @@ class LessonService implements LessonServiceInterface
         return $timeline;
     }
 
-
-    /**
-     * @param int $userId
-     * @param string $id
-     * @return Collection
-     */
-    public function getLessonDetailById(int $userId, string $id): Collection
-    {
-        $lesson = $this->lessonRepository->getLessonDetailById($userId, $id);
-
-        return $lesson;
-    }
-
     /**
      * @param array $lessonData
      * @return bool

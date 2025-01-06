@@ -38,23 +38,6 @@ class LessonRepository implements LessonRepositoryInterface
         return $count;
     }
 
-
-    /**
-     * @param int $userId
-     * @param string $id
-     * @return Collection $record
-     */
-    public function getLessonDetailById(int $userId, string $id): Collection
-    {
-        $sql = Lesson::select('id', 'start_datetime as startDatetime', 'end_datetime as endDatetime', 'place')
-            ->where('user_id', $userId)
-            ->where('id', $id);
-
-        $record = $sql->get();
-
-        return $record;
-    }
-
     /**
      * @param int $userId
      * @param string $placeId
