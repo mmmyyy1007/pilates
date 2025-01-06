@@ -48,8 +48,9 @@ export const PlaceRegisterForm = () => {
      * @param value
      */
     const handlePlaceDataChange = (id: string, value: string) => {
-        setPlaceData(placeData.map((v) => (v.id === id ? { ...v, name: value, displayFlag: true } : v)));
+        setPlaceData(placeData.map((v) => (v.id === id ? { ...v, name: value, displayFlag: value !== "" } : v)));
     };
+
     /**
      * 表示・非表示設定
      *
