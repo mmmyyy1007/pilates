@@ -1,6 +1,5 @@
 import { Loading } from "@/components/Loading";
 import { Typography } from "@/components/Typography";
-// import { LogoutButton } from "@/features/auth/components/LogoutButton";
 import { useAuthStore } from "@/features/auth/stores/authStore";
 import { LessonGuage } from "@/features/pilates/components/LessonGauge";
 import { LessonTimeline } from "@/features/pilates/components/LessonTimeline";
@@ -36,9 +35,7 @@ export const Home = () => {
                 ここはホーム画面です。
             </Typography>
             <LessonGuage />
-            {/* <LogoutButton /> */}
             <LessonTimeline />
-            {/* <SpeedDialMenu /> */}
             <PilatesQuotes />
         </Box>
     );
