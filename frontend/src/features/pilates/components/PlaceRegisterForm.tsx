@@ -73,7 +73,7 @@ export const PlaceRegisterForm = () => {
         try {
             await handleRegisterPlace(placeData);
             setAlertServerity("success");
-            setAlertMessage(MESSAGES.registerSucces);
+            setAlertMessage(MESSAGES.registerSuccess);
         } catch (error) {
             setAlertServerity("error");
             setAlertMessage(MESSAGES.registerError);
@@ -134,10 +134,10 @@ export const PlaceRegisterForm = () => {
             const clickedId = e.currentTarget.id;
             await handleDeletePlace({ id: clickedId });
             setAlertServerity("success");
-            setAlertMessage(MESSAGES.registerSucces);
+            setAlertMessage(MESSAGES.deleteSuccess);
         } catch (error) {
             setAlertServerity("error");
-            setAlertMessage(MESSAGES.registerError);
+            setAlertMessage(MESSAGES.deleteError);
             handleError(error);
         }
     };

@@ -80,7 +80,7 @@ export const LessonList = () => {
             try {
                 await handleRegisterLesson(data);
                 setAlertServerity("success");
-                setAlertMessage(MESSAGES.registerSucces);
+                setAlertMessage(MESSAGES.registerSuccess);
             } catch (error) {
                 setAlertServerity("error");
                 setAlertMessage(MESSAGES.registerError);
