@@ -32,10 +32,6 @@ export interface LessonTimelineApiRespose {
     timeline: LessonTimelineData[];
 }
 
-export interface LessonDetailId {
-    id: string;
-}
-
 export interface LessonRegisterData {
     startDatetime: string;
     endDatetime: string;
