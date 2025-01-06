@@ -29,13 +29,6 @@ interface LessonRepositoryInterface
     public function getLessonDetailById(int $userId, string $id): Collection;
 
     /**
-     * @param int $userId
-     * @param string $id
-     * @return bool
-     */
-    public function existsLessonById(int $userId, string $id): bool;
-
-    /**
      * @param array $lessonData
      * @return bool
      */
