@@ -19,11 +19,9 @@ interface LessonServiceInterface
     public function countLessonById(): int;
 
     /**
-     * @param int $userId
      * @return array
      */
-    public function timelineLessonById(int $userId): array;
-
+    public function timelineLessonById(): array;
 
     /**
      * @param int $userId

@@ -36,12 +36,11 @@ class LessonController extends Controller
     }
 
     /**
-     * レッスン一覧タイムライン取得
+     * レッスンタイムライン取得
      */
     public function showTimeline()
     {
-        $userId = Auth::id();
-        $timeline = $this->lessonService->timelineLessonById($userId);
+        $timeline = $this->lessonService->timelineLessonById();
         return response()->json(['timeline' => $timeline]);
     }
 

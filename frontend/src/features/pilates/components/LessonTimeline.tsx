@@ -13,7 +13,11 @@ import { useEffect, useState } from "react";
 export const LessonTimeline = () => {
     const [lessonTimelineData, setLessonTimelineData] = useState<LessonTimelineData[]>([]);
     const { handleShowLessonTimeline } = useLesson();
+
     useEffect(() => {
+        /**
+         * レッスンタイムライン取得
+         */
         const fetchLessonTimelineData = async () => {
             const response = await handleShowLessonTimeline();
 

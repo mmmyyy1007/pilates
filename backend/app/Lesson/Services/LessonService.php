@@ -53,12 +53,11 @@ class LessonService implements LessonServiceInterface
     }
 
     /**
-     * @param int $userId
      * @return array
      */
-    public function timelineLessonById($userId): array
+    public function timelineLessonById(): array
     {
-        $lesson = $this->lessonRepository->getLessonById($userId);
+        $lesson = $this->lessonRepository->getLessonById(Auth::id());
 
         $timeline = collect($lesson)->map(function ($item, $index) {
             $start = Carbon::create($item['start_datetime']);
