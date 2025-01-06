@@ -14,9 +14,6 @@ export const useLesson = () => {
     const handleShowLesson = async () => {
         return await showLesson();
     };
-    // const handleShowLessonDetail = async (id: LessonDetailId) => {
-    //     await showLessonDetail(id);
-    // };
     const handleRegisterLesson = async (data: LessonRegisterData) => {
         await registerLesson(data);
     };
