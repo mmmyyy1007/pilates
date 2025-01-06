@@ -29,11 +29,10 @@ class LessonController extends Controller
     /**
      * レッスン回数取得
      */
-    public function showGuage(Request $request)
+    public function showGuage()
     {
-        $userId = Auth::id();
-        $count = $this->lessonService->countLessonById($userId);
-        return response()->json(['count' => $count]);
+        $count = $this->lessonService->countLessonById();
+        return response()->json(['min' => 0, 'max' => 30, 'count' => $count]);
     }
 
     /**

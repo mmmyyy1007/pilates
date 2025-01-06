@@ -5,6 +5,7 @@ namespace App\Lesson\Services;
 use App\Lesson\Repositories\LessonRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class LessonService implements LessonServiceInterface
@@ -42,12 +43,11 @@ class LessonService implements LessonServiceInterface
     }
 
     /**
-     * @param int $userId
      * @return int
      */
-    public function countLessonById(int $userId): int
+    public function countLessonById(): int
     {
-        $count = $this->lessonRepository->countLessonById($userId);
+        $count = $this->lessonRepository->countLessonById(Auth::id());
 
         return $count;
     }

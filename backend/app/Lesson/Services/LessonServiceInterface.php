@@ -14,10 +14,9 @@ interface LessonServiceInterface
     public function getLessonById(int $userId): array;
 
     /**
-     * @param int $userId
      * @return int
      */
-    public function countLessonById(int $userId): int;
+    public function countLessonById(): int;
 
     /**
      * @param int $userId
