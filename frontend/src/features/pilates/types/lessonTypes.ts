@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export interface LessonData {
     title: string;
     start: string;
@@ -30,6 +32,11 @@ export interface LessonTimelineData {
 
 export interface LessonTimelineApiRespose {
     timeline: LessonTimelineData[];
+}
+
+export interface LessonStartEndData {
+    start: Dayjs | null;
+    end: Dayjs | null;
 }
 
 export interface LessonRegisterData {

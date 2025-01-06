@@ -4,7 +4,7 @@ import { Typography } from "@/components/Typography";
 import { MESSAGES } from "@/constants/message";
 import { useLesson } from "@/features/pilates/hooks/useLesson";
 import { usePlace } from "@/features/pilates/hooks/usePlace";
-import { LessonData } from "@/features/pilates/types/lessonTypes";
+import { LessonData, LessonStartEndData } from "@/features/pilates/types/lessonTypes";
 import { ActivePlaceData } from "@/features/pilates/types/placeTypes";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import { EventClickArg } from "@fullcalendar/core";
@@ -14,15 +14,17 @@ import FullCalendar from "@fullcalendar/react";
 import { Alert, Box } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { DateTimePicker } from "@mui/x-date-pickers";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
 export const LessonList = () => {
     const [ActivePlaceData, setActivePlaceData] = useState<ActivePlaceData[]>([]);
     const [lessonData, setLessonData] = useState<LessonData[]>([]);
     const [SelectedPlaceData, setSelectedPlaceData] = useState<ActivePlaceData | null>(null);
-    const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(Date.now()));
-    const [endDate, setEndDate] = useState<Dayjs | null>(dayjs().add(1, "hour"));
+    const [startEndData, setStartEndData] = useState<LessonStartEndData>({
+        start: dayjs(Date.now()),
+        end: dayjs().add(1, "hour"),
+    });
     const [eventClickId, seteventClickId] = useState<string | null>(null);
     const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
@@ -53,8 +55,7 @@ export const LessonList = () => {
         const end = dayjs(arg.event.endStr);
         const placeId = arg.event.extendedProps.placeId;
         const place = arg.event.extendedProps.place;
-        setStartDate(start);
-        setEndDate(end);
+        setStartEndData({ start: start, end: end });
         setSelectedPlaceData({ id: placeId, name: place });
         seteventClickId(arg.event.id);
     };
@@ -68,12 +69,12 @@ export const LessonList = () => {
         resetErrors();
 
         const selectedId = lessonData.find((lesson) => lesson.id === eventClickId)?.id ?? Date.now().toString();
-        if (SelectedPlaceData && startDate && endDate) {
+        if (SelectedPlaceData && startEndData.start && startEndData.end) {
             const data = {
                 place: SelectedPlaceData.name,
                 placeId: SelectedPlaceData.id,
-                startDatetime: startDate.format("YYYY-MM-DD HH:mm:ss"),
-                endDatetime: endDate.format("YYYY-MM-DD HH:mm:ss"),
+                startDatetime: startEndData.start.format("YYYY-MM-DD HH:mm:ss"),
+                endDatetime: startEndData.end.format("YYYY-MM-DD HH:mm:ss"),
                 id: selectedId,
             };
 
@@ -108,14 +109,24 @@ export const LessonList = () => {
             <DateTimePicker
                 label="開始日時"
                 slotProps={{ textField: { size: "small", fullWidth: true } }}
-                value={startDate}
-                onChange={(newStartDate) => setStartDate(newStartDate)}
+                value={startEndData.start}
+                onChange={(newStartDate) =>
+                    setStartEndData((prevState) => ({
+                        ...prevState,
+                        start: newStartDate,
+                    }))
+                }
             />
             <DateTimePicker
                 label="終了日時"
                 slotProps={{ textField: { size: "small", fullWidth: true } }}
-                value={endDate}
-                onChange={(newEndDate) => setEndDate(newEndDate)}
+                value={startEndData.end}
+                onChange={(newEndDate) =>
+                    setStartEndData((prevState) => ({
+                        ...prevState,
+                        end: newEndDate,
+                    }))
+                }
             />
             <Autocomplete
                 disablePortal
