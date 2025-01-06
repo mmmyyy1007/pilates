@@ -17,12 +17,11 @@ class LessonController extends Controller
     }
 
     /**
-     * レッスン登録情報取得(全件)
+     * レッスン登録情報取得
      */
-    public function show(Request $request)
+    public function show()
     {
-        $userId = Auth::id();
-        $lesson = $this->lessonService->getLessonById($userId);
+        $lesson = $this->lessonService->getLessonById();
         return response()->json(['lesson' => $lesson]);
     }
 

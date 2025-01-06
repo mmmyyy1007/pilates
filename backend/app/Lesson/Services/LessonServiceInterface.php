@@ -8,10 +8,9 @@ use Illuminate\Validation\Rules\In;
 interface LessonServiceInterface
 {
     /**
-     * @param int $userId
      * @return array
      */
-    public function getLessonById(int $userId): array;
+    public function getLessonById(): array;
 
     /**
      * @return int

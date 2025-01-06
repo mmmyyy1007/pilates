@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 
 export const LessonList = () => {
     const [ActivePlaceData, setActivePlaceData] = useState<ActivePlaceData[]>([]);
-    const [LessonData, setLessonData] = useState<LessonData[]>([]);
+    const [lessonData, setLessonData] = useState<LessonData[]>([]);
     const [SelectedPlaceData, setSelectedPlaceData] = useState<ActivePlaceData | null>(null);
     const [startDate, setStartDate] = useState<Dayjs | null>(dayjs(Date.now()));
     const [endDate, setEndDate] = useState<Dayjs | null>(dayjs().add(1, "hour"));
@@ -67,7 +67,7 @@ export const LessonList = () => {
         e.preventDefault();
         resetErrors();
 
-        const selectedId = LessonData.find((lesson) => lesson.id === eventClickId)?.id ?? Date.now().toString();
+        const selectedId = lessonData.find((lesson) => lesson.id === eventClickId)?.id ?? Date.now().toString();
         if (SelectedPlaceData && startDate && endDate) {
             const data = {
                 place: SelectedPlaceData.name,
@@ -96,7 +96,8 @@ export const LessonList = () => {
                 plugins={[dayGridPlugin, interactionPlugin]}
                 locale="ja"
                 initialView="dayGridMonth"
-                events={LessonData}
+                height="auto"
+                events={lessonData}
                 eventClick={handleDateClick}
             />
             {alertMessage && (
