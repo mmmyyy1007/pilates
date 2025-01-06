@@ -5,11 +5,13 @@ import { Gauge } from "@mui/x-charts/Gauge";
 import { useEffect, useState } from "react";
 
 export const LessonGuage = () => {
-    const valueLessonMin = 0;
-    const valueLessonMax = 30;
-    const [lessonCountData, setLessonCountData] = useState<LessonCountData>({ count: 0 });
+    const [lessonCountData, setLessonCountData] = useState<LessonCountData>({ min: 0, max: 30, count: 0 });
     const { handleShowLessonGuage } = useLesson();
+
     useEffect(() => {
+        /**
+         * レッスン回数取得
+         */
         const fetchLessonCountData = async () => {
             const response = await handleShowLessonGuage();
 
@@ -23,8 +25,8 @@ export const LessonGuage = () => {
                 width={100}
                 height={100}
                 value={lessonCountData.count}
-                valueMin={valueLessonMin}
-                valueMax={valueLessonMax}
+                valueMin={lessonCountData.min}
+                valueMax={lessonCountData.max}
                 text={({ value, valueMax }) => `${value} / ${valueMax}`}
             />
         </Box>

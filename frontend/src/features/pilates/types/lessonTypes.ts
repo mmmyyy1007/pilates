@@ -12,6 +12,8 @@ export interface LessonApiResponse {
 }
 
 export interface LessonCountData {
+    min: number;
+    max: number;
     count: number;
 }
 
