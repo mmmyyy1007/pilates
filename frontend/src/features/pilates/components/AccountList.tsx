@@ -1,8 +1,8 @@
 import { Button } from "@/components/Button";
 import { Modal } from "@/components/Modal";
+import { PasswordTextField } from "@/components/PasswordTextField";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
-import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useAccount } from "@/features/pilates/hooks/useAccount";
 import {
     AccountData,
@@ -23,7 +23,6 @@ export const AccountList = () => {
     const [accountData, setAccountData] = useState<AccountData>({ name: "", date: "", email: "" });
     const [updatedFormName, setupdatedFormName] = useState<AccountFormData>({ key: "", name: "", value: "" });
     const { handleShowAccount, handleUpdateUser, handleUpdatePassword, handleDeleteUser } = useAccount();
-    const { handleLogout } = useLogout();
     const { handleError, resetErrors } = useErrorHandler();
     const [changedData, setChangedData] = useState<UpdatedAccountData>({ key: "", data: "" });
     const [updatedPassword, setUpdatedPassword] = useState<UpdatedPasswordData>({
@@ -89,7 +88,6 @@ export const AccountList = () => {
 
         try {
             await handleDeleteUser();
-            handleLogout();
         } catch (error) {
             handleError(error);
         }
@@ -166,7 +164,7 @@ export const AccountList = () => {
                         }))
                     }
                 ></TextField>
-                <TextField
+                <PasswordTextField
                     label="新しいパスワード"
                     value={updatedPassword.newPassword}
                     onChange={(e) =>
@@ -175,8 +173,8 @@ export const AccountList = () => {
                             newPassword: e.target.value,
                         }))
                     }
-                ></TextField>
-                <TextField
+                />
+                <PasswordTextField
                     label="新しいパスワード(確認用)"
                     value={updatedPassword.ConfirmNewPassword}
                     onChange={(e) =>
@@ -185,7 +183,7 @@ export const AccountList = () => {
                             ConfirmNewPassword: e.target.value,
                         }))
                     }
-                ></TextField>
+                />
                 <Box>
                     <Button variant="outlined" onClick={handleUpdatePass}>
                         更新

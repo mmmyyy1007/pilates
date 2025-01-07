@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { PasswordTextField } from "@/components/PasswordTextField";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
 import { useRegister } from "@/features/auth/hooks/useRegister";
@@ -74,11 +75,10 @@ export const RegisterForm = () => {
                 helperText={errors.email ? errors.email[0] : ""}
                 sx={{ mb: 2 }}
             />
-            <TextField
+            <PasswordTextField
                 label="パスワード"
                 fullWidth
                 required
-                type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
@@ -86,11 +86,10 @@ export const RegisterForm = () => {
                 helperText={errors.password ? errors.password[0] : ""}
                 sx={{ mb: 2 }}
             />
-            <TextField
+            <PasswordTextField
                 label="パスワード（確認用）"
                 fullWidth
                 required
-                type="password"
                 name="password_confirmation"
                 value={formData.password_confirmation}
                 error={!!errors.password_confirmation}

@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { PasswordTextField } from "@/components/PasswordTextField";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
 import { useLogin } from "@/features/auth/hooks/useLogin";
@@ -44,11 +45,10 @@ export const LoginForm = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 sx={{ mb: 2 }}
             />
-            <TextField
+            <PasswordTextField
                 label="パスワード"
                 fullWidth
                 required
-                type="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 sx={{ mb: 2 }}
