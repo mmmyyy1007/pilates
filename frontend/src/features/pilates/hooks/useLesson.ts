@@ -3,6 +3,7 @@ import { showLesson } from "@/features/pilates/api/showLesson";
 import { showLessonGuage } from "@/features/pilates/api/showLessonGuage";
 import { showLessonTimeline } from "@/features/pilates/api/showLessonTimeline";
 import { LessonRegisterData } from "@/features/pilates/types/lessonTypes";
+import { useCallback } from "react";
 
 export const useLesson = () => {
     const handleShowLessonGuage = async () => {
@@ -11,9 +12,9 @@ export const useLesson = () => {
     const handleShowLessonTimeline = async () => {
         return await showLessonTimeline();
     };
-    const handleShowLesson = async () => {
+    const handleShowLesson = useCallback(async () => {
         return await showLesson();
-    };
+    }, []);
     const handleRegisterLesson = async (data: LessonRegisterData) => {
         await registerLesson(data);
     };
