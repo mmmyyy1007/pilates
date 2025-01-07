@@ -86,7 +86,7 @@ export const Layout = () => {
                     </IconButton>
                 </Toolbar>
             </AppBar>
-            <Container>
+            <Container sx={{ mt: 3 }}>
                 <Outlet />
             </Container>
             <Drawer open={open} onClose={toggleDrawer(false)}>
