@@ -25,10 +25,12 @@ class PlaceController extends Controller
         return response()->json(['place' => $place]);
     }
 
-    public function showActive(Request $request)
+    /**
+     * レッスン場所の取得
+     */
+    public function showActive()
     {
-        $userId = Auth::id();
-        $place = $this->placeService->getPlaceActiveById($userId);
+        $place = $this->placeService->getPlaceActiveById();
         return response()->json(['place' => $place]);
     }
 

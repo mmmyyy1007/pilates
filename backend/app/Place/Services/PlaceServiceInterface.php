@@ -13,10 +13,9 @@ interface PlaceServiceInterface
     public function getPlaceById(): Collection;
 
     /**
-     * @param int $userId
      * @return Collection
      */
-    public function getPlaceActiveById(int $userId): Collection;
+    public function getPlaceActiveById(): Collection;
 
     /**
      * @param array $placeData
