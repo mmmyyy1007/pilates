@@ -17,12 +17,11 @@ class PlaceService implements PlaceServiceInterface
     }
 
     /**
-     * @param int $userId
      * @return Collection
      */
-    public function getPlaceById(int $userId): Collection
+    public function getPlaceById(): Collection
     {
-        $place = $this->placeRepository->getPlaceById($userId);
+        $place = $this->placeRepository->getPlaceById(Auth::id());
 
         return $place;
     }

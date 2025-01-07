@@ -19,10 +19,9 @@ class PlaceController extends Controller
     /**
      * 店舗情報取得
      */
-    public function show(Request $request)
+    public function show()
     {
-        $userId = Auth::id();
-        $place = $this->placeService->getPlaceById($userId);
+        $place = $this->placeService->getPlaceById();
         return response()->json(['place' => $place]);
     }
 

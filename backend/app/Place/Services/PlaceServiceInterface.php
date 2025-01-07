@@ -8,10 +8,9 @@ interface PlaceServiceInterface
 {
 
     /**
-     * @param int $userId
      * @return Collection
      */
-    public function getPlaceById(int $userId): Collection;
+    public function getPlaceById(): Collection;
 
     /**
      * @param int $userId
