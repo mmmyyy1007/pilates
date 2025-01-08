@@ -5,8 +5,13 @@ interface LessonButtonProps {
 }
 export const LessonButton = ({ handleRegister }: LessonButtonProps) => {
     return (
-        <Button variant="outlined" onClick={handleRegister}>
-            登録
-        </Button>
+        <>
+            <Button variant="outlined" onClick={handleRegister}>
+                登録
+            </Button>
+            <Button variant="outlined" color="error">
+                削除
+            </Button>
+        </>
     );
 };
