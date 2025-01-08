@@ -31,4 +31,10 @@ interface LessonRepositoryInterface
      * @return bool
      */
     public function existsLessonById(int $userId, string $id): bool;
+
+    /**
+     * @param int $userId
+     * @return bool
+     */
+    public function deleteLessonById(int $userId): bool;
 }

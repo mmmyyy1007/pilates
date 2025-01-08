@@ -21,7 +21,7 @@ class AccountController extends Controller
      */
     public function show(Request $request)
     {
-        $userId = Auth::id();
+        $userId = $request->user()->id;
         $account = $this->accountService->getAccountById($userId);
 
         return response()->json(['account' => $account]);
@@ -32,11 +32,10 @@ class AccountController extends Controller
      */
     public function updateUser(Request $request)
     {
-        $userId = Auth::id();
-        $key = $request->input('key');
-        $data = $request->input('data');
+        $data = $request->input();
+        $data['user_id'] = $request->user()->id;
 
-        $status = $this->accountService->updateUserById($userId, $key, $data);
+        $status = $this->accountService->updateUserById($data);
 
         return response()->json(['status' => $status]);
     }
@@ -46,16 +45,16 @@ class AccountController extends Controller
      */
     public function updatePassword(Request $request)
     {
-        $userId = Auth::id();
-        $userPassword = Auth::user()->password;
         $request->validate([
             'password' => ['required'],
             'new_password' => ['required'],
             'confirm_new_password' => ['required'],
         ]);
-        $data = $request->all();
+        $data = $request->input();
+        $data['user_id'] = $request->user()->id;
+        $data['user_password'] = $request->user()->password;
 
-        $status = $this->accountService->updatePasswordById($userId, $userPassword, $data);
+        $status = $this->accountService->updatePasswordById($data);
 
         return response()->json(['status' => $status]);
     }
@@ -65,8 +64,7 @@ class AccountController extends Controller
      */
     public function deleteUser(Request $request)
     {
-        $userId = Auth::id();
-
+        $userId = $request->user()->id;
         $status = $this->accountService->deleteUserById($userId);
 
         return response()->json(['status' => $status]);

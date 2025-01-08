@@ -14,20 +14,16 @@ interface AccountRepositoryInterface
     public function getAccountById(int $userId): mixed;
 
     /**
-     * @param int $userId
-     * @param string $key
-     * @param string $data
-     * @return bool
-     */
-    public function updateUserById(int $userId, string $key, string $data): bool;
-
-    /**
-     * @param int $userId
-     * @param string $userPassword
      * @param array $data
      * @return bool
      */
-    public function updatePasswordById(int $userId, string $userPassword, array $data): bool;
+    public function updateUserById(array $data): bool;
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function updatePasswordById(array $data): bool;
 
     /**
      * @param int $userId

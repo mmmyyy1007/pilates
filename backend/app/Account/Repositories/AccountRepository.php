@@ -29,35 +29,25 @@ class AccountRepository implements AccountRepositoryInterface
     }
 
     /**
-     * @param int $userId
-     * @param string $key
-     * @param string $data
+     * @param array $data
      * @return bool $status
      */
-    public function updateUserById(int $userId, string $key, string $data): bool
+    public function updateUserById(array $data): bool
     {
-
-        $status = User::where('id', $userId)
-            ->update([$key => $data]);
+        $status = User::where('id', $data['user_id'])
+            ->update([$data['key'] => $data['data']]);
 
         return $status;
     }
 
     /**
-     * @param int $userId
-     * @param string $userPassword
      * @param array $data
      * @return bool $status
      */
-    public function updatePasswordById(int $userId, string $userPassword, array $data): bool
+    public function updatePasswordById(array $data): bool
     {
 
-        // 現在のパスワードと一致するかチェック
-        if (Hash::check($data['password'], $userPassword)) {
-            return false;
-        }
-
-        $status = User::where('id', $userId)
+        $status = User::where('id', $data['user_id'])
             ->update(['password' => Hash::make($data['new_password'])]);
 
         return $status;
@@ -69,18 +59,8 @@ class AccountRepository implements AccountRepositoryInterface
      */
     public function deleteUserById(int $userId): bool
     {
-        try {
+        $status = User::where('id', $userId)->delete();
 
-            DB::transaction(
-                function () use ($userId) {
-                    Lesson::where('user_id', $userId)->delete();
-                    Place::where('user_id', $userId)->delete();
-                    User::where('id', $userId)->delete();
-                }
-            );
-            return true;
-        } catch (\Exception $e) {
-            return false;
-        }
+        return $status;
     }
 }

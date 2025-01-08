@@ -76,4 +76,15 @@ class PlaceRepository implements PlaceRepositoryInterface
 
         return $status;
     }
+
+    /**
+     * @param int $userId
+     * @return bool
+     */
+    public function deletePlaceById(int $userId): bool
+    {
+        $status = Place::where('user_id', $userId)->delete();
+
+        return $status;
+    }
 }

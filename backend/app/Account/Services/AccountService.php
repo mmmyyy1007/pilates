@@ -3,17 +3,23 @@
 namespace App\Account\Services;
 
 use App\Account\Repositories\AccountRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
+use App\Lesson\Repositories\LessonRepository;
+use App\Place\Repositories\PlaceRepositoryInterface;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class AccountService implements AccountServiceInterface
 {
     protected $accountRepository;
+    protected $placeRepository;
+    protected $lessonRepository;
 
-    public function __construct(AccountRepositoryInterface $accountRepository)
+    public function __construct(AccountRepositoryInterface $accountRepository, PlaceRepositoryInterface $placeRepository, LessonRepository $lessonRepository)
     {
         $this->accountRepository = $accountRepository;
+        $this->placeRepository = $placeRepository;
+        $this->lessonRepository = $lessonRepository;
     }
 
     /**
@@ -31,27 +37,28 @@ class AccountService implements AccountServiceInterface
     }
 
     /**
-     * @param int $userId
-     * @param string $key
-     * @param string $data
+     * @param array $data
      * @return bool
      */
-    public function updateUserById(int $userId, string $key, string $data): bool
+    public function updateUserById(array $data): bool
     {
-        $status = $this->accountRepository->updateUserById($userId, $key, $data);
+        $status = $this->accountRepository->updateUserById($data);
 
         return $status;
     }
 
     /**
-     * @param int $userId
-     * @param string $userPassword
      * @param array $data
      * @return bool
      */
-    public function updatePasswordById(int $userId, string $userPassword, array $data): bool
+    public function updatePasswordById(array $data): bool
     {
-        $status = $this->accountRepository->updatePasswordById($userId, $userPassword, $data);
+        // 現在のパスワードと一致するかチェック
+        if (Hash::check($data['password'], $data['user_password'])) {
+            return false;
+        }
+
+        $status = $this->accountRepository->updatePasswordById($data);
 
         return $status;
     }
@@ -62,8 +69,17 @@ class AccountService implements AccountServiceInterface
      */
     public function deleteUserById(int $userId): bool
     {
-        $status = $this->accountRepository->deleteUserById($userId);
-
-        return $status;
+        try {
+            DB::transaction(
+                function () use ($userId) {
+                    $this->lessonRepository->deleteLessonById($userId);
+                    $this->placeRepository->deletePlaceById($userId);
+                    $this->accountRepository->deleteUserById($userId);
+                }
+            );
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

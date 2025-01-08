@@ -33,6 +33,12 @@ interface PlaceRepositoryInterface
 
     /**
      * @param int $userId
+     * @return bool
+     */
+    public function deletePlaceById(int $userId): bool;
+
+    /**
+     * @param int $userId
      * @param string $placeId
      * @param bool
      */
