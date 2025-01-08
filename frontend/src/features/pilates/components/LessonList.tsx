@@ -15,10 +15,10 @@ export const LessonList = () => {
     const [lessonData, setLessonData] = useState<LessonData[]>([]);
     const [selectedPlaceData, setSelectedPlaceData] = useState<ActivePlaceData | null>(null);
     const [startEndData, setStartEndData] = useState<LessonStartEndData>({
+        id: Date.now().toString(),
         start: dayjs(Date.now()),
         end: dayjs().add(1, "hour"),
     });
-    const [eventClickId, seteventClickId] = useState<string | null>(null);
     const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
     const { handleActiveShowPlace } = usePlace();
@@ -49,9 +49,8 @@ export const LessonList = () => {
         const end = dayjs(arg.event.endStr);
         const placeId = arg.event.extendedProps.placeId;
         const place = arg.event.extendedProps.place;
-        setStartEndData({ start: start, end: end });
+        setStartEndData({ id: arg.event.id, start: start, end: end });
         setSelectedPlaceData({ id: placeId, name: place });
-        seteventClickId(arg.event.id);
     };
 
     /**
@@ -62,7 +61,7 @@ export const LessonList = () => {
         e.preventDefault();
         resetErrors();
 
-        const selectedId = lessonData.find((lesson) => lesson.id === eventClickId)?.id ?? Date.now().toString();
+        const selectedId = lessonData.find((lesson) => lesson.id === startEndData.id)?.id ?? Date.now().toString();
         if (selectedPlaceData && startEndData.start && startEndData.end) {
             const data = {
                 place: selectedPlaceData.name,
@@ -84,6 +83,10 @@ export const LessonList = () => {
             }
         }
     };
+
+    /**
+     * レッスン削除
+     */
 
     return (
         <Box sx={{ mt: 3 }}>

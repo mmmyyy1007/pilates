@@ -35,6 +35,7 @@ export interface LessonTimelineApiRespose {
 }
 
 export interface LessonStartEndData {
+    id: string;
     start: Dayjs | null;
     end: Dayjs | null;
 }
