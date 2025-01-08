@@ -47,3 +47,7 @@ export interface LessonRegisterData {
     place: string;
     placeId: string;
 }
+
+export interface LessonDeleteData {
+    id: string;
+}

@@ -22,7 +22,7 @@ export const LessonList = () => {
     const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
     const { handleActiveShowPlace } = usePlace();
-    const { handleShowLesson, handleRegisterLesson } = useLesson();
+    const { handleShowLesson, handleRegisterLesson, handleDeleteLesson } = useLesson();
     const { handleError, resetErrors } = useErrorHandler();
 
     const fetchLessonData = useCallback(async () => {
@@ -87,6 +87,22 @@ export const LessonList = () => {
     /**
      * レッスン削除
      */
+    const handleDelete = async (e: React.FormEvent) => {
+        e.preventDefault();
+        resetErrors();
+
+        const selectedId = lessonData.find((lesson) => lesson.id === startEndData.id)?.id ?? "";
+        const data = { id: selectedId };
+        try {
+            await handleDeleteLesson(data);
+            setAlertServerity("success");
+            setAlertMessage(MESSAGES.registerSuccess);
+        } catch (error) {
+            setAlertServerity("error");
+            setAlertMessage(MESSAGES.registerError);
+            handleError(error);
+        }
+    };
 
     return (
         <Box sx={{ mt: 3 }}>
@@ -103,7 +119,7 @@ export const LessonList = () => {
                 activePlaceData={activePlaceData}
                 setSelectedPlaceData={setSelectedPlaceData}
             />
-            <LessonButton handleRegister={handleRegister} />
+            <LessonButton handleRegister={handleRegister} handleDelete={handleDelete} />
         </Box>
     );
 };
