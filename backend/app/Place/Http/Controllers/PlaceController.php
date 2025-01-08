@@ -19,18 +19,20 @@ class PlaceController extends Controller
     /**
      * 店舗情報取得
      */
-    public function show()
+    public function show(Request $request)
     {
-        $place = $this->placeService->getPlaceById();
+        $userId = $request->user()->id;
+        $place = $this->placeService->getPlaceById($userId);
         return response()->json(['place' => $place]);
     }
 
     /**
      * レッスン場所の取得
      */
-    public function showActive()
+    public function showActive(Request $request)
     {
-        $place = $this->placeService->getPlaceActiveById();
+        $userId = $request->user()->id;
+        $place = $this->placeService->getActivePlaceById($userId);
         return response()->json(['place' => $place]);
     }
 
@@ -41,10 +43,15 @@ class PlaceController extends Controller
     {
         $request->validate([
             '*.name' => ['max:255'],
-            '*.display_flag' => ['required'],
-            '*.order_no' => ['required'],
+            '*.display_flag' => ['required', 'boolean'],
+            '*.order_no' => ['required', 'integer'],
         ]);
-        $data = $request->all();
+        $data = $request->input();
+        $userId = $request->user()->id;
+        $data = array_map(function ($item) use ($userId) {
+            $item['user_id'] = $userId;
+            return $item;
+        }, $data);
 
         $status = $this->placeService->registerPlace($data);
 
@@ -56,9 +63,11 @@ class PlaceController extends Controller
      */
     public function deletePlace(Request $request)
     {
-        $placeId = $request->input('id');
 
-        $status = $this->placeService->deletePlace($placeId);
+        $placeId = $request->input('id');
+        $userId = $request->user()->id;
+
+        $status = $this->placeService->deletePlace($placeId, $userId);
 
         return response()->json(['status' => $status]);
     }

@@ -14,16 +14,9 @@ interface PlaceRepositoryInterface
 
     /**
      * @param int $userId
-     * @param string $placeId
-     * @param bool
-     */
-    public function existsPlaceById(int $userId, string $placeId): bool;
-
-    /**
-     * @param int $userId
      * @param Collection
      */
-    public function getPlaceActiveById(int $userId): Collection;
+    public function getActivePlaceById(int $userId): Collection;
 
     /**
      * @param array $placeData
@@ -37,4 +30,11 @@ interface PlaceRepositoryInterface
      * @return bool
      */
     public function deletePlace(string $placeId, int $userId): bool;
+
+    /**
+     * @param int $userId
+     * @param string $placeId
+     * @param bool
+     */
+    public function existsPlaceById(int $userId, string $placeId): bool;
 }

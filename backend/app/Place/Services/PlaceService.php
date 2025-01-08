@@ -2,6 +2,7 @@
 
 namespace App\Place\Services;
 
+use App\Lesson\Repositories\LessonRepositoryInterface;
 use App\Place\Repositories\PlaceRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
@@ -10,41 +11,44 @@ use Illuminate\Support\Facades\Auth;
 class PlaceService implements PlaceServiceInterface
 {
     protected $placeRepository;
+    protected $lessonRepository;
 
-    public function __construct(PlaceRepositoryInterface $placeRepository)
+    public function __construct(PlaceRepositoryInterface $placeRepository, LessonRepositoryInterface $lessonRepository)
     {
         $this->placeRepository = $placeRepository;
+        $this->lessonRepository = $lessonRepository;
     }
 
     /**
+     * @param int $userId
      * @return Collection
      */
-    public function getPlaceById(): Collection
+    public function getPlaceById(int $userId): Collection
     {
-        $place = $this->placeRepository->getPlaceById(Auth::id());
+        $place = $this->placeRepository->getPlaceById($userId);
 
         return $place;
     }
 
     /**
+     * @param int $userId
      * @return Collection
      */
-    public function getPlaceActiveById(): Collection
+    public function getActivePlaceById(int  $userId): Collection
     {
-        $place = $this->placeRepository->getPlaceActiveById(Auth::id());
+        $place = $this->placeRepository->getActivePlaceById($userId);
 
         return $place;
     }
 
     /**
      * @param array $placeData
+     * @param int $userId
      * @return bool
      */
     public function registerPlace(array $placeData): bool
     {
         $placeData = collect($placeData)->map(function ($item) {
-            $item['user_id'] = Auth::id();
-
             // 新規登録の場合、ユニークIDを再設定
             $exists = $this->placeRepository->existsPlaceById($item['user_id'], $item['id']);
             if (!$exists) {
@@ -67,12 +71,20 @@ class PlaceService implements PlaceServiceInterface
 
     /**
      * @param string $placeId
+     * @param int $userId
      * @return bool
      */
-    public function deletePlace(string $placeId): bool
+    public function deletePlace(string $placeId, int $userId): bool
     {
 
-        $status = $this->placeRepository->deletePlace($placeId, Auth::id());
+        // レッスンで登録されている店舗は削除できない
+        $exists = $this->lessonRepository->existsLessonById($userId, $placeId);
+
+        if ($exists) {
+            return false;
+        }
+
+        $status = $this->placeRepository->deletePlace($placeId, $userId);
 
         return $status;
     }

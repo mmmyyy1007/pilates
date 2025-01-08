@@ -28,7 +28,7 @@ class PlaceRepository implements PlaceRepositoryInterface
      * @param int $userId
      * @return Collection $records
      */
-    public function getPlaceActiveById(int $userId): Collection
+    public function getActivePlaceById(int $userId): Collection
     {
         $sql = Place::select('id', 'name')
             ->where('user_id', $userId)
@@ -65,30 +65,12 @@ class PlaceRepository implements PlaceRepositoryInterface
     }
 
     /**
-     * @param int $userId
-     * @param string $placeId
-     * @return bool $exists
-     */
-    public function existsLessonById(int $userId, string $placeId): bool
-    {
-        $sql = Lesson::where('user_id', $userId)->where('place_id', $placeId);
-        $exists = $sql->exists();
-
-        return $exists;
-    }
-
-    /**
      * @param string $placeId
      * @param int $userId
      * @return bool
      */
     public function deletePlace(string $placeId, int $userId): bool
     {
-        $exists = $this->existsLessonById($userId, $placeId);
-
-        if ($exists) {
-            return false;
-        }
 
         $status = Place::where('user_id', $userId)->where('id', $placeId)->delete();
 

@@ -8,24 +8,28 @@ interface PlaceServiceInterface
 {
 
     /**
+     * @param int $userId
      * @return Collection
      */
-    public function getPlaceById(): Collection;
+    public function getPlaceById(int $userId): Collection;
 
     /**
+     * @param int $userId
      * @return Collection
      */
-    public function getPlaceActiveById(): Collection;
+    public function getActivePlaceById(int $userId): Collection;
 
     /**
      * @param array $placeData
+     * @param int $userId
      * @return bool
      */
     public function registerPlace(array $placeData): bool;
 
     /**
      * @param string $placeId
+     * @param int $userId
      * @return bool
      */
-    public function deletePlace(string $placeId): bool;
+    public function deletePlace(string $placeId, int $userId): bool;
 }
