@@ -27,4 +27,10 @@ interface LessonServiceInterface
      * @return array
      */
     public function timelineLessonById(int $userId): array;
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function deleteLesson(array $data): bool;
 }

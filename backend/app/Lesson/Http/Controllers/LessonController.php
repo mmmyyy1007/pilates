@@ -5,7 +5,6 @@ namespace App\Lesson\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Lesson\Services\LessonServiceInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
 {
@@ -65,6 +64,19 @@ class LessonController extends Controller
         $data['user_id'] = $request->user()->id;
 
         $status = $this->lessonService->registerLesson($data);
+
+        return response()->json(['status' => $status]);
+    }
+
+    /**
+     * レッスン削除
+     */
+    public function deleteLesson(Request $request)
+    {
+        $data = $request->input();
+        $data['user_id'] = $request->user()->id;
+
+        $status = $this->lessonService->deleteLesson($data);
 
         return response()->json(['status' => $status]);
     }

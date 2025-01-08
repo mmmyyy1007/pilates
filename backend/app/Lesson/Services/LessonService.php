@@ -95,4 +95,15 @@ class LessonService implements LessonServiceInterface
 
         return $status;
     }
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function deleteLesson(array $data): bool
+    {
+        $status = $this->lessonRepository->deleteLesson($data);
+
+        return $status;
+    }
 }

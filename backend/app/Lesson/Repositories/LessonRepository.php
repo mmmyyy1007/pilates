@@ -72,4 +72,15 @@ class LessonRepository implements LessonRepositoryInterface
 
         return $status;
     }
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function deleteLesson(array $data): bool
+    {
+        $status = Lesson::where('user_id', $data['user_id'])->where('id', $data['id'])->delete();
+
+        return $status;
+    }
 }

@@ -37,4 +37,10 @@ interface LessonRepositoryInterface
      * @return bool
      */
     public function deleteLessonById(int $userId): bool;
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function deleteLesson(array $data): bool;
 }
