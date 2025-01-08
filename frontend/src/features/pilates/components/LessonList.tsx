@@ -2,7 +2,7 @@ import { MESSAGES } from "@/constants/message";
 import { LessonButton, LessonCalendar, LessonInputGroup } from "@/features/pilates/components/lesson";
 import { useLesson } from "@/features/pilates/hooks/useLesson";
 import { usePlace } from "@/features/pilates/hooks/usePlace";
-import { LessonData, LessonStartEndData } from "@/features/pilates/types/lessonTypes";
+import { LessonData, LessonRegisterData, LessonStartEndData } from "@/features/pilates/types/lessonTypes";
 import { ActivePlaceData } from "@/features/pilates/types/placeTypes";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import { EventClickArg } from "@fullcalendar/core";
@@ -63,7 +63,7 @@ export const LessonList = () => {
 
         const selectedId = lessonData.find((lesson) => lesson.id === startEndData.id)?.id ?? Date.now().toString();
         if (selectedPlaceData && startEndData.start && startEndData.end) {
-            const data = {
+            const data: LessonRegisterData = {
                 place: selectedPlaceData.name,
                 placeId: selectedPlaceData.id,
                 startDatetime: startEndData.start.format("YYYY-MM-DD HH:mm:ss"),
@@ -96,10 +96,10 @@ export const LessonList = () => {
         try {
             await handleDeleteLesson(data);
             setAlertServerity("success");
-            setAlertMessage(MESSAGES.registerSuccess);
+            setAlertMessage(MESSAGES.deleteSuccess);
         } catch (error) {
             setAlertServerity("error");
-            setAlertMessage(MESSAGES.registerError);
+            setAlertMessage(MESSAGES.deleteError);
             handleError(error);
         }
     };
