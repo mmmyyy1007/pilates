@@ -14,6 +14,12 @@ interface LessonRepositoryInterface
     public function getLessonById(int $userId): Collection;
 
     /**
+     * @param array $lessonData
+     * @return bool
+     */
+    public function registerLesson(array $lessonData): bool;
+
+    /**
      * @param int $userId
      * @return int
      */
@@ -25,10 +31,4 @@ interface LessonRepositoryInterface
      * @return bool
      */
     public function existsLessonById(int $userId, string $id): bool;
-
-    /**
-     * @param array $lessonData
-     * @return bool
-     */
-    public function registerLesson(array $lessonData): bool;
 }

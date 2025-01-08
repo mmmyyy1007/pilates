@@ -19,27 +19,33 @@ class LessonController extends Controller
     /**
      * レッスン登録情報取得
      */
-    public function show()
+    public function show(Request $request)
     {
-        $lesson = $this->lessonService->getLessonById();
+        $userId = $request->user()->id;
+        $lesson = $this->lessonService->getLessonById($userId);
+
         return response()->json(['lesson' => $lesson]);
     }
 
     /**
      * レッスン回数取得
      */
-    public function showGuage()
+    public function showGuage(Request $request)
     {
-        $count = $this->lessonService->countLessonById();
+        $userId = $request->user()->id;
+        $count = $this->lessonService->countLessonById($userId);
+
         return response()->json(['min' => 0, 'max' => 30, 'count' => $count]);
     }
 
     /**
      * レッスンタイムライン取得
      */
-    public function showTimeline()
+    public function showTimeline(Request $request)
     {
-        $timeline = $this->lessonService->timelineLessonById();
+        $userId = $request->user()->id;
+        $timeline = $this->lessonService->timelineLessonById($userId);
+
         return response()->json(['timeline' => $timeline]);
     }
 
@@ -48,15 +54,17 @@ class LessonController extends Controller
      */
     public function register(Request $request)
     {
-        // $request->validate([
-        //     '*.name' => ['required', 'max:255'],
-        //     '*.display_flag' => ['required'],
-        //     '*.order_no' => ['required'],
-        // ]);
-        $lessonData = $request->all();
-        $lessonData += ['user_id' => Auth::id()];
+        $request->validate([
+            'place' => ['required'],
+            'place_id' => ['required'],
+            'start_datetime' => ['required'],
+            'end_datetime' => ['required'],
+            'id' => ['required'],
+        ]);
+        $data = $request->input();
+        $data['user_id'] = $request->user()->id;
 
-        $status = $this->lessonService->registerLesson($lessonData);
+        $status = $this->lessonService->registerLesson($data);
 
         return response()->json(['status' => $status]);
     }

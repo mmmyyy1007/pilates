@@ -18,11 +18,12 @@ class LessonService implements LessonServiceInterface
     }
 
     /**
+     * @param int $userId
      * @return array
      */
-    public function getLessonById(): array
+    public function getLessonById(int $userId): array
     {
-        $lesson = $this->lessonRepository->getLessonById(Auth::id());
+        $lesson = $this->lessonRepository->getLessonById($userId);
 
         $events = collect($lesson)->map(function ($item) {
             $start = Carbon::create($item['start_datetime']);
@@ -42,21 +43,23 @@ class LessonService implements LessonServiceInterface
     }
 
     /**
+     * @param int $userId
      * @return int
      */
-    public function countLessonById(): int
+    public function countLessonById($userId): int
     {
-        $count = $this->lessonRepository->countLessonById(Auth::id());
+        $count = $this->lessonRepository->countLessonById($userId);
 
         return $count;
     }
 
     /**
+     * @param int $userId
      * @return array
      */
-    public function timelineLessonById(): array
+    public function timelineLessonById(int $userId): array
     {
-        $lesson = $this->lessonRepository->getLessonById(Auth::id());
+        $lesson = $this->lessonRepository->getLessonById($userId);
 
         $timeline = collect($lesson)->map(function ($item, $index) {
             $start = Carbon::create($item['start_datetime']);
