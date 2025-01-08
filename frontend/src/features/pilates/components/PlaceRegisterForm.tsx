@@ -1,6 +1,5 @@
 import { Button } from "@/components/Button";
 import { TextField } from "@/components/TextFiled";
-import { Typography } from "@/components/Typography";
 import { MESSAGES } from "@/constants/message";
 import { usePlace } from "@/features/pilates/hooks/usePlace";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
@@ -144,7 +143,6 @@ export const PlaceRegisterForm = () => {
 
     return (
         <Box sx={{ mt: 3 }}>
-            <Typography variant="h5">店舗一覧</Typography>
             <Box>
                 {alertMessage && (
                     <Alert severity={alertSeverity} onClose={() => setAlertMessage(null)}>
