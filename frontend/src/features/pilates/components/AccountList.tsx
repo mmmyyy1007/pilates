@@ -106,7 +106,6 @@ export const AccountList = () => {
 
     return (
         <Box sx={{ mt: 3 }}>
-            <Typography variant="h5">アカウント管理</Typography>
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2}>
                     <Grid size={4}>
