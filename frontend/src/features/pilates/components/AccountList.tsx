@@ -15,7 +15,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreateIcon from "@mui/icons-material/Create";
 import { Box, IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 export const AccountList = () => {
     const [openUser, setOpenUser] = useState<boolean>(false);
@@ -57,6 +57,17 @@ export const AccountList = () => {
      */
     const handleModalOpenPassword = () => {
         setOpenPassword(true);
+    };
+
+    /**
+     * パスワードフォーム内変更
+     * @param e
+     */
+    const handleChangePasswordForm = (e: ChangeEvent<HTMLInputElement>) => {
+        setUpdatedPassword((prev) => ({
+            ...prev,
+            [e.target.name]: e.target.value,
+        }));
     };
 
     /**
@@ -154,35 +165,23 @@ export const AccountList = () => {
             </Modal>
             <Modal open={openPassword} onClose={() => setOpenPassword(false)}>
                 <Typography>変更</Typography>
-                <TextField
+                <PasswordTextField
                     label="現在のパスワード"
                     value={updatedPassword.password}
-                    onChange={(e) =>
-                        setUpdatedPassword((prevState) => ({
-                            ...prevState,
-                            password: e.target.value,
-                        }))
-                    }
-                ></TextField>
+                    name="password"
+                    onChange={handleChangePasswordForm}
+                />
                 <PasswordTextField
                     label="新しいパスワード"
                     value={updatedPassword.newPassword}
-                    onChange={(e) =>
-                        setUpdatedPassword((prevState) => ({
-                            ...prevState,
-                            newPassword: e.target.value,
-                        }))
-                    }
+                    name="newPassword"
+                    onChange={handleChangePasswordForm}
                 />
                 <PasswordTextField
                     label="新しいパスワード(確認用)"
                     value={updatedPassword.ConfirmNewPassword}
-                    onChange={(e) =>
-                        setUpdatedPassword((prevState) => ({
-                            ...prevState,
-                            ConfirmNewPassword: e.target.value,
-                        }))
-                    }
+                    name="ConfirmNewPassword"
+                    onChange={handleChangePasswordForm}
                 />
                 <Box>
                     <Button variant="outlined" onClick={handleUpdatePass}>
