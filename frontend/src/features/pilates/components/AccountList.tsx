@@ -1,8 +1,6 @@
 import { Button } from "@/components/Button";
-import { Modal } from "@/components/Modal";
-import { PasswordTextField } from "@/components/PasswordTextField";
-import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
+import { AccountPasswordModal, AccountUserModal } from "@/features/pilates/components/account";
 import { useAccount } from "@/features/pilates/hooks/useAccount";
 import {
     AccountData,
@@ -21,10 +19,9 @@ export const AccountList = () => {
     const [openUser, setOpenUser] = useState<boolean>(false);
     const [openPassword, setOpenPassword] = useState<boolean>(false);
     const [accountData, setAccountData] = useState<AccountData>({ name: "", date: "", email: "" });
-    const [updatedFormName, setupdatedFormName] = useState<AccountFormData>({ key: "", name: "", value: "" });
+    const [updateFormName, setupdateFormName] = useState<AccountFormData>({ key: "", name: "", value: "" });
     const { handleShowAccount, handleUpdateUser, handleUpdatePassword, handleDeleteUser } = useAccount();
     const { handleError, resetErrors } = useErrorHandler();
-    const [changedData, setChangedData] = useState<UpdatedAccountData>({ key: "", data: "" });
     const [updatedPassword, setUpdatedPassword] = useState<UpdatedPasswordData>({
         password: "",
         newPassword: "",
@@ -47,8 +44,7 @@ export const AccountList = () => {
      * 更新用モーダル表示(ユーザー名・メールアドレス)
      */
     const handleModalOpenUser = (formKey: string, formName: string, formValue: string) => {
-        setupdatedFormName({ key: formKey, name: formName, value: formValue });
-        setChangedData({ key: formKey, data: formValue });
+        setupdateFormName({ key: formKey, name: formName, value: formValue });
         setOpenUser(true);
     };
 
@@ -77,7 +73,8 @@ export const AccountList = () => {
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
         setOpenUser(false);
-        await handleUpdateUser(changedData);
+        const data: UpdatedAccountData = { key: updateFormName.key, data: updateFormName.value };
+        await handleUpdateUser(data);
     };
 
     /**
@@ -151,43 +148,20 @@ export const AccountList = () => {
                     退会
                 </Button>
             </Box>
-            <Modal open={openUser} onClose={() => setOpenUser(false)}>
-                <Typography>変更</Typography>
-                <TextField
-                    label={updatedFormName.name}
-                    value={changedData.data}
-                    onChange={(e) => setChangedData({ key: updatedFormName.key, data: e.target.value })}
-                ></TextField>
-                <Button variant="outlined" onClick={handleUpdate}>
-                    更新
-                </Button>
-            </Modal>
-            <Modal open={openPassword} onClose={() => setOpenPassword(false)}>
-                <Typography>変更</Typography>
-                <PasswordTextField
-                    label="現在のパスワード"
-                    value={updatedPassword.password}
-                    name="password"
-                    onChange={handleChangePasswordForm}
-                />
-                <PasswordTextField
-                    label="新しいパスワード"
-                    value={updatedPassword.newPassword}
-                    name="newPassword"
-                    onChange={handleChangePasswordForm}
-                />
-                <PasswordTextField
-                    label="新しいパスワード(確認用)"
-                    value={updatedPassword.ConfirmNewPassword}
-                    name="ConfirmNewPassword"
-                    onChange={handleChangePasswordForm}
-                />
-                <Box>
-                    <Button variant="outlined" onClick={handleUpdatePass}>
-                        更新
-                    </Button>
-                </Box>
-            </Modal>
+            <AccountUserModal
+                openUser={openUser}
+                setOpenUser={setOpenUser}
+                updateFormName={updateFormName}
+                setupdateFormName={setupdateFormName}
+                handleUpdate={handleUpdate}
+            />
+            <AccountPasswordModal
+                openPassword={openPassword}
+                setOpenPassword={setOpenPassword}
+                updatedPassword={updatedPassword}
+                handleChangePasswordForm={handleChangePasswordForm}
+                handleUpdatePass={handleUpdatePass}
+            />
         </Box>
     );
 };
