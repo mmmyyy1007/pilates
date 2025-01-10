@@ -21,25 +21,26 @@ export const AccountPasswordModal = ({
     handleChangePasswordForm,
     handleUpdatePass,
 }: AccountPasswordModalProps) => {
+    const { password, newPassword, ConfirmNewPassword } = updatedPassword;
     return (
         <>
             <Modal open={openPassword} onClose={() => setOpenPassword(false)}>
                 <Typography>変更</Typography>
                 <PasswordTextField
                     label="現在のパスワード"
-                    value={updatedPassword.password}
+                    value={password}
                     name="password"
                     onChange={handleChangePasswordForm}
                 />
                 <PasswordTextField
                     label="新しいパスワード"
-                    value={updatedPassword.newPassword}
+                    value={newPassword}
                     name="newPassword"
                     onChange={handleChangePasswordForm}
                 />
                 <PasswordTextField
                     label="新しいパスワード(確認用)"
-                    value={updatedPassword.ConfirmNewPassword}
+                    value={ConfirmNewPassword}
                     name="ConfirmNewPassword"
                     onChange={handleChangePasswordForm}
                 />
