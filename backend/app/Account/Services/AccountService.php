@@ -54,7 +54,7 @@ class AccountService implements AccountServiceInterface
     public function updatePasswordById(array $data): bool
     {
         // 現在のパスワードと一致するかチェック
-        if (Hash::check($data['password'], $data['user_password'])) {
+        if (!Hash::check($data['password'], $data['user_password'])) {
             return false;
         }
 
