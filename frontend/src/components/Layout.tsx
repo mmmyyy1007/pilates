@@ -1,10 +1,13 @@
+import { Loading } from "@/components/Loading";
 import { ROUTES } from "@/configs/routes";
 import { useLogout } from "@/features/auth/hooks/useLogout";
+import { useAuthStore } from "@/features/auth/stores/authStore";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import PlaceIcon from "@mui/icons-material/Place";
 import { Container } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
@@ -23,23 +26,34 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 export const Layout = () => {
     const { handleLogout } = useLogout();
+    const { user } = useAuthStore();
     const navigate = useNavigate();
+
     /**
      * ログアウト処理
      */
     const onClick = async () => {
         await handleLogout();
     };
-    const [open, setOpen] = useState(false);
 
+    /**
+     * メニュー開閉
+     */
+    const [open, setOpen] = useState(false);
     const toggleDrawer = (newOpen: boolean) => () => {
         setOpen(newOpen);
     };
+
+    if (!user) {
+        return <Loading />;
+    }
+
     const menu = [
         { icon: <HomeIcon />, name: "ホーム", path: ROUTES.HOME },
         { icon: <CalendarTodayIcon />, name: "レッスン一覧", path: ROUTES.LESSON },
         { icon: <PlaceIcon />, name: "店舗一覧", path: ROUTES.PLACE },
         { icon: <PersonIcon />, name: "アカウント管理", path: ROUTES.ACCOUNT },
+        { icon: <LogoutIcon />, name: "ログアウト", path: "" },
     ];
 
     const DrawerList = (
@@ -47,7 +61,7 @@ export const Layout = () => {
             <List>
                 {menu.map((item, index) => (
                     <ListItem key={index} disablePadding>
-                        <ListItemButton onClick={() => navigate(item.path)}>
+                        <ListItemButton onClick={item.path === "" ? onClick : () => navigate(item.path)}>
                             <ListItemIcon>{item.icon}</ListItemIcon>
                             <ListItemText primary={item.name} />
                         </ListItemButton>
@@ -74,16 +88,16 @@ export const Layout = () => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: "20px", fontWeight: 500 }}>
                         Pilates 30
                     </Typography>
-                    <IconButton
-                        onClick={onClick}
-                        size="large"
-                        edge="start"
-                        color="default"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
+                    <Typography
+                        component="div"
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                        }}
                     >
-                        <LogoutIcon />
-                    </IconButton>
+                        <PersonOutlineIcon sx={{ marginRight: "0.5rem" }} />
+                        {user.name}さん
+                    </Typography>
                 </Toolbar>
             </AppBar>
             <Container sx={{ mt: 3 }}>
