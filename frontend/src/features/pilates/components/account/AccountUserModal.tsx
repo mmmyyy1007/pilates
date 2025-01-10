@@ -19,16 +19,17 @@ export const AccountUserModal = ({
     setupdateFormName,
     handleUpdate,
 }: AccountUserModalProps) => {
+    const { key, name, value } = updateFormName;
     return (
         <Modal open={openUser} onClose={() => setOpenUser(false)}>
             <Typography>変更</Typography>
             <TextField
-                label={updateFormName.name}
-                value={updateFormName.value}
+                label={name}
+                value={value}
                 onChange={(e) =>
                     setupdateFormName({
-                        key: updateFormName.key,
-                        name: updateFormName.name,
+                        key: key,
+                        name: name,
                         value: e.target.value,
                     })
                 }
