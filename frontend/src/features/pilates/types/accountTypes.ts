@@ -15,13 +15,13 @@ export interface AccountUserNameData {
 }
 
 export interface AccountFormData {
-    key: string;
-    name: string;
+    key: string | null;
+    name: string | null;
     value: string;
 }
 
 export interface UpdatedAccountData {
-    key: string;
+    key: string | null;
     data: string;
 }
 

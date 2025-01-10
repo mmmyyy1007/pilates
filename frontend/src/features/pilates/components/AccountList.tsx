@@ -1,6 +1,6 @@
 import { Button } from "@/components/Button";
 import { Typography } from "@/components/Typography";
-import { AccountPasswordModal, AccountUserModal } from "@/features/pilates/components/account";
+import { AccountPasswordModal, AccountUserForm, AccountUserModal } from "@/features/pilates/components/account";
 import { useAccount } from "@/features/pilates/hooks/useAccount";
 import {
     AccountData,
@@ -13,7 +13,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreateIcon from "@mui/icons-material/Create";
 import { Box, IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 
 export const AccountList = () => {
     const [openUser, setOpenUser] = useState<boolean>(false);
@@ -43,8 +43,11 @@ export const AccountList = () => {
     /**
      * 更新用モーダル表示(ユーザー名・メールアドレス)
      */
-    const handleModalOpenUser = (formKey: string, formName: string, formValue: string) => {
-        setupdateFormName({ key: formKey, name: formName, value: formValue });
+    const handleModalOpenUser = (e: MouseEvent<HTMLButtonElement>) => {
+        const ariaLabel = e.currentTarget.getAttribute("aria-label");
+        const dataKey = e.currentTarget.getAttribute("data-key");
+        const value = accountData[dataKey as keyof AccountData];
+        setupdateFormName({ key: dataKey, name: ariaLabel, value: value });
         setOpenUser(true);
     };
 
@@ -111,29 +114,23 @@ export const AccountList = () => {
                         </Box>
                     </Grid>
                     <Grid size={8}>
-                        <Box>
-                            {accountData.name}
-                            <IconButton
-                                color="default"
-                                onClick={() => handleModalOpenUser("name", "名前", accountData.name)}
-                            >
-                                <CreateIcon />
-                            </IconButton>
-                        </Box>
-                        <Box>start ～ {accountData.date}</Box>
+                        <AccountUserForm
+                            value={accountData.name}
+                            label="名前"
+                            dataKey="name"
+                            handleModalOpenUser={handleModalOpenUser}
+                        />
+                        <Typography>start ～ {accountData.date}</Typography>
                     </Grid>
                 </Grid>
             </Box>
             <Box>
-                <Typography>
-                    {accountData.email}
-                    <IconButton
-                        color="default"
-                        onClick={() => handleModalOpenUser("email", "メールアドレス", accountData.email)}
-                    >
-                        <CreateIcon />
-                    </IconButton>
-                </Typography>
+                <AccountUserForm
+                    value={accountData.email}
+                    label="メールアドレス"
+                    dataKey="email"
+                    handleModalOpenUser={handleModalOpenUser}
+                />
             </Box>
             <Box>
                 <Typography>
