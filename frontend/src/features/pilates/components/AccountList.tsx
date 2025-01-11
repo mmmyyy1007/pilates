@@ -11,13 +11,14 @@ import {
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreateIcon from "@mui/icons-material/Create";
-import { Box, IconButton } from "@mui/material";
+import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 
 export const AccountList = () => {
     const [openUser, setOpenUser] = useState<boolean>(false);
     const [openPassword, setOpenPassword] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean>(false);
     const [accountData, setAccountData] = useState<AccountData>({ name: "", date: "", email: "" });
     const [updateFormName, setupdateFormName] = useState<AccountFormData>({ key: "", name: "", value: "" });
     const { handleShowAccount, handleUpdateUser, handleUpdatePassword, handleDeleteUser } = useAccount();
@@ -56,6 +57,20 @@ export const AccountList = () => {
      */
     const handleModalOpenPassword = () => {
         setOpenPassword(true);
+    };
+
+    /**
+     * 退会ダイアログ表示
+     */
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    /**
+     * 退会ダイアログ非表示
+     */
+    const handleClickClose = () => {
+        setOpen(false);
     };
 
     /**
@@ -98,6 +113,7 @@ export const AccountList = () => {
         resetErrors();
 
         try {
+            setOpen(false);
             await handleDeleteUser();
         } catch (error) {
             handleError(error);
@@ -141,9 +157,32 @@ export const AccountList = () => {
                 </Typography>
             </Box>
             <Box>
-                <Button variant="outlined" onClick={handleDeleteAccount}>
+                <Button variant="outlined" onClick={handleClickOpen}>
                     退会
                 </Button>
+                <Dialog
+                    open={open}
+                    onClose={handleClickClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"退会手続き前にご確認ください。"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            下記の退会するボタンを押すと退会手続きを実行します。
+                            <br />
+                            登録したすべての情報が削除されますが、よろしいでしょうか。
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button variant="outlined" onClick={handleClickClose}>
+                            退会しない
+                        </Button>
+                        <Button variant="outlined" color="error" autoFocus onClick={handleDeleteAccount}>
+                            退会する
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Box>
             <AccountUserModal
                 openUser={openUser}
