@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { Dialog } from "@/components/Dialog";
 import { Typography } from "@/components/Typography";
 import { AccountPasswordModal, AccountUserForm, AccountUserModal } from "@/features/pilates/components/account";
 import { useAccount } from "@/features/pilates/hooks/useAccount";
@@ -11,7 +12,7 @@ import {
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import CreateIcon from "@mui/icons-material/Create";
-import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 
@@ -64,13 +65,6 @@ export const AccountList = () => {
      */
     const handleClickOpen = () => {
         setOpen(true);
-    };
-
-    /**
-     * 退会ダイアログ非表示
-     */
-    const handleClickClose = () => {
-        setOpen(false);
     };
 
     /**
@@ -162,27 +156,13 @@ export const AccountList = () => {
                 </Button>
                 <Dialog
                     open={open}
-                    onClose={handleClickClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">{"退会手続き前にご確認ください。"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            下記の退会するボタンを押すと退会手続きを実行します。
-                            <br />
-                            登録したすべての情報が削除されますが、よろしいでしょうか。
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button variant="outlined" onClick={handleClickClose}>
-                            退会しない
-                        </Button>
-                        <Button variant="outlined" color="error" autoFocus onClick={handleDeleteAccount}>
-                            退会する
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                    title="退会手続き前にご確認ください。"
+                    content="下記の退会するボタンを押すと退会手続きを実行します。登録したすべての情報が削除されますが、よろしいでしょうか。"
+                    cancel="退会しない"
+                    confirm="退会する"
+                    onClose={() => setOpen(false)}
+                    onConfirm={handleDeleteAccount}
+                />
             </Box>
             <AccountUserModal
                 openUser={openUser}
