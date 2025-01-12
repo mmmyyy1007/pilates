@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { Dialog } from "@/components/Dialog";
 import { TextField } from "@/components/TextFiled";
 import { MESSAGES } from "@/constants/message";
 import { usePlace } from "@/features/pilates/hooks/usePlace";
@@ -17,6 +18,7 @@ export const PlaceRegisterForm = () => {
     const [placeData, setPlaceData] = useState<PlaceData[]>([]);
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
     const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
+    const [open, setOpen] = useState<boolean>(false);
     const { handleShowPlace, handleRegisterPlace, handleDeletePlace } = usePlace();
     const { errors, handleError, resetErrors } = useErrorHandler();
 
@@ -130,6 +132,7 @@ export const PlaceRegisterForm = () => {
         resetErrors();
 
         try {
+            setOpen(false);
             const clickedId = e.currentTarget.id;
             await handleDeletePlace({ id: clickedId });
             setAlertServerity("success");
@@ -173,9 +176,19 @@ export const PlaceRegisterForm = () => {
                                                     error={!!getFieldError(item.orderNo, "name")}
                                                     onChange={(e) => handlePlaceDataChange(item.id, e.target.value)}
                                                 ></TextField>
-                                                <IconButton color="default" id={item.id} onClick={handleDelete}>
+                                                <IconButton color="default" id={item.id} onClick={() => setOpen(true)}>
                                                     <DeleteIcon />
                                                 </IconButton>
+                                                <Dialog
+                                                    id={item.id}
+                                                    open={open}
+                                                    title="店舗削除前にご確認ください。"
+                                                    content="下記の削除するボタンを押すと店舗削除手続きを実行します。レッスン場所として登録している場合は削除されません。"
+                                                    cancel="削除しない"
+                                                    confirm="削除する"
+                                                    onClose={() => setOpen(false)}
+                                                    onConfirm={handleDelete}
+                                                />
                                                 <IconButton color="default" {...provided.dragHandleProps}>
                                                     <DragIndicatorIcon />
                                                 </IconButton>
