@@ -27,7 +27,7 @@ export const LessonList = () => {
     const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
     const [openRegister, setOpenRegister] = useState<boolean>(false);
-    const [open, setOpen] = useState<boolean>(false);
+    const [openDelete, setOpenDelete] = useState<boolean>(false);
     const { handleActiveShowPlace } = usePlace();
     const { handleShowLesson, handleRegisterLesson, handleDeleteLesson } = useLesson();
     const { handleError, resetErrors } = useErrorHandler();
@@ -128,7 +128,7 @@ export const LessonList = () => {
                 setSelectedPlaceData={setSelectedPlaceData}
             />
             <LessonRegisterButton open={openRegister} setOpen={setOpenRegister} handleRegister={handleRegister} />
-            <LessonDeleteButton open={open} setOpen={setOpen} handleDelete={handleDelete} />
+            <LessonDeleteButton open={openDelete} setOpen={setOpenDelete} handleDelete={handleDelete} />
         </Box>
     );
 };
