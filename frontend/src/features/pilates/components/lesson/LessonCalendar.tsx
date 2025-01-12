@@ -1,14 +1,15 @@
 import { LessonData } from "@/features/pilates/types/lessonTypes";
 import { EventClickArg } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 
 interface LessonCalendarProps {
     lessonData: LessonData[];
-    handleDateClick: (arg: EventClickArg) => Promise<void>;
+    handleDateClick: (arg: DateClickArg) => Promise<void>;
+    handleEventClick: (arg: EventClickArg) => Promise<void>;
 }
-export const LessonCalendar = ({ lessonData, handleDateClick }: LessonCalendarProps) => {
+export const LessonCalendar = ({ lessonData, handleDateClick, handleEventClick }: LessonCalendarProps) => {
     return (
         <FullCalendar
             plugins={[dayGridPlugin, interactionPlugin]}
@@ -16,7 +17,8 @@ export const LessonCalendar = ({ lessonData, handleDateClick }: LessonCalendarPr
             initialView="dayGridMonth"
             height="auto"
             events={lessonData}
-            eventClick={handleDateClick}
+            dateClick={handleDateClick}
+            eventClick={handleEventClick}
         />
     );
 };

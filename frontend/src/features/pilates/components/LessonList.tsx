@@ -1,3 +1,4 @@
+import { Modal } from "@/components/Modal";
 import { MESSAGES } from "@/constants/message";
 import {
     LessonCalendar,
@@ -11,18 +12,20 @@ import { LessonData, LessonRegisterData, LessonStartEndData } from "@/features/p
 import { ActivePlaceData } from "@/features/pilates/types/placeTypes";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import { EventClickArg } from "@fullcalendar/core";
+import { DateClickArg } from "@fullcalendar/interaction/index.js";
 import { Alert, Box } from "@mui/material";
 import dayjs from "dayjs";
 import { useCallback, useEffect, useState } from "react";
 
 export const LessonList = () => {
+    const now = Math.round(Date.now() / (5 * 60 * 1000)) * (5 * 60 * 1000);
     const [activePlaceData, setActivePlaceData] = useState<ActivePlaceData[]>([]);
     const [lessonData, setLessonData] = useState<LessonData[]>([]);
     const [selectedPlaceData, setSelectedPlaceData] = useState<ActivePlaceData | null>(null);
     const [startEndData, setStartEndData] = useState<LessonStartEndData>({
         id: Date.now().toString(),
-        start: dayjs(Date.now()),
-        end: dayjs().add(1, "hour"),
+        start: dayjs(now),
+        end: dayjs(now).add(1, "hour"),
     });
     const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
@@ -50,10 +53,10 @@ export const LessonList = () => {
     }, [fetchLessonData]);
 
     /**
-     * カレンダー内のイベントをクリック時
+     * カレンダー内のイベントをクリック時(更新)
      * @param arg
      */
-    const handleDateClick = async (arg: EventClickArg) => {
+    const handleEventClick = async (arg: EventClickArg) => {
         const start = dayjs(arg.event.startStr);
         const end = dayjs(arg.event.endStr);
         const placeId = arg.event.extendedProps.placeId;
@@ -62,6 +65,18 @@ export const LessonList = () => {
         setSelectedPlaceData({ id: placeId, name: place });
         setOpen(true);
         setIsVisibleDelete(true);
+    };
+
+    /**
+     * カレンダーの日付クリック時(新規)
+     * @param arg
+     */
+    const handleDateClick = async (arg: DateClickArg) => {
+        const start = dayjs(`${arg.dateStr}T${dayjs(now).format("HH:mm:ss")}`);
+        const end = dayjs(`${arg.dateStr}T${dayjs(now).add(1, "hour").format("HH:mm:ss")}`);
+        setStartEndData({ id: Date.now().toString(), start: start, end: end });
+        setSelectedPlaceData({ id: "", name: "" });
+        setOpen(true);
     };
 
     /**
@@ -120,25 +135,29 @@ export const LessonList = () => {
 
     return (
         <Box sx={{ mt: 3 }}>
-            <LessonCalendar lessonData={lessonData} handleDateClick={handleDateClick} />
             {alertMessage && (
                 <Alert severity={alertSeverity} onClose={() => setAlertMessage(null)}>
                     {alertMessage}
                 </Alert>
             )}
-            <LessonInputGroup
-                open={open}
-                onClose={() => setOpen(false)}
-                startEndData={startEndData}
-                setStartEndData={setStartEndData}
-                selectedPlaceData={selectedPlaceData}
-                activePlaceData={activePlaceData}
-                setSelectedPlaceData={setSelectedPlaceData}
+            <LessonCalendar
+                lessonData={lessonData}
+                handleDateClick={handleDateClick}
+                handleEventClick={handleEventClick}
             />
-            <LessonRegisterButton open={openRegister} setOpen={setOpenRegister} handleRegister={handleRegister} />
-            {isVisibleDelete && (
-                <LessonDeleteButton open={openDelete} setOpen={setOpenDelete} handleDelete={handleDelete} />
-            )}
+            <Modal open={open} onClose={() => setOpen(false)}>
+                <LessonInputGroup
+                    startEndData={startEndData}
+                    setStartEndData={setStartEndData}
+                    selectedPlaceData={selectedPlaceData}
+                    activePlaceData={activePlaceData}
+                    setSelectedPlaceData={setSelectedPlaceData}
+                />
+                <LessonRegisterButton open={openRegister} setOpen={setOpenRegister} handleRegister={handleRegister} />
+                {isVisibleDelete && (
+                    <LessonDeleteButton open={openDelete} setOpen={setOpenDelete} handleDelete={handleDelete} />
+                )}
+            </Modal>
         </Box>
     );
 };
