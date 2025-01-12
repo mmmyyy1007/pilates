@@ -10,7 +10,7 @@ interface DialogProps {
     content: string;
     cancel: string;
     confirm: React.ReactNode;
-    id: string | undefined;
+    id: string;
     onClose: () => void;
     onConfirm: (e: React.FormEvent) => Promise<void>;
 }
