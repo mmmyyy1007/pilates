@@ -17,7 +17,7 @@ export const LessonDeleteButton = ({ open, setOpen, handleDelete }: LessonDelete
                 open={open}
                 title=""
                 content="削除してもよろしいでしょうか。"
-                cancel="削除しない"
+                cancel="キャンセル"
                 confirm="削除する"
                 id=""
                 onClose={() => setOpen(false)}
