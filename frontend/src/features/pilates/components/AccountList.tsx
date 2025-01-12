@@ -146,6 +146,7 @@ export const AccountList = () => {
                     content="下記の退会するボタンを押すと退会手続きを実行します。登録したすべての情報が削除されますが、よろしいでしょうか。"
                     cancel="退会しない"
                     confirm="退会する"
+                    id=""
                     onClose={() => setOpen(false)}
                     onConfirm={handleDeleteAccount}
                 />
