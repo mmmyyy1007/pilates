@@ -1,9 +1,9 @@
 import { MESSAGES } from "@/constants/message";
 import {
-    LessonButton,
     LessonCalendar,
     LessonDeleteButton,
     LessonInputGroup,
+    LessonRegisterButton,
 } from "@/features/pilates/components/lesson";
 import { useLesson } from "@/features/pilates/hooks/useLesson";
 import { usePlace } from "@/features/pilates/hooks/usePlace";
@@ -26,6 +26,7 @@ export const LessonList = () => {
     });
     const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
+    const [openRegister, setOpenRegister] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
     const { handleActiveShowPlace } = usePlace();
     const { handleShowLesson, handleRegisterLesson, handleDeleteLesson } = useLesson();
@@ -126,7 +127,7 @@ export const LessonList = () => {
                 activePlaceData={activePlaceData}
                 setSelectedPlaceData={setSelectedPlaceData}
             />
-            <LessonButton handleRegister={handleRegister} />
+            <LessonRegisterButton open={openRegister} setOpen={setOpenRegister} handleRegister={handleRegister} />
             <LessonDeleteButton open={open} setOpen={setOpen} handleDelete={handleDelete} />
         </Box>
     );
