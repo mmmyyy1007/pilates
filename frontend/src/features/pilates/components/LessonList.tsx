@@ -26,8 +26,10 @@ export const LessonList = () => {
     });
     const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
+    const [open, setOpen] = useState<boolean>(false);
     const [openRegister, setOpenRegister] = useState<boolean>(false);
     const [openDelete, setOpenDelete] = useState<boolean>(false);
+    const [isVisibleDelete, setIsVisibleDelete] = useState(false);
     const { handleActiveShowPlace } = usePlace();
     const { handleShowLesson, handleRegisterLesson, handleDeleteLesson } = useLesson();
     const { handleError, resetErrors } = useErrorHandler();
@@ -58,6 +60,8 @@ export const LessonList = () => {
         const place = arg.event.extendedProps.place;
         setStartEndData({ id: arg.event.id, start: start, end: end });
         setSelectedPlaceData({ id: placeId, name: place });
+        setOpen(true);
+        setIsVisibleDelete(true);
     };
 
     /**
@@ -79,6 +83,8 @@ export const LessonList = () => {
             };
 
             try {
+                setOpen(false);
+                setOpenRegister(false);
                 await handleRegisterLesson(data);
                 setAlertServerity("success");
                 setAlertMessage(MESSAGES.registerSuccess);
@@ -101,7 +107,7 @@ export const LessonList = () => {
         const selectedId = lessonData.find((lesson) => lesson.id === startEndData.id)?.id ?? "";
         const data = { id: selectedId };
         try {
-            setOpen(false);
+            setOpenDelete(false);
             await handleDeleteLesson(data);
             setAlertServerity("success");
             setAlertMessage(MESSAGES.deleteSuccess);
@@ -121,6 +127,8 @@ export const LessonList = () => {
                 </Alert>
             )}
             <LessonInputGroup
+                open={open}
+                onClose={() => setOpen(false)}
                 startEndData={startEndData}
                 setStartEndData={setStartEndData}
                 selectedPlaceData={selectedPlaceData}
@@ -128,7 +136,9 @@ export const LessonList = () => {
                 setSelectedPlaceData={setSelectedPlaceData}
             />
             <LessonRegisterButton open={openRegister} setOpen={setOpenRegister} handleRegister={handleRegister} />
-            <LessonDeleteButton open={openDelete} setOpen={setOpenDelete} handleDelete={handleDelete} />
+            {isVisibleDelete && (
+                <LessonDeleteButton open={openDelete} setOpen={setOpenDelete} handleDelete={handleDelete} />
+            )}
         </Box>
     );
 };
