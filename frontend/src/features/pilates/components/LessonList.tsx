@@ -1,5 +1,10 @@
 import { MESSAGES } from "@/constants/message";
-import { LessonButton, LessonCalendar, LessonInputGroup } from "@/features/pilates/components/lesson";
+import {
+    LessonButton,
+    LessonCalendar,
+    LessonDeleteButton,
+    LessonInputGroup,
+} from "@/features/pilates/components/lesson";
 import { useLesson } from "@/features/pilates/hooks/useLesson";
 import { usePlace } from "@/features/pilates/hooks/usePlace";
 import { LessonData, LessonRegisterData, LessonStartEndData } from "@/features/pilates/types/lessonTypes";
@@ -21,6 +26,7 @@ export const LessonList = () => {
     });
     const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
+    const [open, setOpen] = useState<boolean>(false);
     const { handleActiveShowPlace } = usePlace();
     const { handleShowLesson, handleRegisterLesson, handleDeleteLesson } = useLesson();
     const { handleError, resetErrors } = useErrorHandler();
@@ -94,6 +100,7 @@ export const LessonList = () => {
         const selectedId = lessonData.find((lesson) => lesson.id === startEndData.id)?.id ?? "";
         const data = { id: selectedId };
         try {
+            setOpen(false);
             await handleDeleteLesson(data);
             setAlertServerity("success");
             setAlertMessage(MESSAGES.deleteSuccess);
@@ -119,7 +126,8 @@ export const LessonList = () => {
                 activePlaceData={activePlaceData}
                 setSelectedPlaceData={setSelectedPlaceData}
             />
-            <LessonButton handleRegister={handleRegister} handleDelete={handleDelete} />
+            <LessonButton handleRegister={handleRegister} />
+            <LessonDeleteButton open={open} setOpen={setOpen} handleDelete={handleDelete} />
         </Box>
     );
 };
