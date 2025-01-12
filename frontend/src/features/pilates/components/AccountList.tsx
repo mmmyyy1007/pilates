@@ -54,20 +54,6 @@ export const AccountList = () => {
     };
 
     /**
-     * 更新用モーダル表示(パスワード)
-     */
-    const handleModalOpenPassword = () => {
-        setOpenPassword(true);
-    };
-
-    /**
-     * 退会ダイアログ表示
-     */
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    /**
      * パスワードフォーム内変更
      * @param e
      */
@@ -145,13 +131,13 @@ export const AccountList = () => {
             <Box>
                 <Typography>
                     *******
-                    <IconButton color="default" onClick={() => handleModalOpenPassword()}>
+                    <IconButton color="default" onClick={() => setOpenPassword(true)}>
                         <CreateIcon />
                     </IconButton>
                 </Typography>
             </Box>
             <Box>
-                <Button variant="outlined" onClick={handleClickOpen}>
+                <Button variant="outlined" onClick={() => setOpen(true)}>
                     退会
                 </Button>
                 <Dialog
