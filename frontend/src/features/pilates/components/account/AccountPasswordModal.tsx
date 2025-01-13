@@ -27,18 +27,21 @@ export const AccountPasswordModal = ({
             <Modal open={openPassword} onClose={() => setOpenPassword(false)}>
                 <Typography>変更</Typography>
                 <PasswordTextField
+                    required
                     label="現在のパスワード"
                     value={password}
                     name="password"
                     onChange={handleChangePasswordForm}
                 />
                 <PasswordTextField
+                    required
                     label="新しいパスワード"
                     value={newPassword}
                     name="newPassword"
                     onChange={handleChangePasswordForm}
                 />
                 <PasswordTextField
+                    required
                     label="新しいパスワード(確認用)"
                     value={ConfirmNewPassword}
                     name="ConfirmNewPassword"

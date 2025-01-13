@@ -24,8 +24,10 @@ export const AccountUserModal = ({
         <Modal open={openUser} onClose={() => setOpenUser(false)}>
             <Typography>変更</Typography>
             <TextField
+                type="text"
                 label={name}
                 value={value}
+                required
                 onChange={(e) =>
                     setupdateFormName({
                         key: key,
