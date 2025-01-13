@@ -167,7 +167,7 @@ export const PlaceRegisterForm = () => {
                                             >
                                                 <Switch
                                                     color="success"
-                                                    checked={item.displayFlag}
+                                                    checked={!!item.displayFlag}
                                                     onChange={() => handlePlaceEnabledChange(item.id)}
                                                 />
                                                 <TextField
