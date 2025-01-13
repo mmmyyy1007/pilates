@@ -11,7 +11,7 @@ import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { Alert, Box, IconButton } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PlaceData } from "../types/placeTypes";
 
 export const PlaceRegisterForm = () => {
@@ -24,26 +24,28 @@ export const PlaceRegisterForm = () => {
     const { handleShowPlace, handleRegisterPlace, handleDeletePlace } = usePlace();
     const { errors, handleError, resetErrors } = useErrorHandler();
 
-    useEffect(() => {
+    const fetchPlaceData = useCallback(async () => {
         /**
-         * 店舗一覧表示
+         * 店舗一覧取得
          */
-        const fetchPlaceData = async () => {
-            const response = await handleShowPlace();
+        const response = await handleShowPlace();
+        console.log("ok");
 
-            if (response.length === 0) {
-                // 初期表示
-                setPlaceData([
-                    { id: Date.now().toString(), name: "", displayFlag: false, orderNo: 0 },
-                    { id: (Date.now() + 1).toString(), name: "", displayFlag: false, orderNo: 1 },
-                    { id: (Date.now() + 2).toString(), name: "", displayFlag: false, orderNo: 2 },
-                ]);
-            } else {
-                setPlaceData(response);
-            }
-        };
+        if (response.length === 0) {
+            // 初期表示
+            setPlaceData([
+                { id: Date.now().toString(), name: "", displayFlag: false, orderNo: 0 },
+                { id: (Date.now() + 1).toString(), name: "", displayFlag: false, orderNo: 1 },
+                { id: (Date.now() + 2).toString(), name: "", displayFlag: false, orderNo: 2 },
+            ]);
+        } else {
+            setPlaceData(response);
+        }
+    }, [handleShowPlace]);
+
+    useEffect(() => {
         fetchPlaceData();
-    }, []);
+    }, [fetchPlaceData]);
 
     /**
      * 入力フォームデータ変更

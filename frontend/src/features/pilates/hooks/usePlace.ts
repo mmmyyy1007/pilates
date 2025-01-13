@@ -6,9 +6,9 @@ import { DeletedPlaceData, PlaceData } from "@/features/pilates/types/placeTypes
 import { useCallback } from "react";
 
 export const usePlace = () => {
-    const handleShowPlace = async () => {
+    const handleShowPlace = useCallback(async () => {
         return await showPlace();
-    };
+    }, []);
     const handleRegisterPlace = async (data: PlaceData[]) => {
         await registerPlace(data);
     };
