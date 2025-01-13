@@ -184,7 +184,7 @@ export const PlaceRegisterForm = () => {
                                                     <DeleteIcon />
                                                 </IconButton>
                                                 <Dialog
-                                                    open={openDelete}
+                                                    open={openDelete && item.id === clickedId}
                                                     title="店舗削除前にご確認ください。"
                                                     content="下記の削除するボタンを押すと店舗削除手続きを実行します。レッスン場所として登録している場合は削除されません。"
                                                     cancel="削除しない"
