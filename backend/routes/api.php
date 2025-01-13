@@ -21,7 +21,7 @@ Route::middleware(['auth'])->prefix('place')->name('place.')->controller(PlaceCo
 // レッスン一覧
 Route::middleware(['auth'])->prefix('lesson')->name('lesson.')->controller(LessonController::class)->group(function () {
     Route::middleware(['convert.snake'])->post('register', 'register')->name('register');
-    Route::post('delete', 'deleteLesson')->name('deleteLesson');
+    Route::delete('delete', 'deleteLesson')->name('deleteLesson');
     Route::get('show', 'show')->name('show');
     Route::get('show/guage', 'showGuage')->name('showGuage');
     Route::get('show/timeline', 'showTimeline')->name('showTimeline');

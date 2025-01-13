@@ -27,8 +27,6 @@ export const LessonList = () => {
         start: dayjs(now),
         end: dayjs(now).add(1, "hour"),
     });
-    const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
-    const [alertMessage, setAlertMessage] = useState<string | null>(null);
     const [open, setOpen] = useState<boolean>(false);
     const [openRegister, setOpenRegister] = useState<boolean>(false);
     const [openDelete, setOpenDelete] = useState<boolean>(false);
@@ -80,6 +78,14 @@ export const LessonList = () => {
     };
 
     /**
+     * レッスンモーダル閉じた時
+     */
+    const handleModalClose = () => {
+        setOpen(false);
+        setIsVisibleDelete(false);
+    };
+
+    /**
      * レッスン情報登録
      * @param e
      */
@@ -119,14 +125,11 @@ export const LessonList = () => {
         const data = { id: selectedId };
         try {
             await handleDeleteLesson(data);
-            setAlertServerity("success");
-            setAlertMessage(message);
             setOpen(false);
             setOpenDelete(false);
             await fetchLessonData();
         } catch {
-            setAlertServerity("error");
-            setAlertMessage(message);
+            setOpenDelete(false);
         }
     };
 
@@ -137,7 +140,7 @@ export const LessonList = () => {
                 handleDateClick={handleDateClick}
                 handleEventClick={handleEventClick}
             />
-            <Modal open={open} onClose={() => setOpen(false)}>
+            <Modal open={open} onClose={handleModalClose}>
                 {errors && (
                     <Typography color="error" sx={{ mb: 2 }}>
                         {message}
