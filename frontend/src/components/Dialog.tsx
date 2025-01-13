@@ -10,7 +10,6 @@ interface DialogProps {
     content: string;
     cancel: string;
     confirm: React.ReactNode;
-    id: string;
     onClose: () => void;
     onConfirm: (e: React.FormEvent) => Promise<void>;
 }
@@ -18,7 +17,7 @@ interface DialogProps {
 /**
  * ダイアログコンポーネント
  */
-export const Dialog = ({ open, title, content, cancel, confirm, id, onClose, onConfirm }: DialogProps) => {
+export const Dialog = ({ open, title, content, cancel, confirm, onClose, onConfirm }: DialogProps) => {
     return (
         <MUIDialog open={open} onClose={onClose}>
             <DialogTitle>{title}</DialogTitle>
@@ -29,7 +28,7 @@ export const Dialog = ({ open, title, content, cancel, confirm, id, onClose, onC
                 <Button variant="outlined" onClick={onClose}>
                     {cancel}
                 </Button>
-                <Button variant="outlined" color="error" autoFocus onClick={onConfirm} id={id}>
+                <Button variant="outlined" color="error" autoFocus onClick={onConfirm}>
                     {confirm}
                 </Button>
             </DialogActions>

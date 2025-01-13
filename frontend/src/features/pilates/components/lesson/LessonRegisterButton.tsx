@@ -18,7 +18,6 @@ export const LessonRegisterButton = ({ open, setOpen, handleRegister }: LessonRe
                 content="登録してもよろしいでしょうか。"
                 cancel="キャンセル"
                 confirm="登録する"
-                id=""
                 onClose={() => setOpen(false)}
                 onConfirm={handleRegister}
             />

@@ -16,6 +16,7 @@ import { PlaceData } from "../types/placeTypes";
 
 export const PlaceRegisterForm = () => {
     const [placeData, setPlaceData] = useState<PlaceData[]>([]);
+    const [clickedId, setClickedId] = useState<string>("");
     const [alertMessage, setAlertMessage] = useState<string | null>(null);
     const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
     const [openRegister, setOpenRegister] = useState<boolean>(false);
@@ -61,6 +62,12 @@ export const PlaceRegisterForm = () => {
      */
     const handlePlaceEnabledChange = (id: string) => {
         setPlaceData(placeData.map((v) => (v.id === id ? { ...v, displayFlag: !v.displayFlag } : v)));
+    };
+
+    const handleDeleteModal = (e: React.FormEvent) => {
+        const id = e.currentTarget.id;
+        setClickedId(id);
+        setOpenDelete(true);
     };
 
     /**
@@ -134,11 +141,10 @@ export const PlaceRegisterForm = () => {
         resetErrors();
 
         try {
-            setOpenDelete(false);
-            const clickedId = e.currentTarget.id;
             await handleDeletePlace({ id: clickedId });
             setAlertServerity("success");
             setAlertMessage(MESSAGES.deleteSuccess);
+            setOpenDelete(false);
         } catch (error) {
             setAlertServerity("error");
             setAlertMessage(MESSAGES.deleteError);
@@ -178,15 +184,10 @@ export const PlaceRegisterForm = () => {
                                                     error={!!getFieldError(item.orderNo, "name")}
                                                     onChange={(e) => handlePlaceDataChange(item.id, e.target.value)}
                                                 ></TextField>
-                                                <IconButton
-                                                    color="default"
-                                                    id={item.id}
-                                                    onClick={() => setOpenDelete(true)}
-                                                >
+                                                <IconButton color="default" id={item.id} onClick={handleDeleteModal}>
                                                     <DeleteIcon />
                                                 </IconButton>
                                                 <Dialog
-                                                    id={item.id}
                                                     open={openDelete}
                                                     title="店舗削除前にご確認ください。"
                                                     content="下記の削除するボタンを押すと店舗削除手続きを実行します。レッスン場所として登録している場合は削除されません。"
@@ -222,7 +223,6 @@ export const PlaceRegisterForm = () => {
                         content="登録してもよろしいでしょうか。"
                         cancel="キャンセル"
                         confirm="登録する"
-                        id=""
                         onClose={() => setOpenRegister(false)}
                         onConfirm={handleRegister}
                     />
