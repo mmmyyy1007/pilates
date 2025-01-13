@@ -1,4 +1,7 @@
 import { ROUTES } from "@/configs/routes";
+import { MESSAGES } from "@/constants/message";
+import { useErrorMessageStore } from "@/stores/errorMessageStore";
+import { useNotificationStore } from "@/stores/notificationStore";
 import axios from "axios";
 
 /**
@@ -35,6 +38,14 @@ apiClient.interceptors.request.use(async (config) => {
  */
 apiClient.interceptors.response.use(
     (response) => {
+        if (response.config.method === "post") {
+            const url = response.config.url;
+            if (url !== "/login") {
+                useNotificationStore.getState().setNotification(MESSAGES.registerSuccess, "success");
+            }
+        } else if (response.config.method === "delete") {
+            useNotificationStore.getState().setNotification(MESSAGES.deleteSuccess, "success");
+        }
         // ステータスコード2xxの場合、そのままレスポンスデータを返す
         return response;
     },
@@ -42,26 +53,38 @@ apiClient.interceptors.response.use(
         // Axiosエラーかどうかを判定
         if (axios.isAxiosError(error)) {
             const status = error.response?.status;
+            const method = error.config?.method;
             switch (status) {
                 case 401:
                     // 認証不足
-                    alert("セッションが無効です。再ログインしてください。");
-                    window.location.href = ROUTES.LOGIN;
+                    // useNotificationStore
+                    //     .getState()
+                    //     .setNotification("セッションが無効です。再ログインしてください。", "error");
+                    // // alert("セッションが無効です。再ログインしてください。");
+                    // window.location.href = ROUTES.LOGIN;
                     break;
                 case 419:
                     // セッションやトークンエラー
-                    alert("セッションが無効です。再ログインしてください。");
-                    window.location.href = ROUTES.LOGIN;
+                    useNotificationStore
+                        .getState()
+                        .setNotification("セッションが無効です。再ログインしてください。", "error");
+                    // alert("セッションが無効です。再ログインしてください。");
+                    setTimeout(() => {
+                        window.location.href = ROUTES.LOGIN;
+                    }, 2000);
                     break;
-                case 422:
+                case 422: {
+                    const errorMessage =
+                        method === "post" ? MESSAGES.registerError : method === "delete" ? MESSAGES.deleteError : "";
                     // バリデーションエラー
-                    return Promise.reject({
-                        message: error.response?.data?.message || "",
-                        errors: error.response?.data?.errors || {},
-                    });
+                    useNotificationStore.getState().setNotification(errorMessage, "error");
+                    useErrorMessageStore.getState().setErrors(error.response?.data);
+                    return Promise.reject(error);
+                }
                 case 500:
                     // サーバーエラー
-                    alert("サーバーエラーが発生しました。");
+                    useNotificationStore.getState().setNotification("サーバーエラーが発生しました。", "error");
+                    // alert("サーバーエラーが発生しました。");
                     // window.location.href = ROUTES.LOGIN;
                     break;
                 default:
@@ -72,7 +95,10 @@ apiClient.interceptors.response.use(
             }
         } else {
             // Axiosエラーでない場合（ネットワーク障害など）
-            alert("ネットワークエラーが発生しました。インターネット接続を確認してください。");
+            useNotificationStore
+                .getState()
+                .setNotification("ネットワークエラーが発生しました。インターネット接続を確認してください。", "error");
+            // alert("ネットワークエラーが発生しました。インターネット接続を確認してください。");
         }
         return Promise.reject(error); // エラーを次に渡す
     },

@@ -1,3 +1,4 @@
+import { NotificationProvider } from "@/providers/NotificationProvider";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -12,6 +13,7 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ja">
+                <NotificationProvider />
                 <CssBaseline />
                 <AppRouter />
             </LocalizationProvider>
