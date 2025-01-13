@@ -1,5 +1,5 @@
 import { Modal } from "@/components/Modal";
-import { MESSAGES } from "@/constants/message";
+import { Typography } from "@/components/Typography";
 import {
     LessonCalendar,
     LessonDeleteButton,
@@ -10,10 +10,10 @@ import { useLesson } from "@/features/pilates/hooks/useLesson";
 import { usePlace } from "@/features/pilates/hooks/usePlace";
 import { LessonData, LessonRegisterData, LessonStartEndData } from "@/features/pilates/types/lessonTypes";
 import { ActivePlaceData } from "@/features/pilates/types/placeTypes";
-import { useErrorHandler } from "@/hooks/useErrorHandler";
+import { useErrorMessageStore } from "@/stores/errorMessageStore";
 import { EventClickArg } from "@fullcalendar/core";
 import { DateClickArg } from "@fullcalendar/interaction/index.js";
-import { Alert, Box } from "@mui/material";
+import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import { useCallback, useEffect, useState } from "react";
 
@@ -35,7 +35,7 @@ export const LessonList = () => {
     const [isVisibleDelete, setIsVisibleDelete] = useState(false);
     const { handleActiveShowPlace } = usePlace();
     const { handleShowLesson, handleRegisterLesson, handleDeleteLesson } = useLesson();
-    const { handleError, resetErrors } = useErrorHandler();
+    const { clearErrors, errors, message } = useErrorMessageStore();
 
     const fetchLessonData = useCallback(async () => {
         /**
@@ -85,7 +85,7 @@ export const LessonList = () => {
      */
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
-        resetErrors();
+        clearErrors();
 
         const selectedId = lessonData.find((lesson) => lesson.id === startEndData.id)?.id ?? Date.now().toString();
         if (selectedPlaceData && startEndData.start && startEndData.end) {
@@ -98,16 +98,12 @@ export const LessonList = () => {
             };
 
             try {
+                await handleRegisterLesson(data);
                 setOpen(false);
                 setOpenRegister(false);
-                await handleRegisterLesson(data);
-                setAlertServerity("success");
-                setAlertMessage(MESSAGES.registerSuccess);
                 await fetchLessonData();
-            } catch (error) {
-                setAlertServerity("error");
-                setAlertMessage(MESSAGES.registerError);
-                handleError(error);
+            } catch {
+                setOpenRegister(false);
             }
         }
     };
@@ -117,35 +113,36 @@ export const LessonList = () => {
      */
     const handleDelete = async (e: React.FormEvent) => {
         e.preventDefault();
-        resetErrors();
+        clearErrors();
 
         const selectedId = lessonData.find((lesson) => lesson.id === startEndData.id)?.id ?? "";
         const data = { id: selectedId };
         try {
-            setOpenDelete(false);
             await handleDeleteLesson(data);
             setAlertServerity("success");
-            setAlertMessage(MESSAGES.deleteSuccess);
-        } catch (error) {
+            setAlertMessage(message);
+            setOpen(false);
+            setOpenDelete(false);
+            await fetchLessonData();
+        } catch {
             setAlertServerity("error");
-            setAlertMessage(MESSAGES.deleteError);
-            handleError(error);
+            setAlertMessage(message);
         }
     };
 
     return (
         <Box sx={{ mt: 3 }}>
-            {alertMessage && (
-                <Alert severity={alertSeverity} onClose={() => setAlertMessage(null)}>
-                    {alertMessage}
-                </Alert>
-            )}
             <LessonCalendar
                 lessonData={lessonData}
                 handleDateClick={handleDateClick}
                 handleEventClick={handleEventClick}
             />
             <Modal open={open} onClose={() => setOpen(false)}>
+                {errors && (
+                    <Typography color="error" sx={{ mb: 2 }}>
+                        {message}
+                    </Typography>
+                )}
                 <LessonInputGroup
                     startEndData={startEndData}
                     setStartEndData={setStartEndData}
