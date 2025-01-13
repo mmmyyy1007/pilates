@@ -1,14 +1,13 @@
 import { Dialog } from "@/components/Dialog";
 import { TextField } from "@/components/TextFiled";
-import { MESSAGES } from "@/constants/message";
 import { PlaceRegisterButton } from "@/features/pilates/components/place";
 import { usePlace } from "@/features/pilates/hooks/usePlace";
-import { useErrorHandler } from "@/hooks/useErrorHandler";
+import { useErrorMessageStore } from "@/stores/errorMessageStore";
 import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import { Alert, Box, IconButton } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
 import { useCallback, useEffect, useState } from "react";
@@ -17,19 +16,17 @@ import { PlaceData } from "../types/placeTypes";
 export const PlaceRegisterForm = () => {
     const [placeData, setPlaceData] = useState<PlaceData[]>([]);
     const [clickedId, setClickedId] = useState<string>("");
-    const [alertMessage, setAlertMessage] = useState<string | null>(null);
-    const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
     const [openRegister, setOpenRegister] = useState<boolean>(false);
     const [openDelete, setOpenDelete] = useState<boolean>(false);
     const { handleShowPlace, handleRegisterPlace, handleDeletePlace } = usePlace();
-    const { errors, handleError, resetErrors } = useErrorHandler();
+    // const { errors, handleError, resetErrors } = useErrorHandler();
+    const { clearErrors, errors, message } = useErrorMessageStore();
 
     const fetchPlaceData = useCallback(async () => {
         /**
          * 店舗一覧取得
          */
         const response = await handleShowPlace();
-        console.log("ok");
 
         if (response.length === 0) {
             // 初期表示
@@ -123,17 +120,13 @@ export const PlaceRegisterForm = () => {
      */
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
-        resetErrors();
+        clearErrors();
 
         try {
             setOpenRegister(false);
             await handleRegisterPlace(placeData);
-            setAlertServerity("success");
-            setAlertMessage(MESSAGES.registerSuccess);
-        } catch (error) {
-            setAlertServerity("error");
-            setAlertMessage(MESSAGES.registerError);
-            handleError(error);
+        } catch {
+            setOpenRegister(false);
         }
     };
 
@@ -144,27 +137,24 @@ export const PlaceRegisterForm = () => {
      */
     const handleDelete = async (e: React.FormEvent) => {
         e.preventDefault();
-        resetErrors();
+        clearErrors();
 
         try {
             await handleDeletePlace({ id: clickedId });
-            setAlertServerity("success");
-            setAlertMessage(MESSAGES.deleteSuccess);
             setOpenDelete(false);
-        } catch (error) {
-            setAlertServerity("error");
-            setAlertMessage(MESSAGES.deleteError);
-            handleError(error);
+            await fetchPlaceData();
+        } catch {
+            setOpenDelete(false);
         }
     };
 
     return (
         <Box sx={{ mt: 3 }}>
             <Box>
-                {alertMessage && (
-                    <Alert severity={alertSeverity} onClose={() => setAlertMessage(null)}>
-                        {alertMessage}
-                    </Alert>
+                {errors && (
+                    <Typography color="error" sx={{ mb: 2 }}>
+                        {message}
+                    </Typography>
                 )}
                 <DragDropContext onDragEnd={handleDragEnd}>
                     <Droppable droppableId="droppable">
