@@ -1,7 +1,7 @@
-import { Button } from "@/components/Button";
 import { Dialog } from "@/components/Dialog";
 import { TextField } from "@/components/TextFiled";
 import { MESSAGES } from "@/constants/message";
+import { PlaceRegisterButton } from "@/features/pilates/components/place";
 import { usePlace } from "@/features/pilates/hooks/usePlace";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd";
@@ -64,31 +64,14 @@ export const PlaceRegisterForm = () => {
         setPlaceData(placeData.map((v) => (v.id === id ? { ...v, displayFlag: !v.displayFlag } : v)));
     };
 
+    /**
+     * 選択した削除ボタン設定
+     * @param e
+     */
     const handleDeleteModal = (e: React.FormEvent) => {
         const id = e.currentTarget.id;
         setClickedId(id);
         setOpenDelete(true);
-    };
-
-    /**
-     * 店舗登録処理
-     *
-     * @param e
-     */
-    const handleRegister = async (e: React.FormEvent) => {
-        e.preventDefault();
-        resetErrors();
-
-        try {
-            setOpenRegister(false);
-            await handleRegisterPlace(placeData);
-            setAlertServerity("success");
-            setAlertMessage(MESSAGES.registerSuccess);
-        } catch (error) {
-            setAlertServerity("error");
-            setAlertMessage(MESSAGES.registerError);
-            handleError(error);
-        }
     };
 
     /**
@@ -129,6 +112,27 @@ export const PlaceRegisterForm = () => {
     const getFieldError = (orderNo: number, field: string): string | undefined => {
         const key = `${orderNo}.${field}`;
         return errors[key]?.[0];
+    };
+
+    /**
+     * 店舗登録処理
+     *
+     * @param e
+     */
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
+        resetErrors();
+
+        try {
+            setOpenRegister(false);
+            await handleRegisterPlace(placeData);
+            setAlertServerity("success");
+            setAlertMessage(MESSAGES.registerSuccess);
+        } catch (error) {
+            setAlertServerity("error");
+            setAlertMessage(MESSAGES.registerError);
+            handleError(error);
+        }
     };
 
     /**
@@ -214,17 +218,10 @@ export const PlaceRegisterForm = () => {
                     </IconButton>
                 </Box>
                 <Box sx={{ mt: 5 }}>
-                    <Button variant="outlined" onClick={() => setOpenRegister(true)}>
-                        登録
-                    </Button>
-                    <Dialog
-                        open={openRegister}
-                        title=""
-                        content="登録してもよろしいでしょうか。"
-                        cancel="キャンセル"
-                        confirm="登録する"
-                        onClose={() => setOpenRegister(false)}
-                        onConfirm={handleRegister}
+                    <PlaceRegisterButton
+                        openRegister={openRegister}
+                        setOpenRegister={setOpenRegister}
+                        handleRegister={handleRegister}
                     />
                 </Box>
             </Box>
