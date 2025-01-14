@@ -19,6 +19,12 @@ export const LessonCalendar = ({ lessonData, handleDateClick, handleEventClick }
             events={lessonData}
             dateClick={handleDateClick}
             eventClick={handleEventClick}
+            eventMouseEnter={(info) => {
+                info.el.style.cursor = "pointer";
+            }}
+            eventMouseLeave={(info) => {
+                info.el.style.cursor = "default";
+            }}
         />
     );
 };
