@@ -34,6 +34,11 @@ export const LessonCalendar = ({ lessonData, handleDateClick, handleEventClick }
                     html: `<div style="cursor: pointer;" title="新規登録(${formattedDate})">${arg.date.getDate()}</div>`,
                 };
             }}
+            headerToolbar={{
+                start: "prev",
+                center: "title",
+                end: "next",
+            }}
         />
     );
 };
