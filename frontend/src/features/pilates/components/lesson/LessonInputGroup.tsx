@@ -1,7 +1,7 @@
 import { TextField } from "@/components/TextFiled";
 import { LessonStartEndData } from "@/features/pilates/types/lessonTypes";
 import { ActivePlaceData } from "@/features/pilates/types/placeTypes";
-import { Autocomplete } from "@mui/material";
+import { Autocomplete, Stack } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 
 interface LessonInputGroupProps {
@@ -19,7 +19,7 @@ export const LessonInputGroup = ({
     setSelectedPlaceData,
 }: LessonInputGroupProps) => {
     return (
-        <>
+        <Stack spacing={2}>
             <DateTimePicker
                 label="開始日時"
                 slotProps={{ textField: { size: "small", fullWidth: true } }}
@@ -54,6 +54,6 @@ export const LessonInputGroup = ({
                 onChange={(_, newValue) => setSelectedPlaceData(newValue)}
                 renderInput={(params) => <TextField {...params} label="レッスン場所" />}
             />
-        </>
+        </Stack>
     );
 };
