@@ -20,6 +20,7 @@ export const AccountList = () => {
     const [openUser, setOpenUser] = useState<boolean>(false);
     const [openPassword, setOpenPassword] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
+    const [openRegister, setOpenRegister] = useState<boolean>(false);
     const [accountData, setAccountData] = useState<AccountData>({ name: "", date: "", email: "" });
     const [updateFormName, setupdateFormName] = useState<AccountFormData>({ key: "", name: "", value: "" });
     const { handleShowAccount, handleUpdateUser, handleUpdatePassword, handleDeleteUser } = useAccount();
@@ -70,9 +71,10 @@ export const AccountList = () => {
      */
     const handleUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
-        setOpenUser(false);
         const data: UpdatedAccountData = { key: updateFormName.key, data: updateFormName.value };
         await handleUpdateUser(data);
+        setOpenRegister(false);
+        setOpenUser(false);
     };
 
     /**
@@ -153,6 +155,8 @@ export const AccountList = () => {
             <AccountUserModal
                 openUser={openUser}
                 setOpenUser={setOpenUser}
+                openRegister={openRegister}
+                setOpenRegister={setOpenRegister}
                 updateFormName={updateFormName}
                 setupdateFormName={setupdateFormName}
                 handleUpdate={handleUpdate}

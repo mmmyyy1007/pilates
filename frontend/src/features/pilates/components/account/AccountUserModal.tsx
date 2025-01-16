@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { Dialog } from "@/components/Dialog";
 import { Modal } from "@/components/Modal";
 import { TextField } from "@/components/TextFiled";
 import { Typography } from "@/components/Typography";
@@ -9,6 +10,8 @@ import { Box, IconButton } from "@mui/material";
 interface AccountUserModalProps {
     openUser: boolean;
     setOpenUser: React.Dispatch<React.SetStateAction<boolean>>;
+    openRegister: boolean;
+    setOpenRegister: React.Dispatch<React.SetStateAction<boolean>>;
     updateFormName: AccountFormData;
     setupdateFormName: React.Dispatch<React.SetStateAction<AccountFormData>>;
     handleUpdate: (e: React.FormEvent) => Promise<void>;
@@ -17,6 +20,8 @@ interface AccountUserModalProps {
 export const AccountUserModal = ({
     openUser,
     setOpenUser,
+    openRegister,
+    setOpenRegister,
     updateFormName,
     setupdateFormName,
     handleUpdate,
@@ -48,9 +53,18 @@ export const AccountUserModal = ({
                         })
                     }
                 ></TextField>
-                <Button variant="outlined" onClick={handleUpdate}>
+                <Button variant="outlined" onClick={() => setOpenRegister(true)}>
                     更新
                 </Button>
+                <Dialog
+                    open={openRegister}
+                    title=""
+                    content="登録してもよろしいでしょうか。"
+                    cancel="キャンセル"
+                    confirm="登録する"
+                    onClose={() => setOpenRegister(false)}
+                    onConfirm={handleUpdate}
+                />
             </Box>
         </Modal>
     );
