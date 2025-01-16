@@ -83,8 +83,9 @@ export const AccountList = () => {
      */
     const handleUpdatePass = async (e: React.FormEvent) => {
         e.preventDefault();
-        setOpenPassword(false);
         await handleUpdatePassword(updatedPassword);
+        setOpenRegister(false);
+        setOpenPassword(false);
     };
 
     /**
@@ -164,6 +165,8 @@ export const AccountList = () => {
             <AccountPasswordModal
                 openPassword={openPassword}
                 setOpenPassword={setOpenPassword}
+                openRegister={openRegister}
+                setOpenRegister={setOpenRegister}
                 updatedPassword={updatedPassword}
                 handleChangePasswordForm={handleChangePasswordForm}
                 handleUpdatePass={handleUpdatePass}

@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { Dialog } from "@/components/Dialog";
 import { Modal } from "@/components/Modal";
 import { PasswordTextField } from "@/components/PasswordTextField";
 import { Typography } from "@/components/Typography";
@@ -10,6 +11,8 @@ import { ChangeEvent } from "react";
 interface AccountPasswordModalProps {
     openPassword: boolean;
     setOpenPassword: (value: React.SetStateAction<boolean>) => void;
+    openRegister: boolean;
+    setOpenRegister: React.Dispatch<React.SetStateAction<boolean>>;
     updatedPassword: UpdatedPasswordData;
     handleChangePasswordForm: (e: ChangeEvent<HTMLInputElement>) => void;
     handleUpdatePass: (e: React.FormEvent) => Promise<void>;
@@ -18,6 +21,8 @@ interface AccountPasswordModalProps {
 export const AccountPasswordModal = ({
     openPassword,
     setOpenPassword,
+    openRegister,
+    setOpenRegister,
     updatedPassword,
     handleChangePasswordForm,
     handleUpdatePass,
@@ -59,12 +64,21 @@ export const AccountPasswordModal = ({
                         onChange={handleChangePasswordForm}
                     />
                     <Box>
-                        <Button variant="outlined" onClick={handleUpdatePass}>
+                        <Button variant="outlined" onClick={() => setOpenRegister(true)}>
                             更新
                         </Button>
                     </Box>
                 </Stack>
             </Modal>
+            <Dialog
+                open={openRegister}
+                title=""
+                content="登録してもよろしいでしょうか。"
+                cancel="キャンセル"
+                confirm="登録する"
+                onClose={() => setOpenRegister(false)}
+                onConfirm={handleUpdatePass}
+            />
         </>
     );
 };
