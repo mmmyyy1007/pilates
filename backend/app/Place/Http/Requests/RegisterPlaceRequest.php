@@ -20,7 +20,8 @@ class RegisterPlaceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            '*.name' => ['max:255'],
+            '*.id' => ['required', 'uuid'],
+            '*.name' => ['max:255', 'string'],
             '*.display_flag' => ['required', 'boolean'],
             '*.order_no' => ['required', 'integer'],
         ];
