@@ -5,7 +5,7 @@ namespace App\Place\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Place\Services\PlaceServiceInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Place\Http\Requests\RegisterPlaceRequest;
 
 class PlaceController extends Controller
 {
@@ -39,15 +39,11 @@ class PlaceController extends Controller
     /**
      * 店舗情報登録
      */
-    public function register(Request $request)
+    public function register(RegisterPlaceRequest $request)
     {
-        $request->validate([
-            '*.name' => ['max:255'],
-            '*.display_flag' => ['required', 'boolean'],
-            '*.order_no' => ['required', 'integer'],
-        ]);
-        $data = $request->input();
+        $data = $request->validate();
         $userId = $request->user()->id;
+
         $data = array_map(function ($item) use ($userId) {
             $item['user_id'] = $userId;
             return $item;
