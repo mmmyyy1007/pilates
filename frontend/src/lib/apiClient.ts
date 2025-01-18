@@ -1,6 +1,5 @@
 import { ROUTES } from "@/configs/routes";
 import { MESSAGES } from "@/constants/message";
-import { useErrorMessageStore } from "@/stores/errorMessageStore";
 import { useNotificationStore } from "@/stores/notificationStore";
 import axios from "axios";
 
@@ -53,7 +52,10 @@ apiClient.interceptors.response.use(
         // Axiosエラーかどうかを判定
         if (axios.isAxiosError(error)) {
             const status = error.response?.status;
-            const method = error.config?.method;
+            // const method = error.config?.method;
+            const message = error.response?.data.message;
+            const errors = error.response?.data.errors;
+
             switch (status) {
                 case 401:
                     // 認証不足
@@ -73,14 +75,12 @@ apiClient.interceptors.response.use(
                         window.location.href = ROUTES.LOGIN;
                     }, 2000);
                     break;
-                case 422: {
-                    const errorMessage =
-                        method === "post" ? MESSAGES.registerError : method === "delete" ? MESSAGES.deleteError : "";
+                case 422:
                     // バリデーションエラー
-                    useNotificationStore.getState().setNotification(errorMessage, "error");
-                    useErrorMessageStore.getState().setErrors(error.response?.data);
-                    return Promise.reject(error);
-                }
+                    return Promise.reject({
+                        message: message || "",
+                        errors: errors || {},
+                    });
                 case 500:
                     // サーバーエラー
                     useNotificationStore.getState().setNotification("サーバーエラーが発生しました。", "error");
