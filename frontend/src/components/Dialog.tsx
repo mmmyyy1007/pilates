@@ -38,10 +38,10 @@ export const Dialog = ({ open, title, content, cancel, confirm, onClose, onConfi
                 <DialogContentText>{content}</DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button variant="outlined" onClick={onClose}>
+                <Button variant="outlined" color="primary" onClick={onClose}>
                     {cancel}
                 </Button>
-                <Button variant="outlined" color="error" autoFocus onClick={onConfirm}>
+                <Button variant="contained" color="primary" autoFocus onClick={onConfirm}>
                     {confirm}
                 </Button>
             </DialogActions>
