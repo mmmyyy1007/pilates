@@ -41,13 +41,13 @@ class PlaceController extends Controller
      */
     public function register(RegisterPlaceRequest $request)
     {
-        $data = $request->validate();
+        $data = $request->validated();
         $userId = $request->user()->id;
 
-        $data = array_map(function ($item) use ($userId) {
+        $data = collect($data)->map(function ($item) use ($userId) {
             $item['user_id'] = $userId;
             return $item;
-        }, $data);
+        })->toArray();
 
         $status = $this->placeService->registerPlace($data);
 
