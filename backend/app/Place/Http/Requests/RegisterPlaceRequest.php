@@ -31,18 +31,12 @@ class RegisterPlaceRequest extends FormRequest
      */
     public function messages(): array
     {
-        $messages = [];
-
-        foreach ($this->input() as $index => $_) {
-            $rowNumber = $index + 1;
-
-            $messages["$index.name.max"] = "フォーム {$rowNumber}: 店舗名は255文字以内で指定してください。";
-            $messages["$index.display_flag.required"] = "フォーム {$rowNumber}: 表示フラグは必須です。";
-            $messages["$index.display_flag.boolean"] = "フォーム {$rowNumber}: 表示フラグには真偽値を指定してください。";
-            $messages["$index.order_no.required"] = "フォーム {$rowNumber}: 表示順は必須です。";
-            $messages["$index.order_no.integer"] = "フォーム {$rowNumber}: 表示順は整数で指定してください。";
-        }
-
-        return $messages;
+        return [
+            '*.name.max' => '店舗名は255文字以内で指定してください。',
+            '*.display_flag.required' => '表示フラグは必須です。',
+            '*.display_flag.boolean' => '表示フラグには真偽値を指定してください。',
+            '*.order_no.required' => '表示順は必須です。',
+            '*.order_no.integer' => '表示順は整数で指定してください。',
+        ];
     }
 }
