@@ -9,7 +9,7 @@ import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import { Box, IconButton } from "@mui/material";
+import { Box, FormControl, FormHelperText, IconButton } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
 import { useCallback, useEffect, useState } from "react";
@@ -111,8 +111,8 @@ export const PlaceRegisterForm = () => {
      * @param field
      * @returns
      */
-    const getFieldError = (orderNo: number, field: string): string | undefined => {
-        const key = `${orderNo}.${field}`;
+    const getFieldError = (index: number, field: string): string | undefined => {
+        const key = `${index}.${field}`;
         return errors[key]?.[0];
     };
 
@@ -190,12 +190,33 @@ export const PlaceRegisterForm = () => {
                                                     checked={!!item.displayFlag}
                                                     onChange={() => handlePlaceEnabledChange(item.id)}
                                                 />
-                                                <TextField
+                                                {/* <TextField
                                                     fullWidth
                                                     value={item.name}
-                                                    error={!!getFieldError(item.orderNo, "name")}
+                                                    error={!!getFieldError(index, "name")}
                                                     onChange={(e) => handlePlaceDataChange(item.id, e.target.value)}
                                                 ></TextField>
+                                                {getFieldError(index, "name") && (
+                                                    <FormHelperText error>
+                                                        {getFieldError(index, "name")}
+                                                    </FormHelperText>
+                                                )} */}
+                                                <FormControl
+                                                    fullWidth
+                                                    margin="normal"
+                                                    error={!!getFieldError(index, "name")}
+                                                >
+                                                    <TextField
+                                                        fullWidth
+                                                        value={item.name}
+                                                        error={!!getFieldError(index, "name")}
+                                                        onChange={(e) => handlePlaceDataChange(item.id, e.target.value)}
+                                                        label="店舗名"
+                                                    />
+                                                    {getFieldError(index, "name") && (
+                                                        <FormHelperText>{getFieldError(index, "name")}</FormHelperText>
+                                                    )}
+                                                </FormControl>
                                                 <IconButton color="default" id={item.id} onClick={handleDeleteModal}>
                                                     <DeleteIcon />
                                                 </IconButton>
