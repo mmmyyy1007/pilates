@@ -20,11 +20,9 @@ class RegisterLessonRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'place' => ['required'],
             'place_id' => ['required'],
             'start_datetime' => ['required'],
             'end_datetime' => ['required'],
-            'id' => ['required'],
         ];
     }
 
@@ -34,7 +32,6 @@ class RegisterLessonRequest extends FormRequest
     public function messages(): array
     {
         return [
-            // 'place.required' => 'レッスン場所は必須です。',
             'place_id.required' => 'レッスン場所は必須です。',
             'start_datetime.required' => '開始時間を選択してください。',
             'end_datetime.required' => '終了時間を選択してください。',

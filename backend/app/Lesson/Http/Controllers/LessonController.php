@@ -5,6 +5,7 @@ namespace App\Lesson\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Lesson\Services\LessonServiceInterface;
 use Illuminate\Http\Request;
+use App\Lesson\Http\Requests\RegisterLessonRequest;
 
 class LessonController extends Controller
 {
@@ -51,16 +52,10 @@ class LessonController extends Controller
     /**
      * レッスン情報登録
      */
-    public function register(Request $request)
+    public function register(RegisterLessonRequest $request)
     {
-        $request->validate([
-            'place' => ['required'],
-            'place_id' => ['required'],
-            'start_datetime' => ['required'],
-            'end_datetime' => ['required'],
-            'id' => ['required'],
-        ]);
-        $data = $request->input();
+        $request->validated();
+        $data = $request->only(['place', 'place_id', 'start_datetime', 'end_datetime', 'id']);
         $data['user_id'] = $request->user()->id;
 
         $status = $this->lessonService->registerLesson($data);
