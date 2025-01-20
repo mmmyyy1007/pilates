@@ -152,11 +152,18 @@ export const LessonList = () => {
                     selectedPlaceData={selectedPlaceData}
                     activePlaceData={activePlaceData}
                     setSelectedPlaceData={setSelectedPlaceData}
+                    handleModalClose={handleModalClose}
                 />
-                <LessonRegisterButton open={openRegister} setOpen={setOpenRegister} handleRegister={handleRegister} />
-                {isVisibleDelete && (
-                    <LessonDeleteButton open={openDelete} setOpen={setOpenDelete} handleDelete={handleDelete} />
-                )}
+                <Box sx={{ mt: 2, display: "flex", gap: 2 }}>
+                    <LessonRegisterButton
+                        open={openRegister}
+                        setOpen={setOpenRegister}
+                        handleRegister={handleRegister}
+                    />
+                    {isVisibleDelete && (
+                        <LessonDeleteButton open={openDelete} setOpen={setOpenDelete} handleDelete={handleDelete} />
+                    )}
+                </Box>
             </Modal>
         </Box>
     );

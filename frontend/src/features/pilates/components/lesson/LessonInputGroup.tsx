@@ -1,7 +1,8 @@
 import { TextField } from "@/components/TextFiled";
 import { LessonStartEndData } from "@/features/pilates/types/lessonTypes";
 import { ActivePlaceData } from "@/features/pilates/types/placeTypes";
-import { Autocomplete, Stack } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { Autocomplete, IconButton, Stack } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 
 interface LessonInputGroupProps {
@@ -10,6 +11,7 @@ interface LessonInputGroupProps {
     selectedPlaceData: ActivePlaceData | null;
     activePlaceData: ActivePlaceData[];
     setSelectedPlaceData: React.Dispatch<React.SetStateAction<ActivePlaceData | null>>;
+    handleModalClose: () => void;
 }
 export const LessonInputGroup = ({
     startEndData,
@@ -17,9 +19,17 @@ export const LessonInputGroup = ({
     selectedPlaceData,
     activePlaceData,
     setSelectedPlaceData,
+    handleModalClose,
 }: LessonInputGroupProps) => {
     return (
         <Stack spacing={2}>
+            <IconButton
+                aria-label="close"
+                onClick={handleModalClose}
+                style={{ position: "absolute", right: 4, top: 4 }}
+            >
+                <CloseIcon />
+            </IconButton>
             <DateTimePicker
                 label="開始日時"
                 slotProps={{ textField: { size: "small", fullWidth: true } }}
