@@ -45,7 +45,20 @@ class LessonRepository implements LessonRepositoryInterface
      */
     public function existsLessonById(int $userId, string $id): bool
     {
-        $sql = Lesson::where('user_id', $userId)->where('place_id', $id);
+        $sql = Lesson::where('user_id', $userId)->where('id', $id);
+        $exists = $sql->exists();
+
+        return $exists;
+    }
+
+    /**
+     * @param int $userId
+     * @param string $placeId
+     * @return bool $exists
+     */
+    public function existsLessonByPlaceId(int $userId, string $placeId): bool
+    {
+        $sql = Lesson::where('user_id', $userId)->where('place_id', $placeId);
         $exists = $sql->exists();
 
         return $exists;

@@ -34,6 +34,13 @@ interface LessonRepositoryInterface
 
     /**
      * @param int $userId
+     * @param string $placeId
+     * @return bool
+     */
+    public function existsLessonByPlaceId(int $userId, string $placeId): bool;
+
+    /**
+     * @param int $userId
      * @return bool
      */
     public function deleteLessonById(int $userId): bool;

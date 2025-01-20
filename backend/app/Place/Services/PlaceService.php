@@ -78,7 +78,7 @@ class PlaceService implements PlaceServiceInterface
     {
 
         // レッスンで登録されている店舗は削除できない
-        $exists = $this->lessonRepository->existsLessonById($userId, $placeId);
+        $exists = $this->lessonRepository->existsLessonByPlaceId($userId, $placeId);
 
         if ($exists) {
             return false;
