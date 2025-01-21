@@ -59,7 +59,8 @@ export const LessonList = () => {
         const end = dayjs(arg.event.endStr);
         const placeId = arg.event.extendedProps.placeId;
         const place = arg.event.extendedProps.place;
-        setStartEndData({ id: arg.event.id, start: start, end: end });
+        const id = arg.event.id;
+        setStartEndData({ id: id, start: start, end: end });
         setSelectedPlaceData({ id: placeId, name: place });
         setOpen(true);
         setIsVisibleDelete(true);
