@@ -11,8 +11,7 @@ import {
 } from "@/features/pilates/types/accountTypes";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import CreateIcon from "@mui/icons-material/Create";
-import { Box, IconButton } from "@mui/material";
+import { Box, Link } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 
@@ -132,12 +131,9 @@ export const AccountList = () => {
                 />
             </Box>
             <Box>
-                <Typography>
-                    *******
-                    <IconButton color="default" onClick={() => setOpenPassword(true)}>
-                        <CreateIcon />
-                    </IconButton>
-                </Typography>
+                <Link href="#" underline="hover" onClick={() => setOpenPassword(true)}>
+                    パスワード変更はこちら
+                </Link>
             </Box>
             <Box>
                 <Button variant="outlined" onClick={() => setOpen(true)}>
