@@ -3,9 +3,7 @@
 namespace App\Place\Repositories;
 
 use App\Place\Models\Place;
-use App\Lesson\Models\Lesson;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\DB;
 
 class PlaceRepository implements PlaceRepositoryInterface
 {

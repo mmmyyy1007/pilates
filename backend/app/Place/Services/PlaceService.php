@@ -6,7 +6,6 @@ use App\Lesson\Repositories\LessonRepositoryInterface;
 use App\Place\Repositories\PlaceRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
 
 class PlaceService implements PlaceServiceInterface
 {

@@ -2,10 +2,7 @@
 
 namespace App\Account\Repositories;
 
-use App\Lesson\Models\Lesson;
 use App\Models\User;
-use App\Place\Models\Place;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 

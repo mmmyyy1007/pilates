@@ -2,7 +2,6 @@
 
 namespace App\Lesson\Repositories;
 
-use App\Place\Models\Place;
 use App\Lesson\Models\Lesson;
 use Illuminate\Database\Eloquent\Collection;
 

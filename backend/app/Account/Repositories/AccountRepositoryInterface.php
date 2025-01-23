@@ -2,9 +2,6 @@
 
 namespace App\Account\Repositories;
 
-use Illuminate\Database\Eloquent\Collection;
-use PHPUnit\TestRunner\TestResult\Collector;
-
 interface AccountRepositoryInterface
 {
     /**

@@ -3,7 +3,6 @@
 namespace App\Lesson\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
-use PHPUnit\TestRunner\TestResult\Collector;
 
 interface LessonRepositoryInterface
 {

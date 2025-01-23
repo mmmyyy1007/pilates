@@ -5,7 +5,6 @@ namespace App\Account\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Account\Services\AccountServiceInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AccountController extends Controller
 {
