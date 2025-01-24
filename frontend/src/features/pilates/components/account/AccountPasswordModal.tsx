@@ -73,9 +73,9 @@ export const AccountPasswordModal = ({
             <Dialog
                 open={openRegister}
                 title=""
-                content="登録してもよろしいでしょうか。"
+                content="更新してもよろしいでしょうか。"
                 cancel="キャンセル"
-                confirm="登録する"
+                confirm="更新する"
                 onClose={() => setOpenRegister(false)}
                 onConfirm={handleUpdatePass}
             />
