@@ -2,8 +2,9 @@
 
 namespace App\Account\Http\Controllers;
 
-use App\Account\Http\Requests\RegisterPasswordRequest;
+use App\Account\Http\Requests\RegisterEmailRequest;
 use App\Account\Http\Requests\RegisterNameRequest;
+use App\Account\Http\Requests\RegisterPasswordRequest;
 use App\Account\Services\AccountServiceInterface;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -43,11 +44,12 @@ class AccountController extends Controller
     }
 
     /**
-     * ログインユーザー変更
+     * メールアドレス変更
      */
-    public function updateUser(Request $request)
+    public function updateEmail(RegisterEmailRequest $request)
     {
-        $data = $request->input();
+        $request->validated();
+        $data = $request->only(['key', 'data']);
         $data['user_id'] = $request->user()->id;
 
         $status = $this->accountService->updateUserById($data);
