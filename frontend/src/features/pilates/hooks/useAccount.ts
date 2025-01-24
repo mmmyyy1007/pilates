@@ -1,5 +1,6 @@
 import { deleteUser } from "@/features/pilates/api/deleteUser";
 import { showAccount } from "@/features/pilates/api/showAccount";
+import { updateName } from "@/features/pilates/api/updateName";
 import { updatePassword } from "@/features/pilates/api/updatePassword";
 import { updateUser } from "@/features/pilates/api/updateUser";
 import { UpdatedAccountData, UpdatedPasswordData } from "@/features/pilates/types/accountTypes";
@@ -7,6 +8,9 @@ import { UpdatedAccountData, UpdatedPasswordData } from "@/features/pilates/type
 export const useAccount = () => {
     const handleShowAccount = async () => {
         return await showAccount();
+    };
+    const handleUpdateName = async (data: UpdatedAccountData) => {
+        await updateName(data);
     };
     const handleUpdateUser = async (data: UpdatedAccountData) => {
         await updateUser(data);
@@ -17,5 +21,5 @@ export const useAccount = () => {
     const handleDeleteUser = async () => {
         await deleteUser();
     };
-    return { handleShowAccount, handleUpdateUser, handleUpdatePassword, handleDeleteUser };
+    return { handleShowAccount, handleUpdateName, handleUpdateUser, handleUpdatePassword, handleDeleteUser };
 };

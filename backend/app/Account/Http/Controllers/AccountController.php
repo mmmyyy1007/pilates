@@ -2,10 +2,11 @@
 
 namespace App\Account\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Account\Services\AccountServiceInterface;
-use Illuminate\Http\Request;
 use App\Account\Http\Requests\RegisterPasswordRequest;
+use App\Account\Http\Requests\RegisterNameRequest;
+use App\Account\Services\AccountServiceInterface;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
@@ -17,7 +18,7 @@ class AccountController extends Controller
     }
 
     /**
-     * ログインユーザー登録情報取得
+     * ログインユーザー情報取得
      */
     public function show(Request $request)
     {
@@ -25,6 +26,20 @@ class AccountController extends Controller
         $account = $this->accountService->getAccountById($userId);
 
         return response()->json(['account' => $account]);
+    }
+
+    /**
+     * ユーザー名変更
+     */
+    public function updateName(RegisterNameRequest $request)
+    {
+        $request->validated();
+        $data = $request->only(['key', 'data']);
+        $data['user_id'] = $request->user()->id;
+
+        $status = $this->accountService->updateUserById($data);
+
+        return response()->json(['status' => $status]);
     }
 
     /**

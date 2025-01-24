@@ -30,6 +30,7 @@ Route::middleware(['auth'])->prefix('lesson')->name('lesson.')->controller(Lesso
 // アカウント管理
 Route::middleware(['auth'])->prefix('account')->name('account.')->controller(AccountController::class)->group(function () {
     Route::post('update/user', 'updateUser')->name('updateUser');
+    Route::post('update/name', 'updateName')->name('updateName');
     Route::middleware(['convert.snake'])->post('update/password', 'updatePassword')->name('updatePassword');
     Route::post('delete', 'deleteUser')->name('deleteUser');
     Route::get('show', 'show')->name('show');
