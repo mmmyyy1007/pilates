@@ -5,7 +5,7 @@ import { PasswordTextField } from "@/components/PasswordTextField";
 import { Typography } from "@/components/Typography";
 import { UpdatedPasswordData } from "@/features/pilates/types/accountTypes";
 import CloseIcon from "@mui/icons-material/Close";
-import { Box, IconButton, Stack } from "@mui/material";
+import { Box, FormControl, FormHelperText, IconButton, Stack } from "@mui/material";
 import { ChangeEvent } from "react";
 
 interface AccountPasswordModalProps {
@@ -16,6 +16,7 @@ interface AccountPasswordModalProps {
     updatedPassword: UpdatedPasswordData;
     handleChangePasswordForm: (e: ChangeEvent<HTMLInputElement>) => void;
     handleUpdatePass: (e: React.FormEvent) => Promise<void>;
+    errors: Record<string, string[]>;
 }
 
 export const AccountPasswordModal = ({
@@ -26,6 +27,7 @@ export const AccountPasswordModal = ({
     updatedPassword,
     handleChangePasswordForm,
     handleUpdatePass,
+    errors,
 }: AccountPasswordModalProps) => {
     const { password, newPassword, ConfirmNewPassword } = updatedPassword;
     return (
@@ -42,27 +44,34 @@ export const AccountPasswordModal = ({
                             <CloseIcon />
                         </IconButton>
                     </Typography>
-                    <PasswordTextField
-                        required
-                        label="現在のパスワード"
-                        value={password}
-                        name="password"
-                        onChange={handleChangePasswordForm}
-                    />
-                    <PasswordTextField
-                        required
-                        label="新しいパスワード"
-                        value={newPassword}
-                        name="newPassword"
-                        onChange={handleChangePasswordForm}
-                    />
-                    <PasswordTextField
-                        required
-                        label="新しいパスワード(確認用)"
-                        value={ConfirmNewPassword}
-                        name="ConfirmNewPassword"
-                        onChange={handleChangePasswordForm}
-                    />
+                    <FormControl fullWidth margin="normal" error={!!errors}>
+                        <PasswordTextField
+                            required
+                            label="現在のパスワード"
+                            value={password}
+                            name="password"
+                            onChange={handleChangePasswordForm}
+                        />
+                        <FormHelperText>{errors["password"]}</FormHelperText>
+                        <PasswordTextField
+                            sx={{ mt: 2 }}
+                            required
+                            label="新しいパスワード"
+                            value={newPassword}
+                            name="newPassword"
+                            onChange={handleChangePasswordForm}
+                        />
+                        <FormHelperText>{errors["new_password"]}</FormHelperText>
+                        <PasswordTextField
+                            sx={{ mt: 2 }}
+                            required
+                            label="新しいパスワード(確認用)"
+                            value={ConfirmNewPassword}
+                            name="ConfirmNewPassword"
+                            onChange={handleChangePasswordForm}
+                        />
+                        <FormHelperText>{errors["confirm_new_password"]}</FormHelperText>
+                    </FormControl>
                     <Box>
                         <Button variant="outlined" onClick={() => setOpenRegister(true)}>
                             更新
