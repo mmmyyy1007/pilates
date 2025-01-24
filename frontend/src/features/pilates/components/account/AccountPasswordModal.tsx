@@ -11,8 +11,8 @@ import { ChangeEvent } from "react";
 interface AccountPasswordModalProps {
     openPassword: boolean;
     setOpenPassword: (value: React.SetStateAction<boolean>) => void;
-    openRegister: boolean;
-    setOpenRegister: React.Dispatch<React.SetStateAction<boolean>>;
+    openRegisterPassword: boolean;
+    setOpenRegisterPassword: React.Dispatch<React.SetStateAction<boolean>>;
     updatedPassword: UpdatedPasswordData;
     handleChangePasswordForm: (e: ChangeEvent<HTMLInputElement>) => void;
     handleUpdatePass: (e: React.FormEvent) => Promise<void>;
@@ -22,8 +22,8 @@ interface AccountPasswordModalProps {
 export const AccountPasswordModal = ({
     openPassword,
     setOpenPassword,
-    openRegister,
-    setOpenRegister,
+    openRegisterPassword,
+    setOpenRegisterPassword,
     updatedPassword,
     handleChangePasswordForm,
     handleUpdatePass,
@@ -73,19 +73,19 @@ export const AccountPasswordModal = ({
                         <FormHelperText>{errors["confirm_new_password"]}</FormHelperText>
                     </FormControl>
                     <Box>
-                        <Button variant="outlined" onClick={() => setOpenRegister(true)}>
+                        <Button variant="outlined" onClick={() => setOpenRegisterPassword(true)}>
                             更新
                         </Button>
                     </Box>
                 </Stack>
             </Modal>
             <Dialog
-                open={openRegister}
+                open={openRegisterPassword}
                 title=""
                 content="更新してもよろしいでしょうか。"
                 cancel="キャンセル"
                 confirm="更新する"
-                onClose={() => setOpenRegister(false)}
+                onClose={() => setOpenRegisterPassword(false)}
                 onConfirm={handleUpdatePass}
             />
         </>
