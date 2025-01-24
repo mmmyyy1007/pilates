@@ -5,6 +5,7 @@ namespace App\Account\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Account\Services\AccountServiceInterface;
 use Illuminate\Http\Request;
+use App\Account\Http\Requests\RegisterPasswordRequest;
 
 class AccountController extends Controller
 {
@@ -42,14 +43,10 @@ class AccountController extends Controller
     /**
      * ログインパスワード変更
      */
-    public function updatePassword(Request $request)
+    public function updatePassword(RegisterPasswordRequest $request)
     {
-        $request->validate([
-            'password' => ['required'],
-            'new_password' => ['required'],
-            'confirm_new_password' => ['required'],
-        ]);
-        $data = $request->input();
+        $request->validated();
+        $data = $request->only(['password', 'new_password', 'confirm_new_password']);
         $data['user_id'] = $request->user()->id;
         $data['user_password'] = $request->user()->password;
 
