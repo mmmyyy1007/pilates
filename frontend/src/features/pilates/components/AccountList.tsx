@@ -1,34 +1,31 @@
 import { Button } from "@/components/Button";
 import { Dialog } from "@/components/Dialog";
 import { Typography } from "@/components/Typography";
-import { AccountPasswordModal, AccountUserForm, AccountUserModal } from "@/features/pilates/components/account";
+import { AccountPasswordModal, AccountUserForm } from "@/features/pilates/components/account";
 import { useAccount } from "@/features/pilates/hooks/useAccount";
-import {
-    AccountData,
-    AccountFormData,
-    UpdatedAccountData,
-    UpdatedPasswordData,
-} from "@/features/pilates/types/accountTypes";
+import { AccountData, UpdatedAccountData, UpdatedPasswordData } from "@/features/pilates/types/accountTypes";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Box, Link } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import React, { ChangeEvent, MouseEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 export const AccountList = () => {
-    const [openUser, setOpenUser] = useState<boolean>(false);
     const [openPassword, setOpenPassword] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
-    const [openRegister, setOpenRegister] = useState<boolean>(false);
+    const [openRegisterName, setOpenRegisterName] = useState<boolean>(false);
+    const [openRegisterEmail, setOpenRegisterEmail] = useState<boolean>(false);
+    const [openRegisterPassword, setOpenRegisterPassword] = useState<boolean>(false);
     const [accountData, setAccountData] = useState<AccountData>({ name: "", date: "", email: "" });
-    const [updateFormName, setupdateFormName] = useState<AccountFormData>({ key: "", name: "", value: "" });
-    const { handleShowAccount, handleUpdateUser, handleUpdatePassword, handleDeleteUser } = useAccount();
-    const { handleError, resetErrors } = useErrorHandler();
+    const [updatedUser, setUpdatedUser] = useState<UpdatedAccountData>({ key: "", data: "" });
     const [updatedPassword, setUpdatedPassword] = useState<UpdatedPasswordData>({
         password: "",
         newPassword: "",
         ConfirmNewPassword: "",
     });
+    const { handleShowAccount, handleUpdateName, handleUpdateEmail, handleUpdatePassword, handleDeleteUser } =
+        useAccount();
+    const { errors, handleError, resetErrors } = useErrorHandler();
 
     useEffect(() => {
         /**
@@ -43,14 +40,16 @@ export const AccountList = () => {
     }, []);
 
     /**
-     * 更新用モーダル表示(ユーザー名・メールアドレス)
+     * ユーザー名・メールアドレスフォーム内変更
      */
-    const handleModalOpenUser = (e: MouseEvent<HTMLButtonElement>) => {
-        const ariaLabel = e.currentTarget.getAttribute("aria-label");
-        const dataKey = e.currentTarget.getAttribute("data-key");
-        const value = accountData[dataKey as keyof AccountData];
-        setupdateFormName({ key: dataKey, name: ariaLabel, value: value });
-        setOpenUser(true);
+    const handleChangeUserForm = (e: ChangeEvent<HTMLInputElement>) => {
+        const id = e.target.id;
+        const value = e.target.value;
+        setAccountData((prev) => ({
+            ...prev,
+            [id]: value,
+        }));
+        setUpdatedUser({ key: id, data: value });
     };
 
     /**
@@ -65,15 +64,37 @@ export const AccountList = () => {
     };
 
     /**
-     * ログインユーザー変更
+     * ユーザー名変更
      * @param e
      */
-    const handleUpdate = async (e: React.FormEvent) => {
+    const handleUpdateUserName = async (e: React.FormEvent) => {
         e.preventDefault();
-        const data: UpdatedAccountData = { key: updateFormName.key, data: updateFormName.value };
-        await handleUpdateUser(data);
-        setOpenRegister(false);
-        setOpenUser(false);
+        resetErrors();
+
+        try {
+            await handleUpdateName(updatedUser);
+        } catch (error) {
+            handleError(error);
+        } finally {
+            setOpenRegisterName(false);
+        }
+    };
+
+    /**
+     * メールアドレス変更
+     * @param e
+     */
+    const handleUpdateUserEmail = async (e: React.FormEvent) => {
+        e.preventDefault();
+        resetErrors();
+
+        try {
+            await handleUpdateEmail(updatedUser);
+        } catch (error) {
+            handleError(error);
+        } finally {
+            setOpenRegisterEmail(false);
+        }
     };
 
     /**
@@ -82,9 +103,16 @@ export const AccountList = () => {
      */
     const handleUpdatePass = async (e: React.FormEvent) => {
         e.preventDefault();
-        await handleUpdatePassword(updatedPassword);
-        setOpenRegister(false);
-        setOpenPassword(false);
+        resetErrors();
+
+        try {
+            await handleUpdatePassword(updatedPassword);
+            setOpenPassword(false);
+        } catch (error) {
+            handleError(error);
+        } finally {
+            setOpenRegisterPassword(false);
+        }
     };
 
     /**
@@ -115,8 +143,11 @@ export const AccountList = () => {
                         <AccountUserForm
                             value={accountData.name}
                             label="名前"
-                            dataKey="name"
-                            handleModalOpenUser={handleModalOpenUser}
+                            id="name"
+                            openRegister={openRegisterName}
+                            setOpenRegister={setOpenRegisterName}
+                            handleUpdate={handleUpdateUserName}
+                            handleChangeUserForm={handleChangeUserForm}
                         />
                         <Typography>start ～ {accountData.date}</Typography>
                     </Grid>
@@ -126,8 +157,11 @@ export const AccountList = () => {
                 <AccountUserForm
                     value={accountData.email}
                     label="メールアドレス"
-                    dataKey="email"
-                    handleModalOpenUser={handleModalOpenUser}
+                    id="email"
+                    openRegister={openRegisterEmail}
+                    setOpenRegister={setOpenRegisterEmail}
+                    handleUpdate={handleUpdateUserEmail}
+                    handleChangeUserForm={handleChangeUserForm}
                 />
             </Box>
             <Box>
@@ -149,23 +183,15 @@ export const AccountList = () => {
                     onConfirm={handleDeleteAccount}
                 />
             </Box>
-            <AccountUserModal
-                openUser={openUser}
-                setOpenUser={setOpenUser}
-                openRegister={openRegister}
-                setOpenRegister={setOpenRegister}
-                updateFormName={updateFormName}
-                setupdateFormName={setupdateFormName}
-                handleUpdate={handleUpdate}
-            />
             <AccountPasswordModal
                 openPassword={openPassword}
                 setOpenPassword={setOpenPassword}
-                openRegister={openRegister}
-                setOpenRegister={setOpenRegister}
+                openRegisterPassword={openRegisterPassword}
+                setOpenRegisterPassword={setOpenRegisterPassword}
                 updatedPassword={updatedPassword}
                 handleChangePasswordForm={handleChangePasswordForm}
                 handleUpdatePass={handleUpdatePass}
+                errors={errors}
             />
         </Box>
     );

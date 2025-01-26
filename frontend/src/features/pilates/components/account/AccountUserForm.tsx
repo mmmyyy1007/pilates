@@ -1,28 +1,42 @@
-import { Typography } from "@/components/Typography";
+import { Dialog } from "@/components/Dialog";
 import CreateIcon from "@mui/icons-material/Create";
-import { IconButton } from "@mui/material";
-import { MouseEvent } from "react";
+import { IconButton, TextField } from "@mui/material";
+import { ChangeEvent } from "react";
 
 interface AccountUserFormProps {
     value: string;
     label: string;
-    dataKey: string;
-    handleModalOpenUser: (e: MouseEvent<HTMLButtonElement>) => void;
+    id: string;
+    openRegister: boolean;
+    setOpenRegister: React.Dispatch<React.SetStateAction<boolean>>;
+    handleUpdate: (e: React.FormEvent) => Promise<void>;
+    handleChangeUserForm: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const AccountUserForm = ({ value, label, dataKey, handleModalOpenUser }: AccountUserFormProps) => {
+export const AccountUserForm = ({
+    value,
+    label,
+    id,
+    openRegister,
+    setOpenRegister,
+    handleUpdate,
+    handleChangeUserForm,
+}: AccountUserFormProps) => {
     return (
-        <Typography>
-            {value}
-            <IconButton
-                color="default"
-                aria-label={label}
-                data-key={dataKey}
-                type="button"
-                onClick={handleModalOpenUser}
-            >
+        <>
+            <TextField value={value} label={label} id={id} onChange={handleChangeUserForm}></TextField>
+            <IconButton color="default" type="button" onClick={() => setOpenRegister(true)}>
                 <CreateIcon />
             </IconButton>
-        </Typography>
+            <Dialog
+                open={openRegister}
+                title=""
+                content="更新してもよろしいでしょうか。"
+                cancel="キャンセル"
+                confirm="更新する"
+                onClose={() => setOpenRegister(false)}
+                onConfirm={handleUpdate}
+            />
+        </>
     );
 };
