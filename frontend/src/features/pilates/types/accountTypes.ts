@@ -14,12 +14,6 @@ export interface AccountUserNameData {
     email: string;
 }
 
-export interface AccountFormData {
-    key: string | null;
-    name: string | null;
-    value: string;
-}
-
 export interface UpdatedAccountData {
     key: string | null;
     data: string;
