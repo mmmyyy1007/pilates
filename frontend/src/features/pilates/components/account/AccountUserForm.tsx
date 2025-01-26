@@ -22,6 +22,7 @@ export const AccountUserForm = ({
     handleUpdate,
     handleChangeUserForm,
 }: AccountUserFormProps) => {
+    const content = `${label}を更新してもよろしいでしょうか。`;
     return (
         <>
             <TextField value={value} label={label} id={id} onChange={handleChangeUserForm}></TextField>
@@ -31,7 +32,7 @@ export const AccountUserForm = ({
             <Dialog
                 open={openRegister}
                 title=""
-                content="更新してもよろしいでしょうか。"
+                content={content}
                 cancel="キャンセル"
                 confirm="更新する"
                 onClose={() => setOpenRegister(false)}
