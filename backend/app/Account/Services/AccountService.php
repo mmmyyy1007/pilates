@@ -40,9 +40,20 @@ class AccountService implements AccountServiceInterface
      * @param array $data
      * @return bool
      */
-    public function updateUserById(array $data): bool
+    public function updateNameById(array $data): bool
     {
-        $status = $this->accountRepository->updateUserById($data);
+        $status = $this->accountRepository->updateNameById($data);
+
+        return $status;
+    }
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function updateEmailById(array $data): bool
+    {
+        $status = $this->accountRepository->updateEmailById($data);
 
         return $status;
     }

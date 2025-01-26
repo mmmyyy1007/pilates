@@ -35,10 +35,10 @@ class AccountController extends Controller
     public function updateName(RegisterNameRequest $request)
     {
         $request->validated();
-        $data = $request->only(['key', 'data']);
+        $data = $request->only(['value']);
         $data['user_id'] = $request->user()->id;
 
-        $status = $this->accountService->updateUserById($data);
+        $status = $this->accountService->updateNameById($data);
 
         return response()->json(['status' => $status]);
     }
@@ -49,10 +49,10 @@ class AccountController extends Controller
     public function updateEmail(RegisterEmailRequest $request)
     {
         $request->validated();
-        $data = $request->only(['key', 'data']);
+        $data = $request->only(['value']);
         $data['user_id'] = $request->user()->id;
 
-        $status = $this->accountService->updateUserById($data);
+        $status = $this->accountService->updateEmailById($data);
 
         return response()->json(['status' => $status]);
     }

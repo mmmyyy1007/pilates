@@ -14,7 +14,13 @@ interface AccountRepositoryInterface
      * @param array $data
      * @return bool
      */
-    public function updateUserById(array $data): bool;
+    public function updateNameById(array $data): bool;
+
+    /**
+     * @param array $data
+     * @return bool
+     */
+    public function updateEmailById(array $data): bool;
 
     /**
      * @param array $data

@@ -15,8 +15,7 @@ export interface AccountUserNameData {
 }
 
 export interface UpdatedAccountData {
-    key: string | null;
-    data: string;
+    value: string;
 }
 
 export interface UpdatedPasswordData {

@@ -3,7 +3,7 @@ import { Dialog } from "@/components/Dialog";
 import { Typography } from "@/components/Typography";
 import { AccountPasswordModal, AccountUserForm } from "@/features/pilates/components/account";
 import { useAccount } from "@/features/pilates/hooks/useAccount";
-import { AccountData, UpdatedAccountData, UpdatedPasswordData } from "@/features/pilates/types/accountTypes";
+import { AccountData, UpdatedPasswordData } from "@/features/pilates/types/accountTypes";
 import { useErrorHandler } from "@/hooks/useErrorHandler";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Box, Link } from "@mui/material";
@@ -17,7 +17,7 @@ export const AccountList = () => {
     const [openRegisterEmail, setOpenRegisterEmail] = useState<boolean>(false);
     const [openRegisterPassword, setOpenRegisterPassword] = useState<boolean>(false);
     const [accountData, setAccountData] = useState<AccountData>({ name: "", date: "", email: "" });
-    const [updatedUser, setUpdatedUser] = useState<UpdatedAccountData>({ key: "", data: "" });
+    // const [updatedUser, setUpdatedUser] = useState<UpdatedAccountData>({ key: "", data: "" });
     const [updatedPassword, setUpdatedPassword] = useState<UpdatedPasswordData>({
         password: "",
         newPassword: "",
@@ -49,7 +49,7 @@ export const AccountList = () => {
             ...prev,
             [id]: value,
         }));
-        setUpdatedUser({ key: id, data: value });
+        // setUpdatedUser({ key: id, data: value });
     };
 
     /**
@@ -72,7 +72,7 @@ export const AccountList = () => {
         resetErrors();
 
         try {
-            await handleUpdateName(updatedUser);
+            await handleUpdateName({ value: accountData.name });
         } catch (error) {
             handleError(error);
         } finally {
@@ -89,7 +89,7 @@ export const AccountList = () => {
         resetErrors();
 
         try {
-            await handleUpdateEmail(updatedUser);
+            await handleUpdateEmail({ value: accountData.email });
         } catch (error) {
             handleError(error);
         } finally {

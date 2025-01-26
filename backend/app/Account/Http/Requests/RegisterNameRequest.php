@@ -20,7 +20,7 @@ class RegisterNameRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'data' => ['required'],
+            'value' => ['required'],
         ];
     }
 
@@ -30,7 +30,7 @@ class RegisterNameRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'data.required' => 'ユーザー名は必須です。',
+            'value.required' => 'ユーザー名は必須です。',
         ];
     }
 }

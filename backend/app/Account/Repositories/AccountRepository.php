@@ -29,10 +29,22 @@ class AccountRepository implements AccountRepositoryInterface
      * @param array $data
      * @return bool $status
      */
-    public function updateUserById(array $data): bool
+    public function updateNameById(array $data): bool
     {
         $status = User::where('id', $data['user_id'])
-            ->update([$data['key'] => $data['data']]);
+            ->update(['name' => $data['value']]);
+
+        return $status;
+    }
+
+    /**
+     * @param array $data
+     * @return bool $status
+     */
+    public function updateEmailById(array $data): bool
+    {
+        $status = User::where('id', $data['user_id'])
+            ->update(['email' => $data['value']]);
 
         return $status;
     }

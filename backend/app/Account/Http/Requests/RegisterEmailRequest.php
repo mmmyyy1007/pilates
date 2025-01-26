@@ -20,7 +20,7 @@ class RegisterEmailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'data' => ['required'],
+            'value' => ['required'],
         ];
     }
 
@@ -30,7 +30,7 @@ class RegisterEmailRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'data.required' => 'メールアドレスは必須です。',
+            'value.required' => 'メールアドレスは必須です。',
         ];
     }
 }
