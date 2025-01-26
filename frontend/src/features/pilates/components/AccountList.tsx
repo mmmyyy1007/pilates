@@ -17,7 +17,6 @@ export const AccountList = () => {
     const [openRegisterEmail, setOpenRegisterEmail] = useState<boolean>(false);
     const [openRegisterPassword, setOpenRegisterPassword] = useState<boolean>(false);
     const [accountData, setAccountData] = useState<AccountData>({ name: "", date: "", email: "" });
-    // const [updatedUser, setUpdatedUser] = useState<UpdatedAccountData>({ key: "", data: "" });
     const [updatedPassword, setUpdatedPassword] = useState<UpdatedPasswordData>({
         password: "",
         newPassword: "",
@@ -49,7 +48,6 @@ export const AccountList = () => {
             ...prev,
             [id]: value,
         }));
-        // setUpdatedUser({ key: id, data: value });
     };
 
     /**
