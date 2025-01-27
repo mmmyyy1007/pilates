@@ -20,19 +20,30 @@ export const LessonCalendar = ({ lessonData, handleDateClick, handleEventClick }
             dateClick={handleDateClick}
             eventClick={handleEventClick}
             eventMouseEnter={(info) => {
-                info.el.style.cursor = "pointer";
+                const cellElement = info.el.closest(".fc-daygrid-day") as HTMLElement; // HTMLElementとして扱う
+                if (cellElement) {
+                    cellElement.style.backgroundColor = ""; // セルの背景色をリセット
+                }
             }}
             eventMouseLeave={(info) => {
-                info.el.style.cursor = "default";
+                const cellElement = info.el.closest(".fc-daygrid-day") as HTMLElement; // HTMLElementとして扱う
+                if (cellElement) {
+                    cellElement.style.backgroundColor = ""; // セルの背景色をリセット
+                }
             }}
-            dayCellContent={(arg) => {
-                // 日付をフォーマット
-                const date = new Date(arg.date);
-                const formattedDate = `${date.getMonth() + 1}月${date.getDate()}日`;
+            dayCellDidMount={(arg) => {
+                // セル全体にスタイルを適用
+                const cellElement = arg.el; // セル全体の要素
+                cellElement.style.cursor = "pointer"; // ポインターを設定
+                cellElement.style.transition = "background-color 0.3s"; // 背景色変更のアニメーション
 
-                return {
-                    html: `<div style="cursor: pointer;" title="新規登録(${formattedDate})">${arg.date.getDate()}</div>`,
-                };
+                // ホバー時の背景色変更
+                cellElement.addEventListener("mouseenter", () => {
+                    cellElement.style.backgroundColor = "#e6f7ff"; // ホバー時の色
+                });
+                cellElement.addEventListener("mouseleave", () => {
+                    cellElement.style.backgroundColor = ""; // デフォルトの背景色に戻す
+                });
             }}
             headerToolbar={{
                 start: "prev",
