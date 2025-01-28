@@ -9,7 +9,7 @@ import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea
 import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import { Box, FormControl, FormHelperText, IconButton } from "@mui/material";
+import { Box, FormControl, FormHelperText, IconButton, Tooltip } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Switch from "@mui/material/Switch";
 import { useCallback, useEffect, useState } from "react";
@@ -190,17 +190,6 @@ export const PlaceRegisterForm = () => {
                                                     checked={!!item.displayFlag}
                                                     onChange={() => handlePlaceEnabledChange(item.id)}
                                                 />
-                                                {/* <TextField
-                                                    fullWidth
-                                                    value={item.name}
-                                                    error={!!getFieldError(index, "name")}
-                                                    onChange={(e) => handlePlaceDataChange(item.id, e.target.value)}
-                                                ></TextField>
-                                                {getFieldError(index, "name") && (
-                                                    <FormHelperText error>
-                                                        {getFieldError(index, "name")}
-                                                    </FormHelperText>
-                                                )} */}
                                                 <FormControl
                                                     fullWidth
                                                     margin="normal"
@@ -217,9 +206,15 @@ export const PlaceRegisterForm = () => {
                                                         <FormHelperText>{getFieldError(index, "name")}</FormHelperText>
                                                     )}
                                                 </FormControl>
-                                                <IconButton color="default" id={item.id} onClick={handleDeleteModal}>
-                                                    <DeleteIcon />
-                                                </IconButton>
+                                                <Tooltip title="削除" arrow>
+                                                    <IconButton
+                                                        color="default"
+                                                        id={item.id}
+                                                        onClick={handleDeleteModal}
+                                                    >
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                </Tooltip>
                                                 <Dialog
                                                     open={openDelete && item.id === clickedId}
                                                     title="店舗削除前にご確認ください。"
