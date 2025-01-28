@@ -32,6 +32,7 @@ class RegisterPlaceRequest extends FormRequest
     public function messages(): array
     {
         return [
+            '*.name.string' => '店舗名を入力してください。',
             '*.name.max' => '店舗名は255文字以内で指定してください。',
             '*.display_flag.required' => '表示フラグは必須です。',
             '*.display_flag.boolean' => '表示フラグには真偽値を指定してください。',
