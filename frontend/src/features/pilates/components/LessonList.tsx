@@ -1,5 +1,7 @@
 import { Modal } from "@/components/Modal";
+import { Snackbar } from "@/components/Snackbar";
 import { Typography } from "@/components/Typography";
+import { MESSAGES } from "@/constants/message";
 import {
     LessonCalendar,
     LessonDeleteButton,
@@ -10,7 +12,7 @@ import { useLesson } from "@/features/pilates/hooks/useLesson";
 import { usePlace } from "@/features/pilates/hooks/usePlace";
 import { LessonData, LessonRegisterData, LessonStartEndData } from "@/features/pilates/types/lessonTypes";
 import { ActivePlaceData } from "@/features/pilates/types/placeTypes";
-import { useErrorMessageStore } from "@/stores/errorMessageStore";
+import { useErrorHandler } from "@/hooks/useErrorHandler";
 import { EventClickArg } from "@fullcalendar/core";
 import { DateClickArg } from "@fullcalendar/interaction/index.js";
 import { Box } from "@mui/material";
@@ -31,9 +33,11 @@ export const LessonList = () => {
     const [openRegister, setOpenRegister] = useState<boolean>(false);
     const [openDelete, setOpenDelete] = useState<boolean>(false);
     const [isVisibleDelete, setIsVisibleDelete] = useState(false);
+    const [alertSeverity, setAlertServerity] = useState<"success" | "error">("success");
+    const [alertMessage, setAlertMessage] = useState<string | null>(null);
     const { handleActiveShowPlace } = usePlace();
     const { handleShowLesson, handleRegisterLesson, handleDeleteLesson } = useLesson();
-    const { clearErrors, errors, message } = useErrorMessageStore();
+    const { errors, handleError, resetErrors } = useErrorHandler();
 
     const fetchLessonData = useCallback(async () => {
         /**
@@ -92,7 +96,7 @@ export const LessonList = () => {
      */
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
-        clearErrors();
+        resetErrors();
 
         const selectedId = lessonData.find((lesson) => lesson.id === startEndData.id)?.id ?? Date.now().toString();
         if (selectedPlaceData && startEndData.start && startEndData.end) {
@@ -106,10 +110,15 @@ export const LessonList = () => {
 
             try {
                 await handleRegisterLesson(data);
+                setAlertServerity("success");
+                setAlertMessage(MESSAGES.registerSuccess);
                 setOpen(false);
-                setOpenRegister(false);
                 await fetchLessonData();
-            } catch {
+            } catch (error) {
+                setAlertServerity("error");
+                setAlertMessage(MESSAGES.registerError);
+                handleError(error);
+            } finally {
                 setOpenRegister(false);
             }
         }
@@ -120,22 +129,31 @@ export const LessonList = () => {
      */
     const handleDelete = async (e: React.FormEvent) => {
         e.preventDefault();
-        clearErrors();
+        resetErrors();
 
         const selectedId = lessonData.find((lesson) => lesson.id === startEndData.id)?.id ?? "";
         const data = { id: selectedId };
         try {
             await handleDeleteLesson(data);
             setOpen(false);
-            setOpenDelete(false);
             await fetchLessonData();
-        } catch {
+        } catch (error) {
+            handleError(error);
+        } finally {
             setOpenDelete(false);
         }
     };
 
+    /**
+     * スナックバー非表示
+     */
+    const handleClose = () => {
+        setAlertMessage(null);
+    };
+
     return (
         <Box sx={{ mt: 3 }}>
+            {alertMessage && <Snackbar message={alertMessage} severity={alertSeverity} onClose={handleClose} />}
             <LessonCalendar
                 lessonData={lessonData}
                 handleDateClick={handleDateClick}
@@ -144,7 +162,7 @@ export const LessonList = () => {
             <Modal open={open} onClose={handleModalClose}>
                 {errors && (
                     <Typography color="error" sx={{ mb: 2 }}>
-                        {message}
+                        {/* {errors} */}
                     </Typography>
                 )}
                 <LessonInputGroup
