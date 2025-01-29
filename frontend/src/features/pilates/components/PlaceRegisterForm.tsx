@@ -129,6 +129,7 @@ export const PlaceRegisterForm = () => {
             await handleRegisterPlace(placeData);
             setAlertServerity("success");
             setAlertMessage(MESSAGES.registerSuccess);
+            await fetchPlaceData();
         } catch (error) {
             setAlertServerity("error");
             setAlertMessage(MESSAGES.registerError);
