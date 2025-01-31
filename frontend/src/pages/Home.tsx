@@ -1,3 +1,4 @@
+import { GettingStartedStepper } from "@/features/pilates/components/GettingStartedStepper";
 import { LessonGuage } from "@/features/pilates/components/LessonGauge";
 import { LessonTimeline } from "@/features/pilates/components/LessonTimeline";
 import { PilatesQuotes } from "@/features/pilates/components/PilatesQuotes";
@@ -19,6 +20,7 @@ export const Home = () => {
                 textAlign: "center",
             }}
         >
+            <GettingStartedStepper />
             <LessonGuage />
             <LessonTimeline />
             <PilatesQuotes />
