@@ -49,7 +49,7 @@ export const GettingStartedStepper = () => {
             </Paper>
             <Box sx={{ height: 50, maxWidth: 400, width: "100%", p: 2 }}>{steps[activeStep].description}</Box>
             <MobileStepper
-                variant="text"
+                variant="dots"
                 steps={maxSteps}
                 position="static"
                 activeStep={activeStep}
