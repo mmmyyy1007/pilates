@@ -50,7 +50,8 @@ export const GettingStartedStepper = () => {
             </Paper>
             <Box sx={{ height: 50, maxWidth: 400, width: "100%", p: 2 }}>
                 {steps[activeStep].description}
-                <Link href={ROUTES.PLACE}>店舗一覧</Link>
+                {activeStep === 0 && <Link href={ROUTES.PLACE}>店舗一覧</Link>}
+                {activeStep === 1 && <Link href={ROUTES.LESSON}>レッスン一覧</Link>}
             </Box>
             <MobileStepper
                 variant="dots"
