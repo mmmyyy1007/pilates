@@ -2,10 +2,14 @@
 
 namespace App\Place\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Database\Factories\PlaceFactory;
 
 class Place extends Model
 {
+    use HasFactory;
+
     /**
      * モデルに関連付けるテーブル
      *
@@ -27,4 +31,12 @@ class Place extends Model
      * @var bool
      */
     public $incrementing = false;
+
+    /**
+     * 明示的にファクトリを指定
+     */
+    protected static function newFactory()
+    {
+        return PlaceFactory::new();
+    }
 }
